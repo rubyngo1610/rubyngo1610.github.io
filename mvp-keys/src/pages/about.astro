@@ -18,7 +18,6 @@ const practiceDaysThisYear = Object.keys(practiceLog).filter(
   d => !d.startsWith('_') && d.startsWith(thisYear)
 ).length;
 
-
 // ─── Commit log: build-time GitHub API fetch + static fallback ─────────────
 interface CommitEntry { commits: number; repos: string[]; }
 
@@ -204,8 +203,8 @@ const dataMilestones = [
               <h3 class="gem-col-title">Practice log</h3>
               <p class="gem-col-meta">
                 {practiceDaysThisYear > 0
-                  ? `${practiceDaysThisYear} active days · updated live as I practice`
-                  : 'Updated live as I practice'}
+                  ? `${practiceDaysThisYear} sessions this year`
+                  : 'Updates quarterly — check back.'}
               </p>
             </div>
           </header>
