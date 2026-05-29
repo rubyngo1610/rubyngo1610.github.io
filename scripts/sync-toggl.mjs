@@ -31,7 +31,9 @@ const LOG_PATH = resolve(__dir, '../shared/data/practice-log.json');
 
 const TOKEN        = process.env.TOGGL_API_TOKEN;
 const PROJECT_NAME = process.env.TOGGL_PROJECT_NAME ?? 'Piano Practice Hours';
-const LOOKBACK_DAYS = 400; // covers 365-day grid + a few weeks buffer
+// Toggl free plan only allows querying ~90 days back.
+// Existing older entries in practice-log.json are preserved by the merge strategy.
+const LOOKBACK_DAYS = 89;
 
 // ─── Guard ────────────────────────────────────────────────────────────────────
 
