@@ -36,10 +36,15 @@ To trigger a deploy manually without a code change: **Actions → Deploy to GitH
 
 ## Auto-sync practice log (Toggl)
 
-The workflow `.github/workflows/sync-practice.yml` runs nightly at 3 AM ET.
-It fetches Toggl time entries and commits new practice sessions to `shared/data/practice-log.json`, which triggers a redeploy automatically.
+**How it works — fully automatic, nothing to run daily.**
 
-### One-time setup
+Every night at 3 AM ET, GitHub runs `.github/workflows/sync-practice.yml` on its own servers.
+It pulls your Toggl sessions, updates `shared/data/practice-log.json`, commits the change,
+and triggers a redeploy. By morning your practice heatmap is current.
+
+Your only job: log sessions in the Toggl app. Everything else is automatic.
+
+### One-time setup (do this once)
 
 **1 — Create a Toggl project**
 - Sign up free at [toggl.com/track](https://toggl.com/track)
@@ -54,10 +59,11 @@ It fetches Toggl time entries and commits new practice sessions to `shared/data/
 - Download **Toggl Track** (iOS / Android)
 - Tap ▶, select **Piano Practice**, type what you're working on, tap ◼ when done
 
-**Run sync manually**
+**To force a sync right now** (optional — e.g. to test your token):
 ```bash
 TOGGL_API_TOKEN=<your_token> node scripts/sync-toggl.mjs
 ```
+Or trigger it from **Actions → Sync practice log → Run workflow** in GitHub.
 
 ---
 
