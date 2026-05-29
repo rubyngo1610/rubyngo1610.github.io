@@ -65,7 +65,7 @@ const mountId = `gg-mount-${instanceId}`;
 <!-- Log data for the client-side renderer -->
 <script id={logId} type="application/json" set:html={JSON.stringify(log)} />
 
-<style>
+<style is:global>
 .gemstone-grid-wrapper { font-family: var(--font-sans); position: relative; }
 
 .gg-summary {
