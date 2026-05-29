@@ -137,26 +137,41 @@ const youtubeId = video ? getYouTubeId(video) : null;
 
 <style>
 .project-modal {
+  /* ── Centering ── */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+
+  /* ── Size ── */
   border: none;
   border-radius: var(--radius-xl);
   padding: 0;
   max-width: min(680px, 92vw);
   width: 100%;
+  /* Height is determined by content up to this cap;
+     about-body scrolls internally so we rarely hit it */
   max-height: 88vh;
-  overflow-y: auto;
+  overflow: hidden;
+
   background: var(--color-score-cream);
   color: var(--color-text-dark);
   box-shadow: 0 32px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06);
 
-  /* Entry animation */
+  /* ── Entry animation ──
+     Use translate + scale as separate properties (not transform)
+     so the centering via margin:auto is not disturbed. */
   opacity: 0;
-  transform: translateY(16px) scale(0.98);
-  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  translate: 0 16px;
+  scale: 0.98;
+  transition: opacity 0.25s var(--ease-out),
+              translate 0.25s var(--ease-out),
+              scale 0.25s var(--ease-out);
 }
 
 .project-modal[open] {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  translate: 0 0;
+  scale: 1;
 }
 
 .project-modal::backdrop {
@@ -253,7 +268,7 @@ const youtubeId = video ? getYouTubeId(video) : null;
   letter-spacing: 0.01em;
 }
 
-/* About */
+/* About — body scrolls, header + tools + links stay fixed */
 .pm-about {
   margin-bottom: var(--space-6);
 }
@@ -262,12 +277,25 @@ const youtubeId = video ? getYouTubeId(video) : null;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  /* Scroll within this section only */
+  max-height: clamp(180px, 34vh, 320px);
+  overflow-y: auto;
+  padding-right: var(--space-2);
+  scroll-behavior: smooth;
 }
 
 .pm-about-body p {
   font-size: var(--text-base);
   line-height: 1.78;
   color: #2a2520;
+}
+
+/* Subtle scrollbar inside about body */
+.pm-about-body::-webkit-scrollbar { width: 4px; }
+.pm-about-body::-webkit-scrollbar-track { background: transparent; }
+.pm-about-body::-webkit-scrollbar-thumb {
+  background: var(--color-cream-mid);
+  border-radius: 2px;
 }
 
 /* Video */
@@ -331,13 +359,9 @@ const youtubeId = video ? getYouTubeId(video) : null;
 }
 .pm-link--external:hover { background: var(--color-cream-mid); }
 
-/* Scrollbar */
-.project-modal::-webkit-scrollbar { width: 6px; }
-.project-modal::-webkit-scrollbar-track { background: var(--color-cream-warm); }
-.project-modal::-webkit-scrollbar-thumb { background: var(--color-cream-mid); border-radius: 3px; }
-
 @media (max-width: 600px) {
   .pm-inner { padding: var(--space-8) var(--space-6) var(--space-6); }
+  .pm-about-body { max-height: clamp(160px, 40vh, 260px); }
 }
 </style>
 
