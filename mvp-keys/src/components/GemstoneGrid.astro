@@ -22,7 +22,8 @@ const days: { date: string; entry: PracticeEntry | null; dayOfWeek: number }[] =
 for (let i = 364; i >= 0; i--) {
   const d = new Date(today);
   d.setDate(d.getDate() - i);
-  const key = d.toISOString().split('T')[0];
+  // Use local date (not UTC) so heatmap cells match the user's calendar day
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   days.push({
     date: key,
     entry: log[key] ?? null,
