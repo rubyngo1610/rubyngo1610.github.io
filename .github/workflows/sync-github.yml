@@ -1,0 +1,51 @@
+name: Sync GitHub contributions
+
+# Runs nightly at 4 AM ET (9 AM UTC) — 1 hour after the practice log sync.
+# Fetches the GitHub contribution calendar via GraphQL and updates
+# shared/data/commit-log.json → commits → triggers a site redeploy.
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # 09:00 UTC = 04:00 ET daily
+  workflow_dispatch:        # allow manual run from Actions tab
+
+jobs:
+  sync:
+    name: Sync GitHub → commit-log.json
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # needed to push the updated JSON
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Node ───────────────────────────────────────────────────────────────
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. Sync ───────────────────────────────────────────────────────────────
+      - name: Fetch GitHub contributions and update commit-log.json
+        run: node scripts/sync-github.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: rubyngo1610
+
+      # ── 4. Commit ─────────────────────────────────────────────────────────────
+      - name: Commit updated log (if changed)
+        run: |
+          git config user.email "github-sync[bot]@users.noreply.github.com"
+          git config user.name  "GitHub Sync Bot"
+          git add shared/data/commit-log.json
+          if git diff --staged --quiet; then
+            echo "No changes — commit-log.json is already up to date."
+          else
+            git commit -m "chore: sync GitHub contributions $(date -u +%Y-%m-%d)"
+            git push
+            echo "✓ Pushed updated commit-log.json"
+          fi

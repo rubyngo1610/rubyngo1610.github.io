@@ -18,51 +18,26 @@ const practiceDaysThisYear = Object.keys(practiceLog).filter(
   d => !d.startsWith('_') && d.startsWith(thisYear)
 ).length;
 
-// ─── Commit log: build-time GitHub API fetch + static fallback ─────────────
-interface CommitEntry { commits: number; repos: string[]; }
+// ─── Commit log: nightly-synced GitHub contributions (GraphQL source) ────────
+// shared/data/commit-log.json is updated nightly by .github/workflows/sync-github.yml
+// using the GitHub GraphQL contributionsCollection API — same source as the
+// GitHub profile contribution graph.
+interface CommitEntry { commits: number; repos?: string[]; }
 
-// Start with the static pre-populated fallback
 const commitLog: Record<string, CommitEntry> = Object.fromEntries(
   Object.entries(staticCommitLog as Record<string, CommitEntry>).filter(([k]) => !k.startsWith('_'))
 );
 
-let githubFetchOk = false;
-try {
-  // Fetch last 100 public push events for rubyngo — no auth needed, 60 req/hr limit
-  const res = await fetch(
-    'https://api.github.com/users/rubyngo1610/events/public?per_page=100',
-    { headers: { 'Accept': 'application/vnd.github.v3+json' } }
-  );
-  if (res.ok) {
-    const events = await res.json() as Array<{
-      type: string;
-      created_at: string;
-      repo: { name: string };
-      payload: { commits?: { sha: string }[] };
-    }>;
+// Count only within the 365-day window shown by CommitGrid
+const today365 = new Date();
+const cutoff365 = new Date(today365);
+cutoff365.setDate(cutoff365.getDate() - 364);
+const cutoffStr = cutoff365.toISOString().split('T')[0];
 
-    for (const ev of events) {
-      if (ev.type !== 'PushEvent') continue;
-      const date  = ev.created_at.split('T')[0];
-      const repo  = ev.repo.name.split('/')[1] ?? ev.repo.name;
-      const count = ev.payload.commits?.length ?? 1;
-
-      if (!commitLog[date]) {
-        commitLog[date] = { commits: 0, repos: [] };
-      }
-      commitLog[date].commits += count;
-      if (!commitLog[date].repos.includes(repo)) {
-        commitLog[date].repos.push(repo);
-      }
-    }
-    githubFetchOk = true;
-  }
-} catch {
-  // Rate-limited or offline during build — static fallback is already loaded
-}
-
-const totalCommits = Object.values(commitLog).reduce((s, e) => s + e.commits, 0);
-const commitActiveDays = Object.keys(commitLog).length;
+const commitEntriesInWindow = Object.entries(commitLog).filter(([k]) => k >= cutoffStr);
+const totalCommits    = commitEntriesInWindow.reduce((s, [, e]) => s + e.commits, 0);
+const commitActiveDays = commitEntriesInWindow.length;
+const githubFetchOk   = '_github_synced_at' in (staticCommitLog as Record<string, unknown>);
 
 // ─── Timeline milestones ───────────────────────────────────────────────────
 const musicMilestones = [
@@ -219,9 +194,7 @@ const dataMilestones = [
             <div>
               <h3 class="gem-col-title">Code commits</h3>
               <p class="gem-col-meta">
-                {githubFetchOk
-                  ? `${commitActiveDays} active days · live from GitHub`
-                  : `${commitActiveDays} active days · static snapshot`}
+                {`${commitActiveDays} active ${commitActiveDays === 1 ? 'day' : 'days'} · ${githubFetchOk ? 'live from GitHub' : 'static snapshot'}`}
               </p>
             </div>
           </header>
