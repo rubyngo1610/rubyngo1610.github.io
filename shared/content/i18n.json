@@ -1,0 +1,138 @@
+{
+  "en": {
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "projects": "Projects",
+      "music": "Music",
+      "moments": "Moments",
+      "experience": "Experience",
+      "skills": "Skills",
+      "blog": "Notes",
+      "contact": "Contact",
+      "resume": "Résumé",
+      "lang_toggle": "Tiếng Việt"
+    },
+    "hero": {
+      "name": "Ngoc (Ruby) Ngo",
+      "tagline": "She's the rare person who is both a fun musician and a data enthusiast — here's the proof.",
+      "cta_resume": "Download Résumé",
+      "cta_email": "Say Hello",
+      "cta_listen": "Listen"
+    },
+    "about": {
+      "headline": "Two disciplines, one practice.",
+      "body_music": "I perform semiannually with the New York Piano Society's Members. I debuted at Carnegie Hall showcasing Kashkin's arrangement of Tchaikovsky's Swan Lake - Finale Scene, and at Kaufman Music Center performing Liszt's arrangement of Wagner's Tristan und Isolde - Isoldens Liebestod.",
+      "body_data": "I am a Master's student in Data Science @ NYU and an ex-Software Engineer II @ Bank of America. I fixed data and automated processes to help banks save millions in compliance fines and utilized FIX protocol's enrichment logic to curate strategies to better serve the automation.",
+      "body_both": "I am passionate about using data science and AI to innovate and empower musicians. By day, I am a technologist and advocate for women in tech; by night, I am a pianist, bringing together my two passions to build community and explore new artistic frontiers.",
+      "origin": "Based in New York City. BA in Quantitative Economics and Music Performance, Dickinson College (Summa Cum Laude, GPA 3.92). Piano training at Vietnam National Academy of Music, Hanoi. Raised in Vietnam.",
+      "practice_label": "Practice days this year",
+      "practice_unit": "sessions logged"
+    },
+    "projects": {
+      "headline": "Selected work.",
+      "view_repo": "View repository",
+      "view_more": "Read more"
+    },
+    "music": {
+      "headline": "At the keys.",
+      "program_note": "Program notes",
+      "listen": "Listen",
+      "repertoire_headline": "Current repertoire"
+    },
+    "moments": {
+      "headline": "Moments I'm proud of.",
+      "subheadline": "Not a highlight reel — just things that mattered.",
+      "category_music": "Music",
+      "category_data": "Data",
+      "category_both": "Both"
+    },
+    "experience": {
+      "headline": "Where I've worked.",
+      "present": "Present"
+    },
+    "skills": {
+      "headline": "Tools of the trade.",
+      "note": "Concise by design — not a keyword dump."
+    },
+    "contact": {
+      "headline": "Let's talk.",
+      "body": "I aspire to contribute to developing innovative AI-powered products and services that will reshape how we discover, consume, and interact with music. Open to full-time roles in data engineering, ML engineering, or data science. Based in New York City.",
+      "email_label": "Email",
+      "linkedin_label": "LinkedIn",
+      "resume_label": "Résumé"
+    },
+    "footer": {
+      "built_with": "Built with Astro. Deployed on GitHub Pages.",
+      "copyright": "© 2025 Ngoc (Ruby) Ngo"
+    }
+  },
+  "vi": {
+    "nav": {
+      "home": "Trang chủ",
+      "about": "Về tôi",
+      "projects": "Dự án",
+      "music": "Âm nhạc",
+      "moments": "Khoảnh khắc",
+      "experience": "Kinh nghiệm",
+      "skills": "Kỹ năng",
+      "blog": "Ghi chú",
+      "contact": "Liên hệ",
+      "resume": "Sơ yếu lý lịch",
+      "lang_toggle": "English"
+    },
+    "hero": {
+      "name": "Ngô Ngọc (Ruby)",
+      "tagline": "Cô ấy là người hiếm có — vừa là nhạc sĩ vui vẻ vừa đam mê dữ liệu — đây là bằng chứng.",
+      "cta_resume": "Tải CV",
+      "cta_email": "Liên hệ",
+      "cta_listen": "Nghe nhạc"
+    },
+    "about": {
+      "headline": "Hai lĩnh vực, một tinh thần.",
+      "body_music": "Tôi biểu diễn nửa năm một lần cùng các hội viên của NY Piano Society. Tôi đã ra mắt tại Carnegie Hall với bản soạn của Kashkin từ Hồ Thiên Nga - Cảnh Chung Kết của Tchaikovsky, và tại Kaufman Music Center với bản soạn của Liszt từ Tristan und Isolde - Isoldens Liebestod của Wagner.",
+      "body_data": "Tôi là học viên cao học Khoa học Dữ liệu tại NYU và là cựu Kỹ sư Phần mềm II tại Bank of America. Tôi đã sửa dữ liệu và tự động hóa quy trình để giúp ngân hàng tiết kiệm hàng triệu đô la tiền phạt tuân thủ, đồng thời ứng dụng logic làm giàu giao thức FIX để xây dựng các chiến lược tự động hóa hiệu quả hơn.",
+      "body_both": "Tôi đam mê sử dụng khoa học dữ liệu và AI để đổi mới và trao quyền cho các nhạc sĩ. Ban ngày, tôi là một nhà công nghệ và người ủng hộ phụ nữ trong ngành kỹ thuật; ban đêm, tôi là một nghệ sĩ piano, kết hợp hai niềm đam mê để xây dựng cộng đồng và khám phá những ranh giới nghệ thuật mới.",
+      "origin": "Đang sống tại New York City. Cử nhân Kinh tế Định lượng và Trình diễn Âm nhạc, Đại học Dickinson (Summa Cum Laude, GPA 3.92). Lớn lên tại Việt Nam.",
+      "practice_label": "Ngày tập luyện năm nay",
+      "practice_unit": "buổi đã ghi"
+    },
+    "projects": {
+      "headline": "Các dự án tiêu biểu.",
+      "view_repo": "Xem kho mã nguồn",
+      "view_more": "Đọc thêm"
+    },
+    "music": {
+      "headline": "Bên phím đàn.",
+      "program_note": "Ghi chú chương trình",
+      "listen": "Nghe",
+      "repertoire_headline": "Repertoire hiện tại"
+    },
+    "moments": {
+      "headline": "Những khoảnh khắc tôi tự hào.",
+      "subheadline": "Không phải cuộn điểm nổi bật — chỉ là những điều thực sự có ý nghĩa.",
+      "category_music": "Âm nhạc",
+      "category_data": "Dữ liệu",
+      "category_both": "Cả hai"
+    },
+    "experience": {
+      "headline": "Nơi tôi đã làm việc.",
+      "present": "Hiện tại"
+    },
+    "skills": {
+      "headline": "Công cụ trong tay.",
+      "note": "Ngắn gọn theo thiết kế — không phải danh sách từ khóa."
+    },
+    "contact": {
+      "headline": "Hãy trò chuyện.",
+      "body": "Tìm kiếm vị trí toàn thời gian trong kỹ thuật dữ liệu, kỹ thuật ML hoặc khoa học dữ liệu. Đang ở New York.",
+      "email_label": "Email",
+      "linkedin_label": "LinkedIn",
+      "resume_label": "Sơ yếu lý lịch"
+    },
+    "footer": {
+      "built_with": "Xây dựng với Astro. Triển khai trên GitHub Pages.",
+      "copyright": "© 2025 Ngô Ngọc (Ruby)"
+    }
+  }
+}

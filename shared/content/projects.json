@@ -1,0 +1,104 @@
+[
+  {
+    "id": "finra-compliance",
+    "title": "Large-Scale Compliance Data Repair",
+    "subtitle": "100M+ records · $2.5M fine avoided · Bank of America",
+    "description": "Saved the company an expected $2.5 million compliance fine from FINRA by repairing +100 million preprocessed records having absent or incorrect fields/attributes of FIX messages through a Python automation process. Led the migration of legacy components to modern technologies.",
+    "narrative": "Fixed data and automated processes to help the bank avoid millions in compliance fines — utilized FIX protocol's enrichment logic to curate strategies to better serve the automation.",
+    "tags": ["Python", "SQL", "Data Engineering", "FIX Protocol", "Compliance", "ETL"],
+    "repo": null,
+    "flagship": true,
+    "order": 1,
+    "_note": "Résumé-safe description only. No proprietary system names."
+  },
+  {
+    "id": "copyright-laundering",
+    "title": "Copyright Laundering in Agentic AIs",
+    "subtitle": "Research · LLM behavior · IP policy · Apr–May 2026",
+    "description": "Investigated how agentic AI systems can inadvertently (or deliberately) reproduce copyrighted material through multi-step reasoning chains — a form of laundering that bypasses single-inference detection. Analyzed model behavior, proposed detection heuristics, and mapped gaps in current AI policy frameworks.",
+    "narrative": "What happens when a chain of 'safe' steps produces an unsafe output? This project tried to answer that for intellectual property.",
+    "tags": ["LLMs", "Python", "NLP", "Policy", "Generative AI", "Ethics", "Research"],
+    "repo": "https://github.com/rubyngo1610",
+    "flagship": true,
+    "order": 2
+  },
+  {
+    "id": "odd-gaming",
+    "title": "ODD Gaming Toxicity Detection",
+    "subtitle": "NLP · Online harm · Real-time classification",
+    "description": "Built a toxicity detection system for online gaming environments using transformer-based classification. Addressed class imbalance, context-dependent slang, and low-latency requirements.",
+    "narrative": "Language in games is its own dialect — abbreviations, irony, in-group jargon. Off-the-shelf models fail fast.",
+    "tags": ["Python", "Transformers", "NLP", "PyTorch", "Classification", "Data Analytics"],
+    "repo": "https://github.com/rubyngo1610",
+    "flagship": false,
+    "order": 3
+  },
+  {
+    "id": "snapeat",
+    "title": "SnapEat",
+    "subtitle": "Google AI Hackathon · Computer Vision · Apr–May 2024",
+    "description": "Hackathon project built for the Google AI challenge: a mobile-first app that identifies food from a photo and returns nutritional information using Google Gemini Vision. Shipped a working demo in 48 hours.",
+    "narrative": "Photo → food → macros in under a second. The engineering was less about ML and more about making the demo feel effortless.",
+    "tags": ["Python", "Gemini API", "Computer Vision", "Generative AI", "Food & Beverage", "Hackathon"],
+    "repo": "https://github.com/rubyngo1610",
+    "flagship": false,
+    "order": 4
+  },
+  {
+    "id": "cartier-recommender",
+    "title": "Cartier Jewelry Recommender: Maison de Bijoux",
+    "subtitle": "Generative AI · K-Modes Clustering · Nov–Dec 2025",
+    "description": "Built a jewelry recommendation system for Cartier using K-Modes clustering and generative AI to match customers to pieces based on style, occasion, and preference signals.",
+    "narrative": "Fashion recommendation meets unsupervised learning — clustering across categorical features where Euclidean distance means nothing.",
+    "tags": ["Python", "K-Modes Clustering", "Generative AI", "Fashion", "Recommender Systems"],
+    "repo": "https://github.com/rubyngo1610",
+    "flagship": false,
+    "order": 5
+  },
+  {
+    "id": "feedback-agent",
+    "title": "Daily Feedback Intelligence Report Agent",
+    "subtitle": "Agentic AI · Cloudflare · Data Analytics · Jan 2026",
+    "description": "Built an autonomous agent that generates daily feedback intelligence reports by aggregating, analyzing, and synthesizing user feedback signals into actionable product insights.",
+    "narrative": "Turning noisy feedback streams into a daily brief — the kind of report a PM would want on their desk every morning without having to ask.",
+    "tags": ["Python", "Cloudflare", "Agentic AI", "Data Analytics", "Product Management"],
+    "repo": "https://github.com/rubyngo1610",
+    "flagship": false,
+    "order": 6
+  },
+  {
+    "id": "uganda-research",
+    "title": "Impact of Twin Lockdowns on Hunger, Labor Market Outcomes, and Household Coping Mechanisms",
+    "subtitle": "Econometrics research · Uganda · Dickinson College · Feb–May 2021",
+    "description": "Examined the economic impact of COVID-19 lockdown policies on household livelihoods in Uganda. Applied difference-in-differences estimation to panel survey data, controlling for pre-trend confounders. Published on SSRN.",
+    "narrative": "The hardest part was the data — survey data from a low-income context with significant missingness. The methodology had to be transparent about its limits.",
+    "tags": ["R", "Econometrics", "Causal Inference", "Policy Research", "Stata", "Multivariable Regression"],
+    "repo": null,
+    "link": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4269291",
+    "flagship": false,
+    "order": 7
+  },
+  {
+    "id": "music-industry-regression",
+    "title": "Digital vs. Physical Music Revenue During Recessions",
+    "subtitle": "Time-series analysis · Music Industry · Feb–May 2021",
+    "description": "Analyzed the independent level of digital and physical format revenues of the recorded music industry during recessions using multivariable regression and time-series analysis.",
+    "narrative": "Music economics at the intersection of data and the industry I care about — what happens to streaming when the economy contracts?",
+    "tags": ["R", "Stata", "Time-Series Analysis", "Multivariable Regression", "Music Industry"],
+    "repo": null,
+    "flagship": false,
+    "order": 8
+  },
+  {
+    "id": "hackathons",
+    "title": "Hackathons & Competitions",
+    "subtitle": "Rossmann Store Sales · Facebook Data Challenge · and others",
+    "description": "Competed in multiple data science challenges including the Rossmann Store Sales Forecast competition on Kaggle (Jul–Aug 2020) and the Facebook Data Challenge. Applied forecasting, feature engineering, and ensemble methods across varied problem domains.",
+    "narrative": "Competitions taught me to iterate fast — a working model in 6 hours is more useful than a perfect one in 6 weeks.",
+    "tags": ["Python", "XGBoost", "Feature Engineering", "Time Series", "Kaggle", "Machine Learning", "Supply Chain Management"],
+    "repo": null,
+    "flagship": false,
+    "secondary": true,
+    "order": 9
+  }
+]

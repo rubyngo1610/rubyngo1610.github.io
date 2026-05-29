@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "Languages",
+      "items": ["Python", "SQL", "R", "Stata", "Shell Scripting", "JavaScript / TypeScript"]
+    },
+    {
+      "name": "Data & ML",
+      "items": ["PyTorch", "scikit-learn", "Pandas", "NumPy", "XGBoost", "Hugging Face Transformers", "LangChain", "K-Modes Clustering", "Time-Series Analysis", "Multivariable Regression"]
+    },
+    {
+      "name": "Engineering",
+      "items": ["dbt", "Airflow", "Spark", "PostgreSQL", "Snowflake", "FIX Protocol", "Stibo Systems", "Git", "Docker", "Cloudflare"]
+    },
+    {
+      "name": "Analytics & BI",
+      "items": ["Tableau", "Splunk", "Plotly", "Matplotlib", "Seaborn"]
+    },
+    {
+      "name": "Cloud & Infra",
+      "items": ["AWS (S3, EC2, Lambda)", "GCP (BigQuery, Vertex AI, Gemini API)", "GitHub Actions"]
+    },
+    {
+      "name": "Music",
+      "items": ["Classical piano — Romantic repertoire", "NY Piano Society", "Sight-reading", "Chamber music", "Tchaikovsky · Wagner · Liszt · Chopin · Brahms · Schubert"]
+    }
+  ]
+}

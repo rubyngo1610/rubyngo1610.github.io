@@ -1,0 +1,268 @@
+---
+/*
+  CommitGrid — 365-day code commit heatmap.
+  Same visual language as GemstoneGrid but amber-toned (topaz vs pearl).
+  Data source: built-time GitHub API fetch + shared/data/commit-log.json fallback.
+  Hover tooltip: date, commit count, repo names.
+*/
+
+interface CommitEntry { commits: number; repos?: string[]; }
+interface Props {
+  log: Record<string, CommitEntry>;
+  totalCommits?: number;
+}
+
+const { log, totalCommits } = Astro.props;
+
+// Build last-365-days grid
+const today = new Date();
+const days: { date: string; entry: CommitEntry | null; dayOfWeek: number }[] = [];
+
+for (let i = 364; i >= 0; i--) {
+  const d = new Date(today);
+  d.setDate(d.getDate() - i);
+  const key = d.toISOString().split('T')[0];
+  days.push({
+    date: key,
+    entry: log[key] ?? null,
+    dayOfWeek: d.getDay(),
+  });
+}
+
+// Group into weeks
+type WeekDay = { date: string; entry: CommitEntry | null };
+const weeks: WeekDay[][] = [];
+let week: WeekDay[] = [];
+
+const firstDay = days[0].dayOfWeek;
+for (let p = 0; p < firstDay; p++) week.push({ date: '', entry: null });
+
+days.forEach(d => {
+  week.push({ date: d.date, entry: d.entry });
+  if (week.length === 7) { weeks.push(week); week = []; }
+});
+if (week.length > 0) weeks.push(week);
+
+const activeDays   = days.filter(d => d.entry !== null).length;
+const computedTotal = totalCommits ?? days.reduce((sum, d) => sum + (d.entry?.commits ?? 0), 0);
+
+// Max commits in a single day (for intensity scaling)
+const maxCommits = Math.max(...days.map(d => d.entry?.commits ?? 0), 1);
+---
+
+<div class="cg-wrapper" aria-label="Code commit heatmap — last 365 days">
+
+  <div class="cg-summary">
+    <span class="cg-stat"><strong>{activeDays}</strong> active days</span>
+    <span class="cg-sep" aria-hidden="true">·</span>
+    <span class="cg-stat"><strong>{computedTotal}</strong> commits</span>
+  </div>
+
+  <div class="cg-scroll">
+    <div class="cg-grid" aria-hidden="true">
+      <div class="cg-dow-labels">
+        {['S','M','T','W','T','F','S'].map(d => (
+          <span class="cg-dow">{d}</span>
+        ))}
+      </div>
+
+      <div class="cg-weeks">
+        {weeks.map((wk) => (
+          <div class="cg-week">
+            {wk.map((day) => {
+              const intensity = day.entry ? day.entry.commits / maxCommits : 0;
+              return (
+                <div
+                  class:list={['cg-day', {
+                    'cg-day--active': !!day.entry,
+                    'cg-day--empty':  !day.date,
+                  }]}
+                  style={day.entry ? `--intensity:${intensity}` : ''}
+                  data-date={day.date}
+                  data-commits={day.entry?.commits ?? 0}
+                  data-repos={day.entry?.repos?.join(', ') ?? ''}
+                  title={day.entry
+                    ? `${day.date}: ${day.entry.commits} commit${day.entry.commits !== 1 ? 's' : ''}${day.entry.repos?.length ? ` — ${day.entry.repos.join(', ')}` : ''}`
+                    : day.date}
+                ></div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="cg-legend" aria-label="Legend">
+    <span class="cg-legend-label">Fewer</span>
+    <div class="cg-legend-squares">
+      <div class="cg-day" style="opacity:0.12;"></div>
+      <div class="cg-day cg-day--active" style="--intensity:0.25"></div>
+      <div class="cg-day cg-day--active" style="--intensity:0.5"></div>
+      <div class="cg-day cg-day--active" style="--intensity:0.75"></div>
+      <div class="cg-day cg-day--active" style="--intensity:1"></div>
+    </div>
+    <span class="cg-legend-label">More commits</span>
+  </div>
+
+  <!-- Accessible table -->
+  <details class="cg-accessible">
+    <summary>Recent commits (screen readers)</summary>
+    <table>
+      <caption>Commit log — last 30 active days</caption>
+      <thead><tr><th>Date</th><th>Commits</th><th>Repos</th></tr></thead>
+      <tbody>
+        {days.filter(d => d.entry).slice(-30).reverse().map(d => (
+          <tr>
+            <td>{d.date}</td>
+            <td>{d.entry?.commits ?? 0}</td>
+            <td>{d.entry?.repos?.join(', ') ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+
+  <div class="cg-tooltip" id="cg-tooltip" aria-hidden="true"></div>
+</div>
+
+<style>
+/* ─── Amber / topaz color tokens (scoped to this component) ─── */
+.cg-wrapper {
+  --color-amber:      #c9a87e;
+  --color-amber-dim:  rgba(201, 168, 126, 0.4);
+  --color-amber-glow: rgba(201, 168, 126, 0.12);
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+.cg-summary {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.cg-stat strong { color: var(--color-text-dark); font-weight: 600; }
+.cg-sep { opacity: 0.4; }
+
+.cg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.cg-grid {
+  display: flex;
+  gap: 4px;
+  min-width: max-content;
+}
+
+.cg-dow-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 18px;
+}
+.cg-dow {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  height: 12px;
+  width: 12px;
+  text-align: center;
+  line-height: 12px;
+}
+
+.cg-weeks { display: flex; gap: 3px; }
+.cg-week  { display: flex; flex-direction: column; gap: 3px; }
+
+.cg-day {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: rgba(10,10,10,0.07);
+  transition: transform 0.12s;
+}
+.cg-day--empty { visibility: hidden; }
+
+.cg-day--active {
+  background: color-mix(in srgb, var(--color-amber) calc(var(--intensity, 0.5) * 100%), rgba(201,168,126,0.3));
+  box-shadow: 0 0 calc(var(--intensity, 0.5) * 8px) var(--color-amber-dim);
+}
+
+@keyframes commit-pulse {
+  0%, 100% { box-shadow: 0 0 3px var(--color-amber-dim); }
+  50%       { box-shadow: 0 0 9px var(--color-amber), 0 0 16px var(--color-amber-glow); }
+}
+
+.cg-day--active {
+  animation: commit-pulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--day-i, 0) * 18ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg-day--active { animation: none; }
+}
+
+.cg-day:hover {
+  transform: scale(1.6);
+  z-index: 2;
+  position: relative;
+}
+
+.cg-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.cg-legend-label { font-size: 10px; color: var(--color-text-muted); }
+.cg-legend-squares { display: flex; gap: 3px; }
+.cg-legend-squares .cg-day { animation: none !important; }
+
+.cg-accessible { margin-top: var(--space-5); font-size: var(--text-sm); }
+.cg-accessible summary { color: var(--color-text-muted); cursor: pointer; font-size: var(--text-xs); }
+.cg-accessible table { margin-top: var(--space-3); border-collapse: collapse; }
+.cg-accessible th,
+.cg-accessible td { padding: var(--space-2) var(--space-3); border: 1px solid var(--color-cream-mid); font-size: var(--text-xs); }
+.cg-accessible th { background: var(--color-cream-warm); }
+
+.cg-tooltip {
+  position: fixed;
+  background: var(--color-hall-black);
+  color: var(--color-score-cream);
+  font-size: 11px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  z-index: var(--z-modal);
+  white-space: nowrap;
+}
+.cg-tooltip.is-visible { opacity: 1; }
+</style>
+
+<script>
+const tooltip = document.getElementById('cg-tooltip')!;
+
+document.querySelectorAll('.cg-day[data-date]').forEach(el => {
+  el.addEventListener('mouseenter', (e: Event) => {
+    const me = e as MouseEvent;
+    const date    = (el as HTMLElement).dataset.date ?? '';
+    const commits = (el as HTMLElement).dataset.commits ?? '0';
+    const repos   = (el as HTMLElement).dataset.repos ?? '';
+    if (!date) return;
+    const n = parseInt(commits, 10);
+    tooltip.textContent = repos
+      ? `${date}: ${n} commit${n !== 1 ? 's' : ''} — ${repos}`
+      : n > 0
+        ? `${date}: ${n} commit${n !== 1 ? 's' : ''}`
+        : date;
+    tooltip.classList.add('is-visible');
+    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
+  });
+  el.addEventListener('mousemove', (e: Event) => {
+    const me = e as MouseEvent;
+    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
+  });
+  el.addEventListener('mouseleave', () => tooltip.classList.remove('is-visible'));
+});
+</script>

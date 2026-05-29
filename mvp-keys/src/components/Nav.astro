@@ -1,0 +1,110 @@
+---
+import i18n from '../../../shared/content/i18n.json';
+
+interface Props { lang?: 'en' | 'vi'; }
+const { lang = 'en' } = Astro.props;
+const t = i18n[lang].nav;
+const base = import.meta.env.BASE_URL;
+
+const links = [
+  { href: `/about`,      label: t.about },
+  { href: `/projects`,   label: t.projects },
+  { href: `/music`,      label: t.music },
+  { href: `/moments`,    label: t.moments },
+  { href: `/experience`, label: t.experience },
+  { href: `/contact`,    label: t.contact },
+];
+
+const currentPath = Astro.url.pathname;
+const toggleLang = lang === 'en' ? 'vi' : 'en';
+---
+
+<header class="site-nav" role="banner">
+  <div class="nav-inner container">
+    <a href="/" class="nav-logo" aria-label="Ngoc (Ruby) Ngo — Home">
+      <span class="nav-logo__name">Ruby Ngo</span>
+      <span class="nav-logo__rule" aria-hidden="true">keys of proof</span>
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+      <ul class="nav-links" id="nav-menu" role="list">
+        {links.map(({ href, label }) => (
+          <li>
+            <a href={href} class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(href) }]}>
+              {label}
+            </a>
+          </li>
+        ))}
+        <li class="nav-divider" aria-hidden="true"></li>
+        <li>
+          <a href={`/resume.pdf`} class="btn btn--outline btn--sm nav-resume" target="_blank" rel="noopener">
+            {t.resume}
+          </a>
+        </li>
+        <li>
+          <a href={Astro.url.pathname} class="nav-lang" hreflang={toggleLang}>
+            {t.lang_toggle}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: var(--z-nav);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom: 1px solid rgba(126,184,201,0.1);
+  color: var(--color-score-cream);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: var(--space-6);
+}
+.nav-logo { display: flex; flex-direction: column; line-height: 1.1; text-decoration: none; color: var(--color-score-cream); }
+.nav-logo__name { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 400; letter-spacing: -0.01em; }
+.nav-logo__rule { font-family: var(--font-sans); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: lowercase; color: var(--color-pearl); opacity: 0.8; }
+
+nav { display: flex; align-items: center; }
+.nav-links { display: flex; align-items: center; gap: var(--space-1); list-style: none; flex-wrap: wrap; }
+.nav-link { font-family: var(--font-sans); font-size: var(--text-sm); color: rgba(245,240,232,0.65); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); transition: color var(--transition); white-space: nowrap; }
+.nav-link:hover, .nav-link--active { color: var(--color-score-cream); }
+.nav-divider { width: 1px; height: 20px; background: rgba(245,240,232,0.15); margin-inline: var(--space-2); }
+.nav-resume { font-size: var(--text-xs); padding: var(--space-1) var(--space-3); border-color: rgba(245,240,232,0.3) !important; color: var(--color-score-cream) !important; }
+.nav-lang { font-size: var(--text-xs); color: var(--color-pearl); opacity: 0.8; padding: var(--space-2); letter-spacing: 0.05em; white-space: nowrap; }
+.nav-lang:hover { opacity: 1; }
+
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: var(--space-2); color: var(--color-score-cream); }
+.hamburger, .hamburger::before, .hamburger::after { display: block; width: 22px; height: 1.5px; background: currentColor; }
+.hamburger { position: relative; }
+.hamburger::before, .hamburger::after { content: ''; position: absolute; left: 0; }
+.hamburger::before { top: -6px; }
+.hamburger::after  { top:  6px; }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; align-items: center; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--color-hall-black); flex-direction: column; align-items: flex-start; padding: var(--space-4) var(--space-6) var(--space-6); border-bottom: 1px solid rgba(245,240,232,0.08); gap: var(--space-1); }
+  .nav-links.is-open { display: flex; }
+  .nav-divider { display: none; }
+  .nav-link { padding: var(--space-3) 0; font-size: var(--text-base); }
+}
+</style>
+
+<script>
+const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement | null;
+const menu   = document.querySelector('#nav-menu') as HTMLElement | null;
+toggle?.addEventListener('click', () => {
+  const open = menu?.classList.toggle('is-open');
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+</script>

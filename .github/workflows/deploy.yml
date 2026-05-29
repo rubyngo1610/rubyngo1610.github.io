@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+# Triggers:
+#   1. Every push to main  (code changes)
+#   2. After the practice-log sync workflow finishes (data changes)
+#   3. Manual trigger from the Actions tab
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ['Sync practice log']
+    types: [completed]
+  workflow_dispatch:
+
+# Only one deploy at a time — cancel in-progress runs when a new one starts
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  # ── Build ────────────────────────────────────────────────────────────────────
+  build:
+    name: Build Astro site
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mvp-keys/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: mvp-keys
+
+      - name: Build
+        run: npm run build
+        working-directory: mvp-keys
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: mvp-keys/dist
+
+  # ── Deploy ───────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,101 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  subtitle: string;
+  narrative: string;
+  tags: string[];
+  repo?: string | null;
+  dark?: boolean;
+  lang?: 'en' | 'vi';
+}
+
+const { title, subtitle, narrative, tags, repo, dark = false, lang = 'en' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<article class:list={['project-card', { 'project-card--dark': dark }]}>
+  <header class="pc-header">
+    <p class="pc-subtitle">{subtitle}</p>
+    <h3 class="pc-title">{title}</h3>
+  </header>
+  <p class="pc-narrative">{narrative}</p>
+  <footer class="pc-footer">
+    <div class="pc-tags" aria-label="Technologies">
+      {tags.map(tag => <span class="tag">{tag}</span>)}
+    </div>
+    {repo && (
+      <a href={repo} class="pc-repo-link" target="_blank" rel="noopener noreferrer" aria-label={`View ${title} on GitHub`}>
+        {lang === 'vi' ? 'Xem mã nguồn' : 'View repo'} →
+      </a>
+    )}
+  </footer>
+</article>
+
+<style>
+.pc-header { margin-bottom: var(--space-4); }
+
+.pc-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+  margin-bottom: var(--space-1);
+}
+
+.project-card--dark .pc-subtitle {
+  color: var(--color-mermaid);
+}
+
+.pc-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.pc-narrative {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-bottom: var(--space-6);
+}
+
+.project-card--dark .pc-narrative {
+  color: rgba(245,240,232,0.6);
+}
+
+.pc-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.pc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.project-card--dark .tag {
+  background: rgba(245,240,232,0.1);
+  color: var(--color-mermaid);
+}
+
+.pc-repo-link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-pearl);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+
+.pc-repo-link:hover { color: var(--color-mermaid); }
+</style>

@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Waveform from '../components/Waveform.astro';
+import experience from '../../../shared/content/experience.json';
+import i18n from '../../../shared/content/i18n.json';
+
+const lang = 'en';
+const t = i18n[lang].experience;
+const base = import.meta.env.BASE_URL;
+
+const work    = experience.filter(e => e.type === 'work');
+const edu     = experience.filter(e => e.type === 'education');
+const music   = experience.filter(e => e.type === 'music');
+---
+
+<BaseLayout
+  title="Experience — Ngoc (Ruby) Ngo"
+  description="Education and work experience — NYU, Bank of America, Dickinson College, NY Piano Society."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Experience</span>
+      <h1>{t.headline}</h1>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <!-- Work -->
+  <section class="section section--cream">
+    <div class="container container--narrow">
+      <span class="program-label">Work</span>
+      <div class="exp-list">
+        {work.map(e => (
+          <article class="exp-item">
+            <div class="exp-meta">
+              <span class="exp-period">{e.start}{e.end ? ` — ${e.end}` : ` — ${t.present}`}</span>
+              <span class="exp-location">{e.location}</span>
+            </div>
+            <div class="exp-body">
+              <h2 class="exp-org">{e.org}</h2>
+              <p class="exp-role">{e.role}</p>
+              <p class="exp-desc">{e.description}</p>
+              {e.highlights && (
+                <ul class="exp-highlights">
+                  {e.highlights.map((h: string) => <li>{h}</li>)}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="waveform-divider waveform-animated" style="background: var(--color-cream-warm);" aria-hidden="true"></div>
+
+  <!-- Education -->
+  <section class="section section--cream-warm">
+    <div class="container container--narrow">
+      <span class="program-label">Education</span>
+      <div class="exp-list">
+        {edu.map(e => (
+          <article class="exp-item">
+            <div class="exp-meta">
+              <span class="exp-period">{e.start}{e.end ? ` — ${e.end}` : ` — ${t.present}`}</span>
+              <span class="exp-location">{e.location}</span>
+            </div>
+            <div class="exp-body">
+              <h2 class="exp-org">{e.org}</h2>
+              <p class="exp-role">{e.role}</p>
+              <p class="exp-desc">{e.description}</p>
+              {e.highlights && (
+                <ul class="exp-highlights">
+                  {e.highlights.map((h: string) => <li>{h}</li>)}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Music -->
+  <section class="section section--cream">
+    <div class="container container--narrow">
+      <span class="program-label">Music</span>
+      <div class="exp-list">
+        {music.map(e => (
+          <article class="exp-item">
+            <div class="exp-meta">
+              <span class="exp-period">{e.start}{e.end ? ` — ${e.end}` : ` — ${t.present}`}</span>
+              <span class="exp-location">{e.location}</span>
+            </div>
+            <div class="exp-body">
+              <h2 class="exp-org">{e.org}</h2>
+              <p class="exp-role">{e.role}</p>
+              <p class="exp-desc">{e.description}</p>
+              {e.highlights && (
+                <ul class="exp-highlights">
+                  {e.highlights.map((h: string) => <li>{h}</li>)}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Résumé CTA -->
+  <section class="section section--dark" style="padding-block: var(--space-16);">
+    <div class="container" style="text-align:center;">
+      <p style="color: rgba(245,240,232,0.7); font-style:italic; margin-bottom: var(--space-6);">Full details in the résumé.</p>
+      <a href={`/resume.pdf`} class="btn btn--primary" target="_blank" rel="noopener">Download Résumé</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.section-waveform { background: var(--color-hall-black); padding: var(--space-3) var(--space-8); }
+
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  margin-top: var(--space-8);
+}
+
+.exp-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--space-8);
+  padding-bottom: var(--space-10);
+  border-bottom: 1px solid var(--color-cream-mid);
+}
+.exp-item:last-child { border-bottom: none; }
+
+.exp-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.exp-period {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-pearl);
+  text-transform: uppercase;
+}
+
+.exp-location {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.exp-org {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-1);
+}
+
+.exp-role {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-pearl);
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+
+.exp-desc {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin-bottom: var(--space-4);
+  max-width: none;
+}
+
+.exp-highlights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-pearl-dim);
+}
+.exp-highlights li {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .exp-item { grid-template-columns: 1fr; gap: var(--space-3); }
+}
+</style>

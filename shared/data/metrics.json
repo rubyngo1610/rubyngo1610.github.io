@@ -1,0 +1,23 @@
+{
+  "music": {
+    "recitals_total": "semiannual",
+    "pieces_active_repertoire": "2",
+    "practice_days_this_year": "derived from practice-log.json",
+    "years_studying": "10+",
+    "notable_venues": ["Carnegie Hall", "Kaufman Music Center"],
+    "societies": ["NY Piano Society"]
+  },
+  "data": {
+    "years_experience": "3",
+    "flagship_record_scale": "100M+",
+    "compliance_savings": "$2.5M",
+    "ms_program": "NYU MS Data Science",
+    "graduation_expected": "2027",
+    "gpa_undergrad": "3.92",
+    "hackathons_entered": "4+"
+  },
+  "flagship_projects": {
+    "primary": "finra-compliance",
+    "secondary": "copyright-laundering"
+  }
+}

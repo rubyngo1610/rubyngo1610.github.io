@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Waveform from '../components/Waveform.astro';
+import projects from '../../../shared/content/projects.json';
+import i18n from '../../../shared/content/i18n.json';
+
+const lang = 'en';
+const t = i18n[lang].projects;
+const base = import.meta.env.BASE_URL;
+
+const primary   = projects.filter(p => p.flagship && !p.secondary);
+const secondary = projects.filter(p => p.secondary);
+const other     = projects.filter(p => !p.flagship && !p.secondary);
+---
+
+<BaseLayout
+  title="Projects — Ngoc (Ruby) Ngo"
+  description="Data engineering, ML research, and hackathon work by Ngoc (Ruby) Ngo."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Work</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">Data engineering · ML research · Agentic AI · Hackathons</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <!-- Flagship -->
+  <section class="section section--cream">
+    <div class="container">
+      <span class="program-label">Flagship</span>
+      <div class="grid-2" style="margin-top: var(--space-8);">
+        {primary.map(p => (
+          <ProjectCard
+            id={p.id}
+            title={p.title}
+            subtitle={p.subtitle}
+            narrative={p.narrative}
+            tags={p.tags}
+            repo={p.repo}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Other projects -->
+  {other.length > 0 && (
+    <section class="section section--cream-warm">
+      <div class="container">
+        <span class="program-label">Other work</span>
+        <div class="grid-2" style="margin-top: var(--space-8);">
+          {other.map(p => (
+            <ProjectCard
+              id={p.id}
+              title={p.title}
+              subtitle={p.subtitle}
+              narrative={p.narrative}
+              tags={p.tags}
+              repo={p.repo}
+              lang={lang}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Hackathons / secondary (collapsible) -->
+  {secondary.length > 0 && (
+    <section class="section section--cream">
+      <div class="container container--narrow">
+        <details class="collapsible-section">
+          <summary class="collapsible-summary">
+            <span class="program-label" style="display:inline; margin:0;">Competitions & Hackathons</span>
+          </summary>
+          <div style="margin-top: var(--space-8);">
+            {secondary.map(p => (
+              <div style="margin-bottom: var(--space-6);">
+                <ProjectCard
+                  id={p.id}
+                  title={p.title}
+                  subtitle={p.subtitle}
+                  narrative={p.narrative}
+                  tags={p.tags}
+                  repo={p.repo}
+                  lang={lang}
+                />
+              </div>
+            ))}
+          </div>
+        </details>
+      </div>
+    </section>
+  )}
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub {
+  color: rgba(245,240,232,0.6);
+  margin-top: var(--space-3);
+  font-style: italic;
+}
+
+.section-waveform {
+  background: var(--color-hall-black);
+  padding: var(--space-3) var(--space-8);
+}
+
+.collapsible-section {
+  border: 1px solid var(--color-cream-mid);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.collapsible-summary {
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.collapsible-summary::-webkit-details-marker { display: none; }
+.collapsible-summary::after {
+  content: '+';
+  font-size: var(--text-xl);
+  color: var(--color-pearl);
+  font-weight: 300;
+  margin-left: auto;
+}
+details[open] .collapsible-summary::after { content: '−'; }
+</style>

@@ -1,0 +1,283 @@
+---
+/*
+  GemstoneGrid — GitHub-style 365-day practice heatmap.
+  Data source: shared/data/practice-log.json
+  Each practiced day glows pearl blue (gemstone effect).
+  Hover: tooltip with date, minutes, piece.
+  Accessible: table fallback, aria-labels.
+*/
+
+interface PracticeEntry { minutes?: number; piece?: string; note?: string; }
+interface Props {
+  log: Record<string, PracticeEntry>;
+  compact?: boolean;
+}
+
+const { log, compact = false } = Astro.props;
+
+// Build last-365-days grid
+const today = new Date();
+const days: { date: string; entry: PracticeEntry | null; dayOfWeek: number }[] = [];
+
+for (let i = 364; i >= 0; i--) {
+  const d = new Date(today);
+  d.setDate(d.getDate() - i);
+  const key = d.toISOString().split('T')[0];
+  days.push({
+    date: key,
+    entry: log[key] ?? null,
+    dayOfWeek: d.getDay(),
+  });
+}
+
+// Group into weeks (columns) for grid rendering
+type WeekDay = { date: string; entry: PracticeEntry | null };
+const weeks: WeekDay[][] = [];
+let week: WeekDay[] = [];
+
+// Pad start to align with correct day of week
+const firstDay = days[0].dayOfWeek; // 0=Sun
+for (let p = 0; p < firstDay; p++) week.push({ date: '', entry: null });
+
+days.forEach(d => {
+  week.push({ date: d.date, entry: d.entry });
+  if (week.length === 7) { weeks.push(week); week = []; }
+});
+if (week.length > 0) weeks.push(week);
+
+const totalDays = days.filter(d => d.entry !== null).length;
+const totalMins = days.reduce((sum, d) => sum + (d.entry?.minutes ?? 0), 0);
+
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+---
+
+<div class="gemstone-grid-wrapper" aria-label="Practice heatmap — last 365 days">
+
+  <!-- Summary -->
+  <div class="gg-summary">
+    <span class="gg-stat">
+      <strong>{totalDays}</strong> practice days
+    </span>
+    <span class="gg-sep" aria-hidden="true">·</span>
+    <span class="gg-stat">
+      <strong>{Math.round(totalMins / 60)}</strong> hours logged
+    </span>
+  </div>
+
+  <!-- Grid -->
+  <div class="gg-scroll">
+    <div class:list={['gg-grid', { 'gg-grid--compact': compact }]} aria-hidden="true">
+      <!-- Day-of-week labels -->
+      <div class="gg-dow-labels">
+        {['S','M','T','W','T','F','S'].map(d => (
+          <span class="gg-dow">{d}</span>
+        ))}
+      </div>
+
+      <!-- Weeks columns -->
+      <div class="gg-weeks">
+        {weeks.map((wk, wi) => (
+          <div class="gg-week">
+            {wk.map((day, di) => (
+              <div
+                class:list={['gg-day', { 'gg-day--practiced': !!day.entry, 'gg-day--empty': !day.date }]}
+                data-date={day.date}
+                data-mins={day.entry?.minutes ?? 0}
+                data-piece={day.entry?.piece ?? ''}
+                title={day.entry ? `${day.date}: ${day.entry.minutes ?? '?'} min — ${day.entry.piece ?? 'practice'}` : day.date}
+              ></div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="gg-legend" aria-label="Legend">
+    <span class="gg-legend-label">Less</span>
+    <div class="gg-legend-squares">
+      <div class="gg-day" style="opacity:0.12;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.3;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.6;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.85;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:1;"></div>
+    </div>
+    <span class="gg-legend-label">More</span>
+  </div>
+
+  <!-- Accessible table -->
+  <details class="gg-accessible">
+    <summary>Recent practice sessions (screen readers)</summary>
+    <table>
+      <caption>Practice log — last 30 sessions</caption>
+      <thead><tr><th>Date</th><th>Minutes</th><th>Piece</th></tr></thead>
+      <tbody>
+        {days.filter(d => d.entry).slice(-30).reverse().map(d => (
+          <tr>
+            <td>{d.date}</td>
+            <td>{d.entry?.minutes ?? '—'}</td>
+            <td>{d.entry?.piece ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+
+  <!-- Hover tooltip -->
+  <div class="gg-tooltip" id="gg-tooltip" aria-hidden="true"></div>
+
+</div>
+
+<style>
+.gemstone-grid-wrapper {
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+.gg-summary {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.gg-stat strong { color: var(--color-text-dark); font-weight: 600; }
+.gg-sep { opacity: 0.4; }
+
+.gg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.gg-grid {
+  display: flex;
+  gap: 4px;
+  min-width: max-content;
+}
+
+.gg-dow-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 18px; /* align with first week */
+}
+.gg-dow {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  height: 12px;
+  width: 12px;
+  text-align: center;
+  line-height: 12px;
+}
+
+.gg-weeks {
+  display: flex;
+  gap: 3px;
+}
+
+.gg-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.gg-day {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: rgba(10, 10, 10, 0.07);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.gg-day--empty {
+  visibility: hidden;
+}
+
+.gg-day--practiced {
+  background: var(--color-pearl);
+  box-shadow: 0 0 6px var(--color-pearl-dim);
+}
+
+@keyframes gem-pulse {
+  0%, 100% { box-shadow: 0 0 4px var(--color-pearl-dim); }
+  50%       { box-shadow: 0 0 10px var(--color-pearl), 0 0 18px var(--color-pearl-glow); }
+}
+
+.gg-day--practiced {
+  animation: gem-pulse 2.5s ease-in-out infinite;
+  animation-delay: calc(var(--day-i, 0) * 20ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-day--practiced { animation: none; }
+}
+
+.gg-day:hover {
+  transform: scale(1.6);
+  z-index: 2;
+  position: relative;
+}
+
+.gg-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.gg-legend-label { font-size: 10px; color: var(--color-text-muted); }
+.gg-legend-squares { display: flex; gap: 3px; }
+.gg-legend-squares .gg-day { animation: none !important; }
+
+.gg-accessible {
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+}
+.gg-accessible summary { color: var(--color-text-muted); cursor: pointer; font-size: var(--text-xs); }
+.gg-accessible table { margin-top: var(--space-3); border-collapse: collapse; }
+.gg-accessible th, .gg-accessible td { padding: var(--space-2) var(--space-3); border: 1px solid var(--color-cream-mid); font-size: var(--text-xs); }
+.gg-accessible th { background: var(--color-cream-warm); }
+
+.gg-tooltip {
+  position: fixed;
+  background: var(--color-hall-black);
+  color: var(--color-score-cream);
+  font-size: 11px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: var(--z-modal);
+  white-space: nowrap;
+}
+.gg-tooltip.is-visible { opacity: 1; }
+</style>
+
+<script>
+const tooltip = document.getElementById('gg-tooltip')!;
+
+document.querySelectorAll('.gg-day[data-date]').forEach(el => {
+  el.addEventListener('mouseenter', (e: Event) => {
+    const me = e as MouseEvent;
+    const date  = (el as HTMLElement).dataset.date ?? '';
+    const mins  = (el as HTMLElement).dataset.mins ?? '0';
+    const piece = (el as HTMLElement).dataset.piece ?? '';
+    if (!date) return;
+    tooltip.textContent = piece
+      ? `${date}: ${mins} min — ${piece}`
+      : mins !== '0'
+        ? `${date}: ${mins} min`
+        : date;
+    tooltip.classList.add('is-visible');
+    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
+  });
+
+  el.addEventListener('mousemove', (e: Event) => {
+    const me = e as MouseEvent;
+    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
+  });
+
+  el.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('is-visible');
+  });
+});
+</script>

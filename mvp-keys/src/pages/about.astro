@@ -1,0 +1,579 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GemstoneGrid from '../components/GemstoneGrid.astro';
+import CommitGrid from '../components/CommitGrid.astro';
+import Waveform from '../components/Waveform.astro';
+import i18n from '../../../shared/content/i18n.json';
+import metrics from '../../../shared/data/metrics.json';
+import practiceLog from '../../../shared/data/practice-log.json';
+import staticCommitLog from '../../../shared/data/commit-log.json';
+
+const lang = 'en';
+const t = i18n[lang].about;
+const base = import.meta.env.BASE_URL;
+
+// ─── Practice stats ────────────────────────────────────────────────────────
+const thisYear = new Date().getFullYear().toString();
+const practiceDaysThisYear = Object.keys(practiceLog).filter(
+  d => !d.startsWith('_') && d.startsWith(thisYear)
+).length;
+
+// ─── Commit log: build-time GitHub API fetch + static fallback ─────────────
+interface CommitEntry { commits: number; repos: string[]; }
+
+// Start with the static pre-populated fallback
+const commitLog: Record<string, CommitEntry> = Object.fromEntries(
+  Object.entries(staticCommitLog as Record<string, CommitEntry>).filter(([k]) => !k.startsWith('_'))
+);
+
+let githubFetchOk = false;
+try {
+  // Fetch last 100 public push events for rubyngo — no auth needed, 60 req/hr limit
+  const res = await fetch(
+    'https://api.github.com/users/rubyngo1610/events/public?per_page=100',
+    { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+  );
+  if (res.ok) {
+    const events = await res.json() as Array<{
+      type: string;
+      created_at: string;
+      repo: { name: string };
+      payload: { commits?: { sha: string }[] };
+    }>;
+
+    for (const ev of events) {
+      if (ev.type !== 'PushEvent') continue;
+      const date  = ev.created_at.split('T')[0];
+      const repo  = ev.repo.name.split('/')[1] ?? ev.repo.name;
+      const count = ev.payload.commits?.length ?? 1;
+
+      if (!commitLog[date]) {
+        commitLog[date] = { commits: 0, repos: [] };
+      }
+      commitLog[date].commits += count;
+      if (!commitLog[date].repos.includes(repo)) {
+        commitLog[date].repos.push(repo);
+      }
+    }
+    githubFetchOk = true;
+  }
+} catch {
+  // Rate-limited or offline during build — static fallback is already loaded
+}
+
+const totalCommits = Object.values(commitLog).reduce((s, e) => s + e.commits, 0);
+const commitActiveDays = Object.keys(commitLog).length;
+
+// ─── Timeline milestones ───────────────────────────────────────────────────
+const musicMilestones = [
+  { year: '2025', event: 'Carnegie Hall debut — Tchaikovsky, Swan Lake Finale Scene' },
+  { year: '2024', event: 'Kaufman Music Center debut — Wagner, Isoldens Liebestod' },
+  { year: '2023', event: 'Joined NY Piano Society' },
+  { year: '2022', event: 'Senior Recital — Dickinson College (Liszt, Chopin, Debussy)' },
+  { year: '2021', event: 'Junior Recital: Desire — Dickinson College (Beethoven, Prokofiev)' },
+  { year: '2020', event: 'Student Concerto Competition Winner — Grieg, Piano Concerto in A minor' },
+  { year: '2018', event: 'Diploma in Piano — Vietnam National Academy of Music, Hanoi' },
+];
+
+const dataMilestones = [
+  { year: '2025–2027', event: 'MS Data Science — NYU' },
+  { year: '2024–2025', event: 'Global Technology Analyst BA — Bank of America' },
+  { year: '2022–2024', event: 'Software Engineer II — Bank of America' },
+  { year: '2018–2022', event: 'BA, Quantitative Economics — Dickinson College' },
+  { year: '2019',      event: 'First hackathon' },
+];
+---
+
+<BaseLayout
+  title="About — Ngoc (Ruby) Ngo"
+  description="Two disciplines, one practice. NYU MS Data Science. Classical pianist. NY Piano Society."
+  lang={lang}
+>
+
+  <!-- ─── Hero ──────────────────────────────────────────────────────────── -->
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">About</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">{t.origin}</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="about-wave" />
+
+  <!-- ─── Narrative ─────────────────────────────────────────────────────── -->
+  <section class="section section--cream" aria-label="Story">
+    <div class="container container--narrow">
+
+      <div class="about-block">
+        <span class="movement-label">Music</span>
+        <h2>The piano came first.</h2>
+        <p>{t.body_music}</p>
+      </div>
+
+      <div class="waveform-divider waveform-animated" style="margin-block: var(--space-12);" aria-hidden="true"></div>
+
+      <div class="about-block">
+        <span class="movement-label">Data</span>
+        <h2>Then the data.</h2>
+        <p>{t.body_data}</p>
+      </div>
+
+      <div class="waveform-divider waveform-animated" style="margin-block: var(--space-12);" aria-hidden="true"></div>
+
+      <div class="about-block about-block--center">
+        <blockquote class="pull-quote">{t.body_both}</blockquote>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── Dual Timeline ─────────────────────────────────────────────────── -->
+  <!--
+    Placement rationale: the narrative says "music came first, then data."
+    The timeline is the factual arc that proves it — milestones in chronological
+    order on two parallel tracks. Sits between narrative and the discipline grids
+    so the page reads: story → arc → proof.
+  -->
+  <section class="section section--cream-warm" aria-label="Timeline">
+    <div class="container">
+      <span class="program-label">Timeline</span>
+      <h2 class="section-h2">The parallel tracks.</h2>
+
+      <div class="dual-timeline" role="region" aria-label="Music and data milestones">
+
+        <!-- Music track (treble) -->
+        <div class="dt-track">
+          <h3 class="dt-track-label dt-track-label--music">
+            <span class="clef" aria-hidden="true">𝄞</span>
+            Music
+          </h3>
+          <div class="timeline" role="list">
+            {musicMilestones.map((m, i) => (
+              <div class="timeline-item" role="listitem">
+                <span class="tl-year">{m.year}</span>
+                <p class="tl-event">{m.event}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="dt-divider" aria-hidden="true"></div>
+
+        <!-- Data track (bass) -->
+        <div class="dt-track">
+          <h3 class="dt-track-label dt-track-label--data">
+            <span class="clef" aria-hidden="true">𝄢</span>
+            Data
+          </h3>
+          <div class="timeline" role="list">
+            {dataMilestones.map((m, i) => (
+              <div class="timeline-item" role="listitem">
+                <span class="tl-year">{m.year}</span>
+                <p class="tl-event">{m.event}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Gemstone split: practice | commits ────────────────────────────── -->
+  <section class="section section--cream" id="practice" aria-label="Discipline grids">
+    <div class="container">
+
+      <div class="gem-intro">
+        <span class="program-label">Gemstone Practice</span>
+        <h2 class="section-h2">Discipline, side by side.</h2>
+        <p class="gem-intro-sub">
+          Same year. Same cadence of showing up. Two different instruments.
+        </p>
+      </div>
+
+      <div class="gem-split">
+
+        <!-- Left column: Piano practice grid (pearl) -->
+        <div class="gem-col gem-col--practice">
+          <header class="gem-col-header">
+            <div class="gem-col-icon" aria-hidden="true">𝄞</div>
+            <div>
+              <h3 class="gem-col-title">Practice log</h3>
+              <p class="gem-col-meta">
+                {practiceDaysThisYear > 0
+                  ? `${practiceDaysThisYear} sessions this year`
+                  : 'Updates quarterly — check back.'}
+              </p>
+            </div>
+          </header>
+          <GemstoneGrid log={practiceLog as any} compact={true} />
+        </div>
+
+        <!-- Column divider -->
+        <div class="gem-col-divider" aria-hidden="true"></div>
+
+        <!-- Right column: Code commit grid (amber) -->
+        <div class="gem-col gem-col--commits">
+          <header class="gem-col-header">
+            <div class="gem-col-icon gem-col-icon--amber" aria-hidden="true">⌨</div>
+            <div>
+              <h3 class="gem-col-title">Code commits</h3>
+              <p class="gem-col-meta">
+                {githubFetchOk
+                  ? `${commitActiveDays} active days · live from GitHub`
+                  : `${commitActiveDays} active days · static snapshot`}
+              </p>
+            </div>
+          </header>
+          <CommitGrid log={commitLog} totalCommits={totalCommits} />
+        </div>
+
+      </div>
+
+      <!-- Legend annotation -->
+      <p class="gem-annotation">
+        Pearl = piano session &nbsp;·&nbsp; Amber = code commit &nbsp;·&nbsp; Brighter = more activity
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ─── Metrics ───────────────────────────────────────────────────────── -->
+  <section class="section section--cream-warm" aria-label="By the numbers">
+    <div class="container">
+      <span class="program-label">By the numbers</span>
+      <div class="metrics-grid" style="margin-top: var(--space-8);">
+        <div class="metric-item">
+          <span class="metric-value">{metrics.music.notable_venues.join(' · ')}</span>
+          <span class="metric-label">Performance venues</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.music.pieces_active_repertoire}</span>
+          <span class="metric-label">Active repertoire pieces</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.data.flagship_record_scale}</span>
+          <span class="metric-label">Records in compliance pipeline</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.data.ms_program}</span>
+          <span class="metric-label">Graduate program</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ───────────────────────────────────────────────────────────── -->
+  <section class="section section--dark" style="padding-block: var(--space-16);">
+    <div class="container" style="text-align:center;">
+      <h2 style="color:var(--color-score-cream); font-weight:300; margin-bottom:var(--space-6);">Let's talk.</h2>
+      <div class="cta-group" style="justify-content:center;">
+        <a href="mailto:ngocrubytin@gmail.com" class="btn btn--primary">Say Hello</a>
+        <a href={`/resume.pdf`} class="btn btn--outline" target="_blank" rel="noopener">Download Résumé</a>
+        <a href="https://www.linkedin.com/in/ngocrubyngo" class="btn btn--outline" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+/* ─── Hero ─── */
+.page-hero { padding-top: 120px; }
+.page-sub {
+  color: rgba(245,240,232,0.65);
+  margin-top: var(--space-4);
+  font-style: italic;
+  font-size: var(--text-lg);
+}
+.about-wave {
+  background: var(--color-hall-black);
+  padding: var(--space-3) var(--space-8);
+}
+
+/* ─── Narrative ─── */
+.about-block { margin-bottom: var(--space-2); }
+.about-block--center { text-align: center; }
+
+.about-block h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+.about-block p {
+  font-size: var(--text-lg);
+  line-height: 1.75;
+  color: var(--color-text-muted);
+}
+
+.movement-label {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: var(--color-pearl);
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.pull-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 2.5vw, var(--text-3xl));
+  font-style: italic;
+  line-height: 1.4;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+.pull-quote::before { content: '\201C'; }
+.pull-quote::after  { content: '\201D'; }
+
+/* ─── Shared section heading ─── */
+.section-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+/* ─── Dual timeline ─── */
+.dual-timeline {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-12);
+  align-items: start;
+  margin-top: var(--space-10);
+}
+
+.dt-divider {
+  background: var(--color-cream-mid);
+  align-self: stretch;
+  min-height: 200px;
+}
+
+.dt-track-label {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.dt-track-label--music { color: var(--color-text-dark); }
+.dt-track-label--data  { color: var(--color-pearl); }
+
+.clef {
+  font-size: 1.6em;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+/* Vertical timeline line */
+.timeline {
+  position: relative;
+  padding-left: var(--space-6);
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--color-cream-mid);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-6) - 4px);
+  top: 5px;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  background: var(--color-pearl);
+  border: 2px solid var(--color-cream-warm);
+}
+
+.dt-track-label--data + .timeline .timeline-item::before {
+  background: #c9a87e; /* amber for data track dots */
+}
+
+.tl-year {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+  line-height: 1;
+}
+
+.dt-track-label--data + .timeline .tl-year {
+  color: #c9a87e;
+}
+
+.tl-event {
+  font-size: var(--text-base);
+  color: var(--color-text-dark);
+  line-height: 1.5;
+}
+
+.timeline-note {
+  margin-top: var(--space-8);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  max-width: none;
+}
+.timeline-note code {
+  background: rgba(10,10,10,0.07);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* ─── Gemstone split ─── */
+.gem-intro { margin-bottom: var(--space-10); }
+.gem-intro-sub {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  font-style: italic;
+  max-width: none;
+}
+
+.gem-split {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.gem-col-divider {
+  background: var(--color-cream-mid);
+  align-self: stretch;
+  min-height: 200px;
+  margin-top: 60px; /* align with grid content, below header */
+}
+
+/* Critical: grid items default to min-width:auto which lets content
+   blow past the 1fr boundary. min-width:0 enforces the 50/50 split. */
+.gem-col {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.gem-col-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-cream-mid);
+}
+
+.gem-col-icon {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-pearl);
+  opacity: 0.9;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.gem-col-icon--amber { color: #c9a87e; }
+
+.gem-col-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--color-text-dark);
+  line-height: 1.2;
+}
+
+.gem-col-meta {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+  max-width: none;
+}
+
+.gem-annotation {
+  margin-top: var(--space-10);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  max-width: none;
+}
+
+/* ─── Metrics ─── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-6);
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-cream-mid);
+}
+.metric-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--color-text-dark);
+  line-height: 1.2;
+}
+.metric-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .dual-timeline {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
+  .dt-divider { display: none; }
+
+  .gem-split {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
+  .gem-col-divider { display: none; }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .metrics-grid { grid-template-columns: 1fr; }
+}
+</style>

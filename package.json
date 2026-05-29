@@ -1,0 +1,12 @@
+{
+  "name": "rubyngo-portfolio",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix mvp-keys",
+    "build": "npm run build --prefix mvp-keys",
+    "preview": "npm run preview --prefix mvp-keys"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

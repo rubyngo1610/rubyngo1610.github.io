@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Waveform from '../components/Waveform.astro';
+import momentsData from '../../../shared/data/moments.json';
+import i18n from '../../../shared/content/i18n.json';
+
+const lang = 'en';
+const t = i18n[lang].moments;
+const base = import.meta.env.BASE_URL;
+const moments = momentsData.moments;
+---
+
+<BaseLayout
+  title="Moments — Ngoc (Ruby) Ngo"
+  description="Moments I'm proud of — music, data, and the intersections."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Moments</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">{t.subheadline}</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="moments-grid" role="list">
+        {moments.map(m => (
+          <article class="moment-full" id={`moment-${m.id}`} role="listitem">
+            <div class="mf-image image-block" style="min-height: 240px;">
+              <div class="img-placeholder" style="height:240px; min-height:unset;" aria-label={`Moment ${m.id} photo`}>photo</div>
+            </div>
+            <div class="mf-body">
+              <span class="moment-category">
+                {t[`category_${m.category}` as keyof typeof t] ?? m.category}
+                {m.year ? ` · ${m.year}` : ''}
+              </span>
+              <h2 class="mf-title">{m.title}</h2>
+              <p class="mf-summary">{lang === 'vi' ? m.summary_vi : m.summary_en}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="moments-note">
+        <p>Owner updates this page quarterly. Five more stories in progress.</p>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.6); margin-top: var(--space-3); font-style:italic; }
+.section-waveform { background: var(--color-hall-black); padding: var(--space-3) var(--space-8); }
+
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-10);
+}
+
+.moment-full {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.mf-image { border-radius: var(--radius-xl); overflow: hidden; }
+
+.mf-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mf-title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 2.5vw, var(--text-3xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.mf-summary {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  font-style: italic;
+  max-width: none;
+}
+
+.moments-note {
+  margin-top: var(--space-16);
+  text-align: center;
+  padding: var(--space-6);
+  border: 1px dashed var(--color-cream-mid);
+  border-radius: var(--radius-lg);
+}
+.moments-note p {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: var(--text-sm);
+  max-width: none;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .moments-grid { grid-template-columns: 1fr; }
+}
+</style>

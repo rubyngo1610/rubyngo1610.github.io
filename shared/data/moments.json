@@ -1,0 +1,49 @@
+{
+  "moments": [
+    {
+      "id": 1,
+      "title": "My Piano Debut with NYPS at Kaufman Hall",
+      "year": "2024",
+      "category": "music",
+      "summary_en": "Debuted at Kaufman Music Center performing Liszt's arrangement of Wagner's Tristan und Isolde - Isoldens Liebestod.",
+      "summary_vi": "Ra mắt tại Kaufman Music Center biểu diễn bản soạn của Liszt từ tác phẩm Tristan und Isolde - Isoldens Liebestod của Wagner.",
+      "image": "/images/moments/kaufman-debut.jpg"
+    },
+    {
+      "id": 2,
+      "title": "My Carnegie Hall Debut",
+      "year": "2025",
+      "category": "music",
+      "summary_en": "Debuted at Carnegie Hall, showcasing Kashkin's arrangement of Tchaikovsky's Swan Lake - Finale Scene in March 2025.",
+      "summary_vi": "Ra mắt tại Carnegie Hall, biểu diễn bản soạn của Kashkin từ Hồ Thiên Nga - Cảnh Chung Kết của Tchaikovsky vào tháng 3 năm 2025.",
+      "image": "/images/moments/carnegie-debut.jpg"
+    },
+    {
+      "id": 3,
+      "title": "I won the GHC 2020 and 2021 Scholarship, supporting WIT",
+      "year": "2020",
+      "category": "data",
+      "summary_en": "Won the Grace Hopper Celebration 2020 and 2021 Scholarship — supporting women in technology.",
+      "summary_vi": "Giành học bổng Grace Hopper Celebration 2020 và 2021 — ủng hộ phụ nữ trong công nghệ.",
+      "image": "/images/moments/ghc-scholarship.jpg"
+    },
+    {
+      "id": 4,
+      "title": "My First Hackathon!",
+      "year": "2019",
+      "category": "data",
+      "summary_en": "Competed in my first hackathon in February 2019 — the start of building things fast under pressure.",
+      "summary_vi": "Tham gia hackathon đầu tiên vào tháng 2 năm 2019 — khởi đầu của việc xây dựng nhanh dưới áp lực.",
+      "image": "/images/moments/first-hackathon.jpg"
+    },
+    {
+      "id": 5,
+      "title": "I hiked up to the top of the Horseshoe Bend",
+      "year": "2025",
+      "category": "both",
+      "summary_en": "Hiked to the top of the Horseshoe Bend in July 2025.",
+      "summary_vi": "Leo lên đỉnh Horseshoe Bend vào tháng 7 năm 2025.",
+      "image": "/images/moments/horseshoe-bend.jpg"
+    }
+  ]
+}

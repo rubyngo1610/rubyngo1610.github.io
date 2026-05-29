@@ -1,0 +1,458 @@
+---
+/*
+  PianoHero — interactive octave piano, C4–C5 (13 keys).
+  White keys = music; Black keys = data.
+  Click/tap → slide-in program note card.
+  Keyboard accessible: Tab to focus, Enter/Space to open card, Escape to close.
+  See KEY_MAP.md for content mapping details.
+*/
+
+const base = import.meta.env.BASE_URL;
+
+const WHITE_KEYS = [
+  { note: 'C4',  label: 'C',  title: 'Origin',              body: 'Dickinson College — BA in Quantitative Economics and Music Performance. Where the two disciplines met and refused to separate.',     link: `/about`,    linkLabel: 'Read more' },
+  { note: 'D4',  label: 'D',  title: 'Carnegie Hall',       body: 'Concert debut at Carnegie Hall with the NY Piano Society. [Owner: add one line about the program or piece.]',                         link: `/music`,    linkLabel: 'Listen' },
+  { note: 'E4',  label: 'E',  title: 'NY Piano Society',    body: 'Performing member since [PLACEHOLDER]. Community concerts across New York — bringing Romantic repertoire to new audiences.',           link: `/music`,    linkLabel: 'Learn more' },
+  { note: 'F4',  label: 'F',  title: '[Proud moment 1]',    body: '[PLACEHOLDER — Owner fills in: a proud music moment. One or two sentences.]',                                                          link: `/moments`,  linkLabel: 'See all moments' },
+  { note: 'G4',  label: 'G',  title: 'Listen',              body: 'Recordings and performance clips — Chopin, Brahms, Schubert. [Owner: embed your featured recording on the Music page.]',              link: `/music`,    linkLabel: 'Go to music' },
+  { note: 'A4',  label: 'A',  title: '[Proud moment 2]',    body: '[PLACEHOLDER — Owner fills in: another proud music moment. One or two sentences.]',                                                    link: `/moments`,  linkLabel: 'See all moments' },
+  { note: 'B4',  label: 'B',  title: 'Repertoire',          body: 'Romantic era focus — Chopin ballades, Brahms intermezzi, Schubert impromptus. [PLACEHOLDER] pieces in active repertoire.',            link: `/music`,    linkLabel: 'See repertoire' },
+];
+
+const BLACK_KEYS = [
+  { note: 'C#4', label: 'C♯', title: 'FINRA-Scale Impact',  body: 'Compliance data pipeline at FINRA scale — 100M+ records, automated quality controls, regulatory validation. Built for correctness first.', link: `/projects`, linkLabel: 'See project' },
+  { note: 'D#4', label: 'D♯', title: 'SnapEat',             body: 'Google AI Hackathon — photo → food → macros in under a second. Shipped a working demo in 48 hours using Gemini Vision.',                   link: `/projects`, linkLabel: 'See project' },
+  { note: 'F#4', label: 'F♯', title: 'Copyright Laundering',body: 'Research into how agentic AI systems reproduce copyrighted material through multi-step chains. Policy and detection implications.',        link: `/projects`, linkLabel: 'See project' },
+  { note: 'G#4', label: 'G♯', title: 'Research',            body: 'Econometric study of COVID-19 lockdown impacts on household livelihoods in Uganda. Difference-in-differences on panel survey data.',      link: `/projects`, linkLabel: 'See project' },
+  { note: 'A#4', label: 'A♯', title: '[Proud moment 3]',    body: '[PLACEHOLDER — Owner fills in: a proud data moment. One or two sentences.]',                                                                link: `/moments`,  linkLabel: 'See all moments' },
+  { note: 'C#5', label: 'C♯', title: 'Stack & Skills',      body: 'Python, SQL, PyTorch, dbt, Airflow, Spark, Snowflake — and classical piano. Tools used deliberately, not collected.',                     link: `/skills`,   linkLabel: 'See skills' },
+];
+
+// C5 = CTA key
+const CTA_KEY = {
+  note: 'C5', label: 'C', title: 'Let\'s talk', body: 'Open to full-time roles in data engineering, ML engineering, or data science. Based in New York.', link: `/contact`, linkLabel: 'Get in touch',
+};
+
+// All keys in piano order: C4 C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C#5 C5
+// (C#5 is the 13th — last black key equivalent; C5 is CTA white key)
+// Physical piano layout for C4–C5: 7 white + 5 black + high C = 13 keys total
+// We render white keys as a row, black keys positioned absolutely above.
+---
+
+<div class="piano-hero-wrapper" aria-label="Keys of Proof — interactive piano" data-base={base}>
+  <!-- Hint text (first visit) -->
+  <p class="piano-hint" id="piano-hint" aria-live="polite">
+    Try a white key <span class="hint-sep" aria-hidden="true">·</span> Try a black key
+  </p>
+
+  <!-- Piano keyboard -->
+  <div class="piano" role="group" aria-label="Piano keyboard — white keys are music, black keys are data">
+    <!-- White keys row -->
+    <div class="white-keys" id="piano-white-keys">
+      {WHITE_KEYS.map((k, i) => (
+        <button
+          class="key key--white"
+          data-note={k.note}
+          data-index={i}
+          aria-label={`${k.note} — ${k.title}`}
+          aria-pressed="false"
+          type="button"
+        >
+          <span class="key-label" aria-hidden="true">{k.label}</span>
+        </button>
+      ))}
+      <!-- CTA key (C5) -->
+      <button
+        class="key key--white key--cta"
+        data-note={CTA_KEY.note}
+        data-index={WHITE_KEYS.length}
+        aria-label={`${CTA_KEY.note} — ${CTA_KEY.title}`}
+        aria-pressed="false"
+        type="button"
+      >
+        <span class="key-label" aria-hidden="true">{CTA_KEY.label}</span>
+      </button>
+    </div>
+
+    <!-- Black keys (positioned absolutely) -->
+    <div class="black-keys" aria-hidden="false">
+      {BLACK_KEYS.map((k, i) => (
+        <button
+          class:list={['key', 'key--black', `key--black-${i}`]}
+          data-note={k.note}
+          data-index={WHITE_KEYS.length + 1 + i}
+          aria-label={`${k.note} — ${k.title} (data)`}
+          aria-pressed="false"
+          type="button"
+        >
+          <span class="key-label-black" aria-hidden="true">{k.label}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Program note card panel -->
+  <div class="card-panel" id="card-panel" aria-live="polite" aria-atomic="true" hidden>
+    <button class="card-close" id="card-close" aria-label="Close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <div class="card-inner">
+      <span class="card-note" id="card-note"></span>
+      <span class="card-type" id="card-type"></span>
+      <h3 class="card-title" id="card-title"></h3>
+      <p class="card-body" id="card-body"></p>
+      <a class="card-link btn btn--dark" id="card-link" href="#">Read more →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Screen-reader accessible list -->
+<details class="piano-accessible-list" style="margin-top: var(--space-8);">
+  <summary class="program-label" style="cursor:pointer; display:inline-block;">Accessible key list (screen readers)</summary>
+  <ul style="margin-top:var(--space-4); list-style:none; display:flex; flex-direction:column; gap:var(--space-3);">
+    {WHITE_KEYS.map(k => (
+      <li>
+        <strong>{k.note} (music)</strong> — {k.title}: {k.body} <a href={k.link}>{k.linkLabel}</a>
+      </li>
+    ))}
+    {BLACK_KEYS.map(k => (
+      <li>
+        <strong>{k.note} (data)</strong> — {k.title}: {k.body} <a href={k.link}>{k.linkLabel}</a>
+      </li>
+    ))}
+    <li>
+      <strong>{CTA_KEY.note} (CTA)</strong> — {CTA_KEY.title}: {CTA_KEY.body} <a href={CTA_KEY.link}>{CTA_KEY.linkLabel}</a>
+    </li>
+  </ul>
+</details>
+
+<style>
+.piano-hero-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) 0;
+  user-select: none;
+}
+
+.piano-hint {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: rgba(245,240,232,0.45);
+  letter-spacing: 0.06em;
+  text-align: center;
+  transition: opacity 0.4s;
+}
+.piano-hint.is-hidden { opacity: 0; pointer-events: none; }
+.hint-sep { margin-inline: var(--space-2); }
+
+/* ─── Piano container ─── */
+.piano {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ─── White keys ─── */
+.white-keys {
+  display: flex;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+}
+
+.key--white {
+  width: 64px;
+  height: 200px;
+  background: rgba(245, 240, 232, 0.92);
+  border: 1.5px solid rgba(10,10,10,0.2);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: var(--space-3);
+  transition: background var(--transition), transform 0.08s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+.key--white:hover,
+.key--white:focus-visible {
+  background: white;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-pearl), 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.key--white:active,
+.key--white[aria-pressed="true"] {
+  transform: scaleY(0.97) translateY(2px);
+  background: var(--color-mermaid);
+}
+
+.key--cta {
+  background: rgba(126,184,201,0.2) !important;
+  border-color: rgba(126,184,201,0.4) !important;
+}
+.key--cta:hover { background: rgba(126,184,201,0.4) !important; }
+
+.key-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(10,10,10,0.4);
+}
+
+.key--cta .key-label { color: var(--color-pearl); }
+
+/* ─── Black keys ─── */
+.black-keys {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 130px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.key--black {
+  position: absolute;
+  width: 42px;
+  height: 128px;
+  background: var(--color-hall-black);
+  border: 1.5px solid rgba(245,240,232,0.08);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  cursor: pointer;
+  pointer-events: all;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: var(--space-2);
+  box-shadow: 2px 6px 16px rgba(0,0,0,0.6), inset 0 -1px 3px rgba(255,255,255,0.05);
+  transition: background var(--transition), transform 0.08s;
+}
+
+.key--black:hover,
+.key--black:focus-visible {
+  background: var(--color-mid-gray);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-pearl), 2px 8px 20px rgba(0,0,0,0.7);
+}
+
+.key--black:active,
+.key--black[aria-pressed="true"] {
+  transform: translateY(2px);
+  background: var(--color-pearl);
+}
+
+/* Black key positions: C# D# F# G# A# C#5 within an 8-white-key span (C4–C5)
+   Each white key = 64px + 3px gap = 67px
+   Black key center positions (fraction of white key width from left edge):
+   C# = between C4 and D4: at ~0.63 × 67 = ~42
+   D# = between D4 and E4: at 67 + ~0.63×67 = ~109
+   F# = between F4 and G4: at 3×67 + ~0.63×67 = ~243
+   G# = between G4 and A4: at 4×67 + ~0.63×67 = ~310
+   A# = between A4 and B4: at 5×67 + ~0.63×67 = ~377
+   C#5= between B4 and C5: at 6×67 + ~0.63×67 = ~444  */
+.key--black-0 { left: calc(0 * 67px + 42px); }   /* C# between C4 & D4 */
+.key--black-1 { left: calc(1 * 67px + 42px); }   /* D# between D4 & E4 */
+.key--black-2 { left: calc(3 * 67px + 42px); }   /* F# between F4 & G4 */
+.key--black-3 { left: calc(4 * 67px + 42px); }   /* G# between G4 & A4 */
+.key--black-4 { left: calc(5 * 67px + 42px); }   /* A# between A4 & B4 */
+.key--black-5 { left: calc(6 * 67px + 42px); }   /* C#5 between B4 & C5 */
+
+.key-label-black {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(245,240,232,0.35);
+}
+
+/* ─── Card panel ─── */
+.card-panel {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background: var(--color-score-cream);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-cream-mid);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  overflow: hidden;
+  animation: card-in 0.3s var(--ease-out);
+}
+
+.card-panel[hidden] { display: none; }
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-panel { animation: none; }
+}
+
+.card-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: none;
+  border: none;
+  font-size: var(--text-2xl);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: var(--space-1);
+  transition: color var(--transition);
+  z-index: 1;
+}
+.card-close:hover { color: var(--color-text-dark); }
+
+.card-inner {
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.card-note {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+}
+
+.card-type {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-text-dark);
+  margin-top: var(--space-1);
+}
+
+.card-body {
+  font-size: var(--text-base);
+  line-height: 1.72;
+  color: var(--color-text-muted);
+  font-style: italic;
+  max-width: none;
+  margin-block: var(--space-2);
+}
+
+.card-link {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+/* ─── Accessible list ─── */
+.piano-accessible-list { border: none; }
+.piano-accessible-list summary { font-size: var(--text-xs); opacity: 0.5; }
+
+/* ─── Mobile fallback — stacked white/black card lists ─── */
+@media (max-width: 600px) {
+  .key--white { width: 40px; height: 140px; }
+  .key--black { width: 28px; height: 90px; }
+  .black-keys { height: 90px; }
+  .key--black-0 { left: calc(0 * 43px + 27px); }
+  .key--black-1 { left: calc(1 * 43px + 27px); }
+  .key--black-2 { left: calc(3 * 43px + 27px); }
+  .key--black-3 { left: calc(4 * 43px + 27px); }
+  .key--black-4 { left: calc(5 * 43px + 27px); }
+  .key--black-5 { left: calc(6 * 43px + 27px); }
+}
+</style>
+
+<script>
+// All key data from server — we encode it as JSON for the client script
+const WHITE_KEYS_DATA = [
+  { note:'C4', title:'Origin', type:'music', body:'Dickinson College — BA in Quantitative Economics and Music Performance. Where the two disciplines met and refused to separate.', link:'about' },
+  { note:'D4', title:'Carnegie Hall', type:'music', body:'Concert debut at Carnegie Hall with the NY Piano Society. [Owner: add one line about the program or piece.]', link:'music' },
+  { note:'E4', title:'NY Piano Society', type:'music', body:'Performing member since [PLACEHOLDER]. Community concerts across New York — bringing Romantic repertoire to new audiences.', link:'music' },
+  { note:'F4', title:'[Proud moment 1]', type:'music', body:'[PLACEHOLDER — Owner fills in: a proud music moment. One or two sentences.]', link:'moments' },
+  { note:'G4', title:'Listen', type:'music', body:'Recordings and performance clips — Chopin, Brahms, Schubert. [Owner: embed your featured recording on the Music page.]', link:'music' },
+  { note:'A4', title:'[Proud moment 2]', type:'music', body:'[PLACEHOLDER — Owner fills in: another proud music moment. One or two sentences.]', link:'moments' },
+  { note:'B4', title:'Repertoire', type:'music', body:'Romantic era focus — Chopin ballades, Brahms intermezzi, Schubert impromptus. [PLACEHOLDER] pieces in active repertoire.', link:'music' },
+];
+
+const BLACK_KEYS_DATA = [
+  { note:'C#4', title:'FINRA-Scale Impact', type:'data', body:'Compliance data pipeline at FINRA scale — 100M+ records, automated quality controls, regulatory validation. Built for correctness first.', link:'projects' },
+  { note:'D#4', title:'SnapEat', type:'data', body:'Google AI Hackathon — photo → food → macros in under a second. Shipped a working demo in 48 hours using Gemini Vision.', link:'projects' },
+  { note:'F#4', title:'Copyright Laundering', type:'data', body:'Research into how agentic AI systems reproduce copyrighted material through multi-step chains. Policy and detection implications.', link:'projects' },
+  { note:'G#4', title:'Research', type:'data', body:'Econometric study of COVID-19 lockdown impacts on household livelihoods in Uganda. Difference-in-differences on panel survey data.', link:'projects' },
+  { note:'A#4', title:'[Proud moment 3]', type:'data', body:'[PLACEHOLDER — Owner fills in: a proud data moment. One or two sentences.]', link:'moments' },
+  { note:'C#5', title:'Stack & Skills', type:'data', body:'Python, SQL, PyTorch, dbt, Airflow, Spark, Snowflake — and classical piano. Tools used deliberately, not collected.', link:'skills' },
+];
+
+const CTA_KEY_DATA = { note:'C5', title:"Let's talk", type:'cta', body:'Open to full-time roles in data engineering, ML engineering, or data science. Based in New York.', link:'contact' };
+
+const ALL_KEYS = [...WHITE_KEYS_DATA, CTA_KEY_DATA, ...BLACK_KEYS_DATA];
+
+const BASE = (document.querySelector('.piano-hero-wrapper') as HTMLElement)?.dataset.base ?? '';
+
+function openCard(data: typeof ALL_KEYS[0]) {
+  const panel = document.getElementById('card-panel')!;
+  (document.getElementById('card-note')  as HTMLElement).textContent = data.note;
+  (document.getElementById('card-type')  as HTMLElement).textContent = data.type === 'music' ? 'White key · Music' : data.type === 'data' ? 'Black key · Data' : 'Call to action';
+  (document.getElementById('card-title') as HTMLElement).textContent = data.title;
+  (document.getElementById('card-body')  as HTMLElement).textContent = data.body;
+  const linkEl = document.getElementById('card-link') as HTMLAnchorElement;
+  linkEl.href = `${BASE}/${data.link}`;
+  linkEl.textContent = 'Read more →';
+  panel.hidden = false;
+  panel.focus?.();
+  // Hide hint after first interaction
+  document.getElementById('piano-hint')?.classList.add('is-hidden');
+  // Update aria-pressed
+  document.querySelectorAll('.key').forEach(k => k.setAttribute('aria-pressed', 'false'));
+}
+
+function closeCard() {
+  const panel = document.getElementById('card-panel')!;
+  panel.hidden = true;
+  document.querySelectorAll('.key').forEach(k => k.setAttribute('aria-pressed', 'false'));
+}
+
+document.querySelectorAll('.key--white, .key--black').forEach((btn, i) => {
+  const handler = () => {
+    const note = btn.getAttribute('data-note') ?? '';
+    const data = ALL_KEYS.find(k => k.note === note);
+    if (data) {
+      btn.setAttribute('aria-pressed', 'true');
+      openCard(data);
+    }
+  };
+  btn.addEventListener('click', handler);
+  btn.addEventListener('keydown', (e: Event) => {
+    const ke = e as KeyboardEvent;
+    if (ke.key === 'Enter' || ke.key === ' ') { ke.preventDefault(); handler(); }
+  });
+});
+
+document.getElementById('card-close')?.addEventListener('click', closeCard);
+
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeCard();
+});
+</script>

@@ -1,0 +1,149 @@
+[
+  {
+    "id": "boa-swe",
+    "org": "Bank of America",
+    "role": "Software Engineer II",
+    "type": "work",
+    "location": "New York City",
+    "start": "2022",
+    "end": "2024",
+    "description": "Saved the company an expected $2.5 million compliance fine from FINRA by repairing +100 million preprocessed records having absent or incorrect fields/attributes of FIX messages through a Python automation process. Led the migration of legacy components to modern technologies.",
+    "highlights": [
+      "Saved expected $2.5M compliance fine from FINRA",
+      "Repaired +100 million preprocessed records via Python automation",
+      "Led migration of legacy components to modern technologies"
+    ]
+  },
+  {
+    "id": "boa-analyst",
+    "org": "Bank of America",
+    "role": "Global Technology Analyst — Business Analyst",
+    "type": "work",
+    "location": "New York City",
+    "start": "2024",
+    "end": "2025",
+    "description": "Resolved data's regulatory compliance issues by analyzing +50 million corrupting tags' values in FIX messages post-trade and proposing correcting strategies.",
+    "highlights": [
+      "Analyzed +50 million corrupting tag values in FIX messages post-trade",
+      "Proposed correcting strategies for regulatory compliance",
+      "Data Analytics Lead — Bank of America's Asian Leadership Network",
+      "Represented Bank of America at the 2025 Girls Who Code Fair"
+    ]
+  },
+  {
+    "id": "gpc",
+    "org": "Genuine Parts Company",
+    "role": "Search Data Analyst Intern",
+    "type": "work",
+    "location": "Atlanta, GA",
+    "start": "2021",
+    "end": "2021",
+    "description": "Created models to identify 1,000 products with the highest discrepancy between physical and online sales, leading to a projected 20% increase in online sales for these products with proposed strategies. Improved efficiency of the data authoring assignment process by 50% with automation by building a workflow in Stibo Systems' Workbench and screens in Web UI.",
+    "highlights": [
+      "Identified 1,000 products with highest physical-to-online sales discrepancy",
+      "Projected 20% increase in online sales with proposed strategies",
+      "Improved data authoring assignment efficiency by 50% via automation (Stibo Systems)"
+    ]
+  },
+  {
+    "id": "mekong",
+    "org": "Mekong Capital",
+    "role": "Vision Driven Data Analyst Intern",
+    "type": "work",
+    "location": "Remote",
+    "start": "2020",
+    "end": "2020",
+    "description": "Identified trends and opportunities for negotiating down the cost basis of rental rates for commercial retail across the Mekong Capital portfolio by 30%, based on pre- and current Covid-19 pandemic data analysis.",
+    "highlights": [
+      "Identified trends to negotiate down commercial rental rates by 30%",
+      "Pre- and post-COVID-19 pandemic data analysis across portfolio"
+    ]
+  },
+  {
+    "id": "nyu-ms",
+    "org": "New York University",
+    "role": "Master's of Science in Data Science",
+    "type": "education",
+    "location": "New York City",
+    "start": "2025",
+    "end": "2027",
+    "description": "Graduate coursework in machine learning, statistical inference, large-scale data systems, and NLP. Research and project work spanning compliance data engineering, agentic AI behavior, and toxicity detection.",
+    "highlights": [
+      "Relevant coursework: Introduction to Data Science, Probability and Statistics, Database Systems",
+      "Projects: Copyright Laundering in Agentic AIs, ODD Gaming Toxicity Detection"
+    ]
+  },
+  {
+    "id": "dickinson",
+    "org": "Dickinson College",
+    "role": "Bachelor's of Arts in Quantitative Economics and Music Performance",
+    "type": "education",
+    "location": "Carlisle, PA",
+    "start": "2018",
+    "end": "2022",
+    "description": "Double major combining rigorous quantitative methods with classical piano performance. Senior thesis on COVID-19 lockdown economic impacts in Uganda using difference-in-differences econometrics. GPA: 3.92.",
+    "highlights": [
+      "GPA: 3.92 — Summa Cum Laude",
+      "Honors: Phi Kappa Sigma, Dean's List, Truman GHC 22&23 Scholar, Two Sigma Tapia 22&23 Scholar, Truman Bullard Music Scholarship",
+      "Relevant coursework: Big Data in Business, Advanced Econometrics, Applied Empirical Data Analysis, Python Programming",
+      "Vice President of Programming — Women in Economics Club (co-founded)"
+    ]
+  },
+  {
+    "id": "vnam",
+    "org": "Vietnam National Academy of Music",
+    "role": "Diploma in Piano Emphasis",
+    "type": "education",
+    "location": "Hanoi, Vietnam",
+    "start": null,
+    "end": "2018",
+    "description": "Classical piano training at Vietnam's premier conservatory. Principal teacher: Huong Ngo (Aug 2008 – May 2018).",
+    "highlights": [
+      "Diploma in Piano Emphasis — May 2018",
+      "Principal teacher: Huong Ngo"
+    ]
+  },
+  {
+    "id": "ny-piano-society",
+    "org": "NY Piano Society",
+    "role": "Performing Member",
+    "type": "music",
+    "location": "New York City",
+    "start": "2023",
+    "end": null,
+    "description": "Performs semiannually with the New York Piano Society's Members. Debuted at Carnegie Hall showcasing Kashkin's arrangement of Tchaikovsky's Swan Lake - Finale Scene (March 2025). Debuted at Kaufman Music Center performing Liszt's arrangement of Wagner's Tristan und Isolde - Isoldens Liebestod (October 2024).",
+    "highlights": [
+      "Carnegie Hall debut — Kashkin arr. Tchaikovsky, Swan Lake - Finale Scene (March 2025)",
+      "Kaufman Music Center debut — Liszt arr. Wagner, Tristan und Isolde - Isoldens Liebestod (October 2024)",
+      "Semiannual performances with NY Piano Society Members"
+    ]
+  },
+  {
+    "id": "boa-aln",
+    "org": "Bank of America — Asian Leadership Network",
+    "role": "Data Analytics Lead",
+    "type": "organization",
+    "location": "New York City",
+    "start": "2023",
+    "end": "2025",
+    "description": "Empowered committee leaders with actionable insights, leading to a 15% increase in membership and an improvement in overall member satisfaction.",
+    "highlights": [
+      "15% increase in membership through data-driven insights",
+      "Improved overall member satisfaction metrics"
+    ]
+  },
+  {
+    "id": "wie-club",
+    "org": "Women in Economics Club — Dickinson College",
+    "role": "Vice President of Programming",
+    "type": "organization",
+    "location": "Carlisle, PA",
+    "start": "2021",
+    "end": "2022",
+    "description": "Co-founded Women in Economics Club at Dickinson College to support women in STEM majors, organizing career development sessions, including networking and mentorship opportunities, guest and alumni speakers, and skills labs.",
+    "highlights": [
+      "Co-founded the club to support women in STEM majors",
+      "Organized networking, mentorship, guest speakers, and skills labs"
+    ]
+  }
+]

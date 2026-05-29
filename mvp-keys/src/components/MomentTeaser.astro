@@ -1,0 +1,90 @@
+---
+interface Props {
+  id: number;
+  title: string;
+  year: string;
+  category: 'music' | 'data' | 'both';
+  summary: string;
+  image?: string;
+  lang?: 'en' | 'vi';
+}
+
+const { id, title, year, category, summary, image, lang = 'en' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const categoryLabel = {
+  en: { music: 'Music', data: 'Data', both: 'Both' },
+  vi: { music: 'Âm nhạc', data: 'Dữ liệu', both: 'Cả hai' },
+};
+const label = categoryLabel[lang][category];
+---
+
+<article class="moment-card">
+  {image && (
+    <div class="mc-image image-block" style="height: 160px;">
+      <img src={image} alt="" loading="lazy" />
+    </div>
+  )}
+  {!image && (
+    <div class="img-placeholder mc-image" style="height: 160px; min-height: unset;" aria-hidden="true">
+      photo
+    </div>
+  )}
+  <div class="mc-body">
+    <span class="moment-category">{label}{year ? ` · ${year}` : ''}</span>
+    <h3 class="mc-title">{title}</h3>
+    <p class="mc-summary">{summary}</p>
+    <a href={`/moments#moment-${id}`} class="mc-link">
+      {lang === 'vi' ? 'Đọc thêm' : 'Read more'} →
+    </a>
+  </div>
+</article>
+
+<style>
+.moment-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mc-image {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mc-body {
+  flex: 1;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--color-cream-mid);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: white;
+}
+
+.mc-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.mc-summary {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.mc-link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-pearl);
+  margin-top: var(--space-2);
+  transition: color var(--transition);
+}
+.mc-link:hover { color: var(--color-text-dark); }
+</style>

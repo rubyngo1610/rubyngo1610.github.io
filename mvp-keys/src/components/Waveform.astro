@@ -1,0 +1,45 @@
+---
+interface Props {
+  bars?: number;
+  class?: string;
+}
+
+const { bars = 40, class: className = '' } = Astro.props;
+---
+
+<div class:list={['waveform-bar-row', className]} aria-hidden="true">
+  {Array.from({ length: bars }, (_, i) => (
+    <div class="waveform-bar" style={`--i:${i};--h:${20 + Math.sin(i * 0.5) * 50 + Math.random() * 30}%`}></div>
+  ))}
+</div>
+
+<style>
+.waveform-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 48px;
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.waveform-bar {
+  flex: 0 0 3px;
+  height: var(--h, 40%);
+  border-radius: 99px;
+  background: var(--color-pearl);
+  opacity: 0.5;
+  animation: bar-pulse 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+
+@keyframes bar-pulse {
+  0%, 100% { opacity: 0.25; transform: scaleY(0.6); }
+  50%       { opacity: 0.75; transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waveform-bar { animation: none; opacity: 0.3; }
+}
+</style>

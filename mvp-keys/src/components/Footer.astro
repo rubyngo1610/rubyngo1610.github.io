@@ -1,0 +1,42 @@
+---
+import i18n from '../../../shared/content/i18n.json';
+
+interface Props { lang?: 'en' | 'vi'; }
+const { lang = 'en' } = Astro.props;
+const t = i18n[lang].footer;
+const tc = i18n[lang].contact;
+const base = import.meta.env.BASE_URL;
+---
+
+<footer class="site-footer">
+  <div class="waveform-divider waveform-animated footer-wave" aria-hidden="true"></div>
+  <div class="footer-inner container">
+    <div class="footer-brand">
+      <span class="footer-name">Ngoc (Ruby) Ngo</span>
+      <span class="footer-sub">keys of proof · piano · data · Brooklyn</span>
+    </div>
+    <div class="footer-cta">
+      <a href={`/resume.pdf`} class="btn btn--outline footer-btn" target="_blank" rel="noopener">{tc.resume_label}</a>
+      <a href="mailto:ngocrubytin@gmail.com" class="btn btn--outline footer-btn">{tc.email_label}</a>
+      <a href="https://www.linkedin.com/in/ngocrubyngo" class="btn btn--outline footer-btn" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="footer-meta">
+      <span>{t.copyright}</span>
+      <span aria-hidden="true">·</span>
+      <span>{t.built_with}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+.site-footer { background: var(--color-hall-black); color: rgba(245,240,232,0.5); padding-bottom: var(--space-12); }
+.footer-wave { margin: 0; }
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); padding-top: var(--space-12); text-align: center; }
+.footer-brand { display: flex; flex-direction: column; gap: var(--space-1); }
+.footer-name { font-family: var(--font-serif); font-size: var(--text-xl); color: var(--color-score-cream); letter-spacing: -0.01em; }
+.footer-sub { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: lowercase; color: var(--color-pearl); opacity: 0.7; }
+.footer-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.footer-btn { font-size: var(--text-xs); padding: var(--space-2) var(--space-4); border-color: rgba(245,240,232,0.2); }
+.footer-btn:hover { border-color: rgba(245,240,232,0.5); color: var(--color-score-cream); }
+.footer-meta { font-size: var(--text-xs); display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; color: rgba(245,240,232,0.3); }
+</style>

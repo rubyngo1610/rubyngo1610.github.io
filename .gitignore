@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+mvp-keys/node_modules/
+
+# Build output — never commit dist
+mvp-keys/dist/
+mvp-program/dist/
+
+# Astro cache
+.astro/
+mvp-keys/.astro/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+
+# Claude Code local settings
+.claude/
+
+# Private source material — not part of the deployed site
+Private\ &\ Shared/
+Ruby-Ngo-Music-CV.docx
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+Private*
+Ruby-Ngo-Music-CV.docx

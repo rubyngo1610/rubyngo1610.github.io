@@ -1,0 +1,93 @@
+/* ─── Design Tokens — rubyngo.github.io ─────────────────────────────────────
+   Same tokens imported by both mvp-program and mvp-keys.
+   Owner edits here; change propagates everywhere.
+─────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Palette */
+  --color-hall-black:    #0a0a0a;
+  --color-black-soft:    #111111;
+  --color-dark-gray:     #1e1e1e;
+  --color-mid-gray:      #3a3a3a;
+  --color-score-cream:   #f5f0e8;
+  --color-cream-warm:    #ede7d8;
+  --color-cream-mid:     #d6cebf;
+  --color-pearl:         #7eb8c9;
+  --color-mermaid:       #b8d4e3;
+  --color-pearl-dim:     rgba(126, 184, 201, 0.35);
+  --color-pearl-glow:    rgba(126, 184, 201, 0.15);
+  --color-text-dark:     #0a0a0a;
+  --color-text-light:    #f5f0e8;
+  --color-text-muted:    #8a8070;
+
+  /* Typography */
+  --font-serif:    'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:     'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+  --text-5xl:  3rem;
+  --text-6xl:  3.75rem;
+  --text-7xl:  4.5rem;
+
+  /* Spacing */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Layout */
+  --max-width:        72rem;
+  --content-width:    56rem;
+  --narrow-width:     40rem;
+  --section-pad-y:    var(--space-24);
+  --section-pad-x:    var(--space-8);
+
+  /* Radius */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.25rem;
+  --radius-xl:   2rem;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  --transition: 0.25s var(--ease-out);
+  --transition-slow: 0.5s var(--ease-out);
+
+  /* Z-index */
+  --z-base:    0;
+  --z-above:   10;
+  --z-nav:     100;
+  --z-modal:   200;
+  --z-overlay: 300;
+}
+
+/* Reduced motion: disable all animations/transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

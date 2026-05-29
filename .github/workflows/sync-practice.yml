@@ -1,0 +1,55 @@
+name: Sync practice log
+
+# Runs nightly at 3 AM ET (8 AM UTC).
+# Fetches Toggl time entries → updates shared/data/practice-log.json
+# → commits the change → the site rebuild is triggered automatically
+# by your deploy workflow (or GitHub Pages "Deploy from branch" setting).
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 08:00 UTC = 03:00 ET daily
+  workflow_dispatch:        # allow manual run from Actions tab
+
+jobs:
+  sync:
+    name: Sync Toggl → practice-log.json
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # needed to push the updated JSON
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # Use the default GITHUB_TOKEN for push; no PAT needed for same-repo.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Node ───────────────────────────────────────────────────────────────
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. Sync ───────────────────────────────────────────────────────────────
+      - name: Fetch Toggl entries and merge into practice-log.json
+        run: node scripts/sync-toggl.mjs
+        env:
+          TOGGL_API_TOKEN: ${{ secrets.TOGGL_API_TOKEN }}
+          # Optional: override if your Toggl project has a different name.
+          # Set it under Settings → Secrets and variables → Actions → Variables.
+          TOGGL_PROJECT_NAME: ${{ vars.TOGGL_PROJECT_NAME || 'Piano Practice' }}
+
+      # ── 4. Commit ─────────────────────────────────────────────────────────────
+      - name: Commit updated log (if changed)
+        run: |
+          git config user.email "practice-sync[bot]@users.noreply.github.com"
+          git config user.name  "Practice Sync Bot"
+          git add shared/data/practice-log.json
+          if git diff --staged --quiet; then
+            echo "No changes — practice-log.json is already up to date."
+          else
+            git commit -m "chore: sync practice log $(date -u +%Y-%m-%d)"
+            git push
+            echo "✓ Pushed updated practice-log.json"
+          fi

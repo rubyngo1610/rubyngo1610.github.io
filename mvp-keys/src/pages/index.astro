@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PianoHero from '../components/PianoHero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import MomentTeaser from '../components/MomentTeaser.astro';
+import projects from '../../../shared/content/projects.json';
+import momentsData from '../../../shared/data/moments.json';
+import i18n from '../../../shared/content/i18n.json';
+import metrics from '../../../shared/data/metrics.json';
+
+const lang = 'en';
+const t = i18n[lang];
+const base = import.meta.env.BASE_URL;
+
+const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary];
+const flagshipProjects = flagshipIds.map(id => projects.find(p => p.id === id)).filter(Boolean);
+const topMoments = momentsData.moments.slice(0, 3);
+---
+
+<BaseLayout
+  title="Ngoc (Ruby) Ngo — Keys of Proof"
+  description="Software engineer and classical pianist. White keys = music. Black keys = data. Try one."
+  lang={lang}
+>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HERO — dark stage with piano keyboard
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="piano-stage section section--dark" aria-label="Keys of Proof hero">
+    <!-- Scroll-driven waveform bg -->
+    <canvas class="stage-canvas" id="stage-canvas" aria-hidden="true"></canvas>
+
+    <div class="stage-content container">
+      <div class="stage-headline">
+        <span class="program-label">Keys of Proof</span>
+        <h1 class="stage-name">{t.hero.name}</h1>
+        <p class="stage-tagline">{t.hero.tagline}</p>
+      </div>
+
+      <!-- THE PIANO -->
+      <PianoHero />
+
+      <!-- Quick CTAs below piano -->
+      <div class="stage-ctas cta-group">
+        <a href={`/resume.pdf`} class="btn btn--primary" target="_blank" rel="noopener">{t.hero.cta_resume}</a>
+        <a href="mailto:ngocrubytin@gmail.com" class="btn btn--outline">{t.hero.cta_email}</a>
+        <a href={`/music`} class="btn btn--outline">{t.hero.cta_listen}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       60-SECOND RECRUITER STRIP — same as MVP Program
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- Flagship projects -->
+  <section class="section section--cream" aria-label="Flagship projects">
+    <div class="container">
+      <div class="strip-header">
+        <span class="program-label">Selected work</span>
+        <a href={`/projects`} class="strip-more">All projects →</a>
+      </div>
+      <div class="grid-2">
+        {flagshipProjects.map((p) => (
+          <ProjectCard
+            id={p!.id}
+            title={p!.title}
+            subtitle={p!.subtitle}
+            narrative={p!.narrative}
+            tags={p!.tags}
+            repo={p!.repo}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Moments teasers -->
+  <section class="section section--cream-warm" aria-label="Proud moments">
+    <div class="container">
+      <div class="strip-header">
+        <span class="program-label">{t.moments.headline}</span>
+        <a href={`/moments`} class="strip-more">All moments →</a>
+      </div>
+      <div class="grid-3">
+        {topMoments.map(m => (
+          <MomentTeaser
+            id={m.id}
+            title={m.title}
+            year={m.year}
+            category={m.category as 'music' | 'data' | 'both'}
+            summary={m.summary_en}
+            image={m.image}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section section--dark" style="padding-block: var(--space-20);">
+    <div class="container" style="text-align:center;">
+      <p class="encore-prompt">Open to full-time data engineering · ML engineering · data science roles. NYC-based.</p>
+      <div class="cta-group" style="justify-content:center; margin-top:var(--space-6);">
+        <a href={`/resume.pdf`} class="btn btn--primary" target="_blank" rel="noopener">{t.hero.cta_resume}</a>
+        <a href="mailto:ngocrubytin@gmail.com" class="btn btn--outline">{t.hero.cta_email}</a>
+        <a href="https://www.linkedin.com/in/ngocrubyngo" class="btn btn--outline" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+/* ─── Piano stage ─── */
+.piano-stage {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+.stage-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding-top: 80px;
+  padding-bottom: var(--space-16);
+}
+
+.stage-headline {
+  text-align: center;
+}
+
+.stage-name {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--color-score-cream);
+  line-height: 1.05;
+  margin-bottom: var(--space-4);
+}
+
+.stage-tagline {
+  font-size: clamp(var(--text-base), 1.5vw, var(--text-xl));
+  color: rgba(245,240,232,0.65);
+  max-width: 52ch;
+  line-height: 1.6;
+  font-style: italic;
+  margin-inline: auto;
+}
+
+.stage-ctas { justify-content: center; }
+
+/* ─── Strip header ─── */
+.strip-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+
+.strip-more {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-pearl);
+  transition: color var(--transition);
+}
+.strip-more:hover { color: var(--color-text-dark); }
+
+/* ─── Encore ─── */
+.encore-prompt {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(var(--text-xl), 2vw, var(--text-2xl));
+  color: rgba(245,240,232,0.7);
+  max-width: 52ch;
+  margin-inline: auto;
+}
+</style>
+
+<script>
+/* Subtle animated waveform canvas behind the piano */
+const canvas = document.getElementById('stage-canvas') as HTMLCanvasElement | null;
+if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const ctx = canvas.getContext('2d')!;
+  let t = 0;
+
+  function resize() {
+    canvas!.width  = canvas!.offsetWidth;
+    canvas!.height = canvas!.offsetHeight;
+  }
+
+  function draw() {
+    const { width, height } = canvas!;
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = '#7eb8c9';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.4;
+
+    for (let wave = 0; wave < 3; wave++) {
+      ctx.beginPath();
+      for (let x = 0; x <= width; x += 2) {
+        const freq = 0.004 + wave * 0.002;
+        const amp  = 20 + wave * 8;
+        const y = height / 2 + Math.sin(x * freq + t + wave * 1.2) * amp
+                             + Math.sin(x * 0.008 + t * 0.7) * 10;
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    t += 0.012;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+}
+</script>
