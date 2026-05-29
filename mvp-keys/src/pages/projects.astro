@@ -1,17 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ProjectModal from '../components/ProjectModal.astro';
 import Waveform from '../components/Waveform.astro';
 import projects from '../../../shared/content/projects.json';
 import i18n from '../../../shared/content/i18n.json';
 
 const lang = 'en';
 const t = i18n[lang].projects;
-const base = import.meta.env.BASE_URL;
 
 const primary   = projects.filter(p => p.flagship && !p.secondary);
 const secondary = projects.filter(p => p.secondary);
 const other     = projects.filter(p => !p.flagship && !p.secondary);
+
+// A project gets a modal if it has extended about text or tools
+const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools && p.modal_tools.length > 0));
 ---
 
 <BaseLayout
@@ -44,6 +47,7 @@ const other     = projects.filter(p => !p.flagship && !p.secondary);
             tags={p.tags}
             repo={p.repo}
             lang={lang}
+            hasModal={hasModal(p)}
           />
         ))}
       </div>
@@ -65,6 +69,7 @@ const other     = projects.filter(p => !p.flagship && !p.secondary);
               tags={p.tags}
               repo={p.repo}
               lang={lang}
+              hasModal={hasModal(p)}
             />
           ))}
         </div>
@@ -91,6 +96,7 @@ const other     = projects.filter(p => !p.flagship && !p.secondary);
                   tags={p.tags}
                   repo={p.repo}
                   lang={lang}
+                  hasModal={hasModal(p)}
                 />
               </div>
             ))}
@@ -99,6 +105,21 @@ const other     = projects.filter(p => !p.flagship && !p.secondary);
       </div>
     </section>
   )}
+
+  <!-- All project modals (rendered in DOM, hidden until triggered) -->
+  {projects.map(p => (
+    <ProjectModal
+      id={p.id}
+      title={p.title}
+      subtitle={p.subtitle}
+      modal_tools={p.modal_tools}
+      modal_about={p.modal_about}
+      repo={p.repo}
+      link={p.link}
+      video={'video' in p ? (p as any).video : undefined}
+      tags={p.tags}
+    />
+  ))}
 
 </BaseLayout>
 

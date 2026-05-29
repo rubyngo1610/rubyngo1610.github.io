@@ -7,7 +7,7 @@
       "category": "music",
       "summary_en": "Debuted at Kaufman Music Center performing Liszt's arrangement of Wagner's Tristan und Isolde - Isoldens Liebestod.",
       "summary_vi": "Ra mắt tại Kaufman Music Center biểu diễn bản soạn của Liszt từ tác phẩm Tristan und Isolde - Isoldens Liebestod của Wagner.",
-      "image": "/images/moments/kaufman-debut.jpg"
+      "image": null
     },
     {
       "id": 2,
@@ -25,7 +25,7 @@
       "category": "data",
       "summary_en": "Won the Grace Hopper Celebration 2020 and 2021 Scholarship — supporting women in technology.",
       "summary_vi": "Giành học bổng Grace Hopper Celebration 2020 và 2021 — ủng hộ phụ nữ trong công nghệ.",
-      "image": "/images/moments/ghc-scholarship.jpg"
+      "image": null
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "category": "data",
       "summary_en": "Competed in my first hackathon in February 2019 — the start of building things fast under pressure.",
       "summary_vi": "Tham gia hackathon đầu tiên vào tháng 2 năm 2019 — khởi đầu của việc xây dựng nhanh dưới áp lực.",
-      "image": "/images/moments/first-hackathon.jpg"
+      "image": null
     },
     {
       "id": 5,
@@ -43,7 +43,34 @@
       "category": "both",
       "summary_en": "Hiked to the top of the Horseshoe Bend in July 2025.",
       "summary_vi": "Leo lên đỉnh Horseshoe Bend vào tháng 7 năm 2025.",
-      "image": "/images/moments/horseshoe-bend.jpg"
+      "image": null
+    },
+    {
+      "id": 6,
+      "title": "Represented Bank of America at the Girls Who Code Fair",
+      "year": "2025",
+      "category": "data",
+      "summary_en": "Represented Bank of America at the 2025 Girls Who Code Fair — advocating for women in technology.",
+      "summary_vi": "Đại diện Bank of America tại Girls Who Code Fair 2025 — vận động cho phụ nữ trong công nghệ.",
+      "image": "/images/moments/girls-who-code-fair.jpg"
+    },
+    {
+      "id": 7,
+      "title": "ALN at the 2025 Symposium",
+      "year": "2025",
+      "category": "data",
+      "summary_en": "Led the Asian Leadership Network's presence at the 2025 Symposium, empowering committee leaders with actionable insights.",
+      "summary_vi": "Dẫn dắt sự hiện diện của Asian Leadership Network tại Hội thảo 2025, trao quyền cho các lãnh đạo với những hiểu biết thiết thực.",
+      "image": "/images/moments/aln-symposium.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Community Canvas — GPC Intern Project",
+      "year": "2021",
+      "category": "both",
+      "summary_en": "Painted a canvas for new homeless shelters during my internship at Genuine Parts Company — because giving back matters.",
+      "summary_vi": "Vẽ tranh canvas cho các khu trú ẩn dành cho người vô gia cư trong thời gian thực tập tại Genuine Parts Company — vì sự cho đi quan trọng.",
+      "image": "/images/moments/gpc-intern.jpg"
     }
   ]
 }

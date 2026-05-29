@@ -8,13 +8,19 @@ interface Props {
   repo?: string | null;
   dark?: boolean;
   lang?: 'en' | 'vi';
+  hasModal?: boolean;
 }
 
-const { title, subtitle, narrative, tags, repo, dark = false, lang = 'en' } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const { id, title, subtitle, narrative, tags, repo, dark = false, lang = 'en', hasModal = false } = Astro.props;
 ---
 
-<article class:list={['project-card', { 'project-card--dark': dark }]}>
+<article
+  class:list={['project-card', { 'project-card--dark': dark, 'project-card--clickable': hasModal }]}
+  data-modal-id={hasModal ? `modal-${id}` : undefined}
+  role={hasModal ? 'button' : 'article'}
+  tabindex={hasModal ? 0 : undefined}
+  aria-haspopup={hasModal ? 'dialog' : undefined}
+>
   <header class="pc-header">
     <p class="pc-subtitle">{subtitle}</p>
     <h3 class="pc-title">{title}</h3>
@@ -24,11 +30,18 @@ const base = import.meta.env.BASE_URL;
     <div class="pc-tags" aria-label="Technologies">
       {tags.map(tag => <span class="tag">{tag}</span>)}
     </div>
-    {repo && (
-      <a href={repo} class="pc-repo-link" target="_blank" rel="noopener noreferrer" aria-label={`View ${title} on GitHub`}>
-        {lang === 'vi' ? 'Xem mã nguồn' : 'View repo'} →
-      </a>
-    )}
+    <div class="pc-actions">
+      {hasModal && (
+        <span class="pc-read-more" aria-hidden="true">
+          Read more →
+        </span>
+      )}
+      {repo && !hasModal && (
+        <a href={repo} class="pc-repo-link" target="_blank" rel="noopener noreferrer" aria-label={`View ${title} on GitHub`} onclick="event.stopPropagation()">
+          {lang === 'vi' ? 'Xem mã nguồn' : 'View repo'} →
+        </a>
+      )}
+    </div>
   </footer>
 </article>
 
@@ -88,7 +101,9 @@ const base = import.meta.env.BASE_URL;
   color: var(--color-mermaid);
 }
 
-.pc-repo-link {
+.pc-actions { display: flex; align-items: center; gap: var(--space-3); }
+
+.pc-repo-link, .pc-read-more {
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-pearl);
@@ -96,6 +111,47 @@ const base = import.meta.env.BASE_URL;
   white-space: nowrap;
   transition: color var(--transition);
 }
+.pc-repo-link { text-decoration: none; }
+.pc-repo-link:hover, .pc-read-more:hover { color: var(--color-mermaid); }
 
-.pc-repo-link:hover { color: var(--color-mermaid); }
+/* Clickable card */
+.project-card--clickable {
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.project-card--clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+.project-card--clickable:focus-visible {
+  outline: 2px solid var(--color-pearl);
+  outline-offset: 4px;
+  border-radius: var(--radius-md);
+}
+
+.project-card--dark.project-card--clickable:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
 </style>
+
+<script>
+document.querySelectorAll('.project-card--clickable').forEach(card => {
+  const modalId = card.getAttribute('data-modal-id');
+  if (!modalId) return;
+
+  const open = () => {
+    const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+    modal?.showModal();
+  };
+
+  card.addEventListener('click', open);
+  card.addEventListener('keydown', (e) => {
+    if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+      e.preventDefault();
+      open();
+    }
+  });
+});
+</script>

@@ -1,0 +1,368 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  subtitle: string;
+  modal_tools?: string[];
+  modal_about?: string;
+  repo?: string | null;
+  link?: string | null;
+  video?: string | null;
+  tags: string[];
+}
+
+const {
+  id,
+  title,
+  subtitle,
+  modal_tools,
+  modal_about,
+  repo,
+  link,
+  video,
+  tags,
+} = Astro.props;
+
+// Convert newlines in modal_about to paragraphs
+const aboutParagraphs = modal_about
+  ? modal_about
+      .split('\n\n')
+      .map(p => p.trim())
+      .filter(Boolean)
+  : [];
+
+// Extract YouTube video ID from various URL formats
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+const youtubeId = video ? getYouTubeId(video) : null;
+---
+
+<dialog class="project-modal" id={`modal-${id}`} aria-labelledby={`modal-title-${id}`}>
+  <div class="pm-inner">
+    <!-- Close button -->
+    <button class="pm-close" aria-label="Close project details">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Header -->
+    <header class="pm-header">
+      <p class="pm-subtitle">{subtitle}</p>
+      <h2 class="pm-title" id={`modal-title-${id}`}>{title}</h2>
+    </header>
+
+    <!-- Tools -->
+    {(modal_tools && modal_tools.length > 0) && (
+      <div class="pm-tools-row">
+        <span class="pm-section-label">Tools</span>
+        <div class="pm-tools">
+          {(modal_tools ?? []).map(tool => (
+            <span class="pm-tool">{tool}</span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- About -->
+    {aboutParagraphs.length > 0 && (
+      <section class="pm-about">
+        <h3 class="pm-section-label">About</h3>
+        <div class="pm-about-body">
+          {aboutParagraphs.map(para => (
+            <p set:html={para.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Tags fallback if no tools -->
+    {(!modal_tools || modal_tools.length === 0) && tags.length > 0 && (
+      <div class="pm-tools-row">
+        <span class="pm-section-label">Tags</span>
+        <div class="pm-tools">
+          {tags.map(tag => (
+            <span class="pm-tool">{tag}</span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Video embed -->
+    {youtubeId && (
+      <section class="pm-video">
+        <h3 class="pm-section-label">Demo</h3>
+        <div class="pm-video-wrap">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+            title={`${title} demo video`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </section>
+    )}
+
+    <!-- Links -->
+    {(repo || link) && (
+      <footer class="pm-links">
+        <h3 class="pm-section-label">Links</h3>
+        <div class="pm-links-row">
+          {repo && (
+            <a href={repo} class="pm-link pm-link--github" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.461-1.11-1.461-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.742 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+              </svg>
+              View repo
+            </a>
+          )}
+          {link && (
+            <a href={link} class="pm-link pm-link--external" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+              View paper
+            </a>
+          )}
+        </div>
+      </footer>
+    )}
+  </div>
+</dialog>
+
+<style>
+.project-modal {
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 0;
+  max-width: min(680px, 92vw);
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--color-score-cream);
+  color: var(--color-text-dark);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06);
+
+  /* Entry animation */
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.project-modal[open] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.project-modal::backdrop {
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-out);
+}
+
+.project-modal[open]::backdrop {
+  opacity: 1;
+}
+
+.pm-inner {
+  padding: var(--space-10) var(--space-10) var(--space-8);
+  position: relative;
+}
+
+.pm-close {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pm-close:hover {
+  color: var(--color-text-dark);
+  background: var(--color-cream-warm);
+}
+
+/* Header */
+.pm-header { margin-bottom: var(--space-6); padding-right: var(--space-8); }
+
+.pm-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+  margin-bottom: var(--space-2);
+}
+
+.pm-title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-hall-black);
+}
+
+/* Section label */
+.pm-section-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+/* Tools */
+.pm-tools-row {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-cream-mid);
+}
+
+.pm-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pm-tool {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-hall-black);
+  color: var(--color-score-cream);
+  border-radius: var(--radius-full);
+  letter-spacing: 0.01em;
+}
+
+/* About */
+.pm-about {
+  margin-bottom: var(--space-6);
+}
+
+.pm-about-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.pm-about-body p {
+  font-size: var(--text-base);
+  line-height: 1.78;
+  color: #2a2520;
+}
+
+/* Video */
+.pm-video {
+  margin-bottom: var(--space-6);
+}
+
+.pm-video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-hall-black);
+}
+
+.pm-video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Links */
+.pm-links {
+  margin-top: var(--space-2);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-cream-mid);
+}
+
+.pm-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.pm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.pm-link--github {
+  background: var(--color-hall-black);
+  color: var(--color-score-cream);
+}
+.pm-link--github:hover { background: #222; }
+
+.pm-link--external {
+  background: var(--color-cream-warm);
+  color: var(--color-hall-black);
+  border: 1px solid var(--color-cream-mid);
+}
+.pm-link--external:hover { background: var(--color-cream-mid); }
+
+/* Scrollbar */
+.project-modal::-webkit-scrollbar { width: 6px; }
+.project-modal::-webkit-scrollbar-track { background: var(--color-cream-warm); }
+.project-modal::-webkit-scrollbar-thumb { background: var(--color-cream-mid); border-radius: 3px; }
+
+@media (max-width: 600px) {
+  .pm-inner { padding: var(--space-8) var(--space-6) var(--space-6); }
+}
+</style>
+
+<script>
+// Close on backdrop click
+document.querySelectorAll('.project-modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    const rect = (modal as HTMLDialogElement).getBoundingClientRect();
+    const clickedOutside =
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom;
+    if (clickedOutside) (modal as HTMLDialogElement).close();
+  });
+
+  const closeBtn = modal.querySelector('.pm-close');
+  closeBtn?.addEventListener('click', () => (modal as HTMLDialogElement).close());
+});
+
+// Close on Escape (native for <dialog>, but ensure animation)
+document.querySelectorAll('.project-modal').forEach(modal => {
+  modal.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    (modal as HTMLDialogElement).close();
+  });
+});
+</script>
