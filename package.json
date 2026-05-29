@@ -2,9 +2,11 @@
   "name": "rubyngo-portfolio",
   "private": true,
   "scripts": {
-    "dev": "npm run dev --prefix mvp-keys",
-    "build": "npm run build --prefix mvp-keys",
-    "preview": "npm run preview --prefix mvp-keys"
+    "predev":    "node scripts/copy-resume.mjs",
+    "dev":       "npm run dev --prefix mvp-keys",
+    "prebuild":  "node scripts/copy-resume.mjs",
+    "build":     "npm run build --prefix mvp-keys",
+    "preview":   "npm run preview --prefix mvp-keys"
   },
   "engines": {
     "node": ">=18.0.0"
