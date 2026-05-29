@@ -48,7 +48,7 @@ Your only job: log sessions in the Toggl app. Everything else is automatic.
 
 **1 — Create a Toggl project**
 - Sign up free at [toggl.com/track](https://toggl.com/track)
-- Create a project named **Piano Practice**
+- Create a project named **Piano Practice Hours**
 
 **2 — Add your API token to GitHub**
 - Toggl: avatar → Profile → scroll to **API Token** → copy

@@ -30,7 +30,7 @@ const __dir = dirname(fileURLToPath(import.meta.url));
 const LOG_PATH = resolve(__dir, '../shared/data/practice-log.json');
 
 const TOKEN        = process.env.TOGGL_API_TOKEN;
-const PROJECT_NAME = process.env.TOGGL_PROJECT_NAME ?? 'Piano Practice';
+const PROJECT_NAME = process.env.TOGGL_PROJECT_NAME ?? 'Piano Practice Hours';
 const LOOKBACK_DAYS = 400; // covers 365-day grid + a few weeks buffer
 
 // ─── Guard ────────────────────────────────────────────────────────────────────

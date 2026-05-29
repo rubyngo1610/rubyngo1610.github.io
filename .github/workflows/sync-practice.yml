@@ -38,7 +38,7 @@ jobs:
           TOGGL_API_TOKEN: ${{ secrets.TOGGL_API_TOKEN }}
           # Optional: override if your Toggl project has a different name.
           # Set it under Settings → Secrets and variables → Actions → Variables.
-          TOGGL_PROJECT_NAME: ${{ vars.TOGGL_PROJECT_NAME || 'Piano Practice' }}
+          TOGGL_PROJECT_NAME: ${{ vars.TOGGL_PROJECT_NAME || 'Piano Practice Hours' }}
 
       # ── 4. Commit ─────────────────────────────────────────────────────────────
       - name: Commit updated log (if changed)
