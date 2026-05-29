@@ -1,96 +1,47 @@
 ---
 /*
-  GemstoneGrid — GitHub-style 365-day practice heatmap.
-  Data source: shared/data/practice-log.json
-  Each practiced day glows pearl blue (gemstone effect).
-  Hover: tooltip with date, minutes, piece.
-  Accessible: table fallback, aria-labels.
+  GemstoneGrid — practice heatmap, client-side rendered.
+
+  Why client-side?  The grid is built from "today" backwards. If we do
+  this at build time, "today" is frozen to whenever GitHub Actions last
+  ran.  Client-side rendering means today is always the user's actual
+  current date, regardless of when the site was last deployed.
+
+  Data is embedded as JSON in a <script> tag at build time; the JS
+  reads it, measures the container, and draws exactly as many columns
+  as fit — most-recent on the right.
 */
 
 interface PracticeEntry { minutes?: number; piece?: string; note?: string; }
 interface Props {
   log: Record<string, PracticeEntry>;
   compact?: boolean;
+  instanceId?: string;
 }
 
-const { log, compact = false } = Astro.props;
+const { log, compact = false, instanceId = 'practice' } = Astro.props;
 
-// Build last-365-days grid
-const today = new Date();
-const days: { date: string; entry: PracticeEntry | null; dayOfWeek: number }[] = [];
+// All-time totals — computed at build time for the <summary> line
+const allEntries = Object.entries(log).filter(([k]) => !k.startsWith('_'));
+const totalDaysAll = allEntries.length;
+const totalMinsAll = allEntries.reduce((sum, [, v]) => sum + (v.minutes ?? 0), 0);
 
-for (let i = 364; i >= 0; i--) {
-  const d = new Date(today);
-  d.setDate(d.getDate() - i);
-  const key = d.toISOString().split('T')[0];
-  days.push({
-    date: key,
-    entry: log[key] ?? null,
-    dayOfWeek: d.getDay(),
-  });
-}
-
-// Group into weeks (columns) for grid rendering
-type WeekDay = { date: string; entry: PracticeEntry | null };
-const weeks: WeekDay[][] = [];
-let week: WeekDay[] = [];
-
-// Pad start to align with correct day of week
-const firstDay = days[0].dayOfWeek; // 0=Sun
-for (let p = 0; p < firstDay; p++) week.push({ date: '', entry: null });
-
-days.forEach(d => {
-  week.push({ date: d.date, entry: d.entry });
-  if (week.length === 7) { weeks.push(week); week = []; }
-});
-if (week.length > 0) weeks.push(week);
-
-const totalDays = days.filter(d => d.entry !== null).length;
-const totalMins = days.reduce((sum, d) => sum + (d.entry?.minutes ?? 0), 0);
-
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const logId = `gg-log-${instanceId}`;
+const mountId = `gg-mount-${instanceId}`;
 ---
 
-<div class="gemstone-grid-wrapper" aria-label="Practice heatmap — last 365 days">
+<div class="gemstone-grid-wrapper" aria-label="Practice heatmap">
 
-  <!-- Summary -->
+  <!-- Summary (all-time totals, build-time) -->
   <div class="gg-summary">
-    <span class="gg-stat">
-      <strong>{totalDays}</strong> practice days
-    </span>
+    <span class="gg-stat"><strong>{totalDaysAll}</strong> practice days</span>
     <span class="gg-sep" aria-hidden="true">·</span>
-    <span class="gg-stat">
-      <strong>{Math.round(totalMins / 60)}</strong> hours logged
-    </span>
+    <span class="gg-stat"><strong>{Math.round(totalMinsAll / 60)}</strong> hours logged</span>
   </div>
 
-  <!-- Grid -->
+  <!-- Mount point — JS fills this in so today is always current -->
   <div class="gg-scroll">
-    <div class:list={['gg-grid', { 'gg-grid--compact': compact }]} aria-hidden="true">
-      <!-- Day-of-week labels -->
-      <div class="gg-dow-labels">
-        {['S','M','T','W','T','F','S'].map(d => (
-          <span class="gg-dow">{d}</span>
-        ))}
-      </div>
-
-      <!-- Weeks columns -->
-      <div class="gg-weeks">
-        {weeks.map((wk, wi) => (
-          <div class="gg-week">
-            {wk.map((day, di) => (
-              <div
-                class:list={['gg-day', { 'gg-day--practiced': !!day.entry, 'gg-day--empty': !day.date }]}
-                data-date={day.date}
-                data-mins={day.entry?.minutes ?? 0}
-                data-piece={day.entry?.piece ?? ''}
-                title={day.entry ? `${day.date}: ${day.entry.minutes ?? '?'} min — ${day.entry.piece ?? 'practice'}` : day.date}
-              ></div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+    <div class="gg-mount" id={mountId} data-log-id={logId} data-compact={compact ? 'true' : 'false'}></div>
   </div>
 
   <!-- Legend -->
@@ -98,42 +49,24 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
     <span class="gg-legend-label">Less</span>
     <div class="gg-legend-squares">
       <div class="gg-day" style="opacity:0.12;"></div>
-      <div class="gg-day gg-day--practiced" style="opacity:0.3;"></div>
-      <div class="gg-day gg-day--practiced" style="opacity:0.6;"></div>
-      <div class="gg-day gg-day--practiced" style="opacity:0.85;"></div>
-      <div class="gg-day gg-day--practiced" style="opacity:1;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.3; animation:none;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.6; animation:none;"></div>
+      <div class="gg-day gg-day--practiced" style="opacity:0.85; animation:none;"></div>
+      <div class="gg-day gg-day--practiced" style="animation:none;"></div>
     </div>
     <span class="gg-legend-label">More</span>
   </div>
 
-  <!-- Accessible table -->
-  <details class="gg-accessible">
-    <summary>Recent practice sessions (screen readers)</summary>
-    <table>
-      <caption>Practice log — last 30 sessions</caption>
-      <thead><tr><th>Date</th><th>Minutes</th><th>Piece</th></tr></thead>
-      <tbody>
-        {days.filter(d => d.entry).slice(-30).reverse().map(d => (
-          <tr>
-            <td>{d.date}</td>
-            <td>{d.entry?.minutes ?? '—'}</td>
-            <td>{d.entry?.piece ?? '—'}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </details>
-
   <!-- Hover tooltip -->
-  <div class="gg-tooltip" id="gg-tooltip" aria-hidden="true"></div>
+  <div class="gg-tooltip" id={`gg-tip-${instanceId}`} aria-hidden="true"></div>
 
 </div>
 
+<!-- Log data for the client-side renderer -->
+<script id={logId} type="application/json" set:html={JSON.stringify(log)} />
+
 <style>
-.gemstone-grid-wrapper {
-  font-family: var(--font-sans);
-  position: relative;
-}
+.gemstone-grid-wrapper { font-family: var(--font-sans); position: relative; }
 
 .gg-summary {
   display: flex;
@@ -148,75 +81,64 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 
 .gg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
+/* Grid layout */
 .gg-grid {
   display: flex;
   gap: 4px;
-  min-width: max-content;
 }
-
 .gg-dow-labels {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding-top: 18px; /* align with first week */
+  padding-top: 0;
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 2px;
 }
 .gg-dow {
   font-size: 9px;
   color: var(--color-text-muted);
   height: 12px;
-  width: 12px;
-  text-align: center;
+  width: 14px;
+  text-align: right;
   line-height: 12px;
+  padding-right: 2px;
 }
+.gg-weeks { display: flex; gap: 3px; }
+.gg-week  { display: flex; flex-direction: column; gap: 3px; }
 
-.gg-weeks {
-  display: flex;
-  gap: 3px;
-}
-
-.gg-week {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
+/* Cells */
 .gg-day {
   width: 12px;
   height: 12px;
   border-radius: 2px;
   background: rgba(10, 10, 10, 0.07);
   transition: transform 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
 }
-
-.gg-day--empty {
-  visibility: hidden;
-}
-
+.gg-day--empty   { visibility: hidden; }
 .gg-day--practiced {
   background: var(--color-pearl);
   box-shadow: 0 0 6px var(--color-pearl-dim);
+  animation: gem-pulse 2.5s ease-in-out infinite;
+}
+.gg-day--today {
+  outline: 2px solid var(--color-pearl);
+  outline-offset: 1px;
+}
+.gg-day:not(.gg-day--empty):hover {
+  transform: scale(1.6);
+  z-index: 2;
+  position: relative;
 }
 
 @keyframes gem-pulse {
   0%, 100% { box-shadow: 0 0 4px var(--color-pearl-dim); }
   50%       { box-shadow: 0 0 10px var(--color-pearl), 0 0 18px var(--color-pearl-glow); }
 }
+@media (prefers-reduced-motion: reduce) { .gg-day--practiced { animation: none; } }
 
-.gg-day--practiced {
-  animation: gem-pulse 2.5s ease-in-out infinite;
-  animation-delay: calc(var(--day-i, 0) * 20ms);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gg-day--practiced { animation: none; }
-}
-
-.gg-day:hover {
-  transform: scale(1.6);
-  z-index: 2;
-  position: relative;
-}
-
+/* Legend */
 .gg-legend {
   display: flex;
   align-items: center;
@@ -225,17 +147,8 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 }
 .gg-legend-label { font-size: 10px; color: var(--color-text-muted); }
 .gg-legend-squares { display: flex; gap: 3px; }
-.gg-legend-squares .gg-day { animation: none !important; }
 
-.gg-accessible {
-  margin-top: var(--space-6);
-  font-size: var(--text-sm);
-}
-.gg-accessible summary { color: var(--color-text-muted); cursor: pointer; font-size: var(--text-xs); }
-.gg-accessible table { margin-top: var(--space-3); border-collapse: collapse; }
-.gg-accessible th, .gg-accessible td { padding: var(--space-2) var(--space-3); border: 1px solid var(--color-cream-mid); font-size: var(--text-xs); }
-.gg-accessible th { background: var(--color-cream-warm); }
-
+/* Tooltip */
 .gg-tooltip {
   position: fixed;
   background: var(--color-hall-black);
@@ -246,38 +159,149 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
-  z-index: var(--z-modal);
+  z-index: var(--z-modal, 900);
   white-space: nowrap;
 }
 .gg-tooltip.is-visible { opacity: 1; }
 </style>
 
 <script>
-const tooltip = document.getElementById('gg-tooltip')!;
+(function () {
+  const CELL = 12;   // cell width/height px
+  const GAP  = 3;    // gap between cells px
+  const COL  = CELL + GAP;  // one column width
+  const DOW_W = 18;  // day-of-week label column width
 
-document.querySelectorAll('.gg-day[data-date]').forEach(el => {
-  el.addEventListener('mouseenter', (e: Event) => {
-    const me = e as MouseEvent;
-    const date  = (el as HTMLElement).dataset.date ?? '';
-    const mins  = (el as HTMLElement).dataset.mins ?? '0';
-    const piece = (el as HTMLElement).dataset.piece ?? '';
-    if (!date) return;
-    tooltip.textContent = piece
-      ? `${date}: ${mins} min — ${piece}`
-      : mins !== '0'
-        ? `${date}: ${mins} min`
-        : date;
-    tooltip.classList.add('is-visible');
-    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
-  });
+  function buildGrid(mount: HTMLElement, log: Record<string, any>) {
+    const tipId = mount.closest('.gemstone-grid-wrapper')
+                       ?.querySelector('.gg-tooltip')?.id ?? '';
+    const tooltip = tipId ? document.getElementById(tipId) : null;
 
-  el.addEventListener('mousemove', (e: Event) => {
-    const me = e as MouseEvent;
-    Object.assign(tooltip.style, { left: me.clientX + 10 + 'px', top: me.clientY - 30 + 'px' });
-  });
+    // How many complete weeks fit in the available width?
+    const available = mount.offsetWidth;
+    if (available < COL * 2) return; // not laid out yet
+    const numWeeks = Math.max(4, Math.floor((available - DOW_W - 4) / COL));
 
-  el.addEventListener('mouseleave', () => {
-    tooltip.classList.remove('is-visible');
+    // Today (local date, midnight) — use local year/month/day, not UTC,
+    // so users ahead of UTC don't see tomorrow's date.
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const localKey = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const todayKey = localKey(today);
+
+    // Today's day-of-week (0=Sun). The rightmost column contains Sunday
+    // through today — so it has (todayDOW + 1) real cells.
+    const todayDOW = today.getDay();
+
+    // Total real cells: fill (numWeeks-1) full weeks + current partial week
+    const totalReal = (numWeeks - 1) * 7 + (todayDOW + 1);
+
+    // Build days array from oldest → newest
+    const days: { date: string; entry: any; dow: number; isToday: boolean; isPad: boolean }[] = [];
+
+    for (let i = totalReal - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const key = localKey(d);
+      days.push({ date: key, entry: log[key] ?? null, dow: d.getDay(), isToday: key === todayKey, isPad: false });
+    }
+
+    // Group into weeks (columns)
+    const weeks: (typeof days)[] = [];
+    for (let w = 0; w < numWeeks; w++) {
+      const start = w * 7;
+      const slice = days.slice(start, start + 7);
+      // Pad the last column to 7 cells with invisible placeholders
+      while (slice.length < 7) slice.push({ date: '', entry: null, dow: -1, isToday: false, isPad: true });
+      weeks.push(slice);
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────
+    mount.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'gg-grid';
+
+    // DOW labels
+    const labels = document.createElement('div');
+    labels.className = 'gg-dow-labels';
+    ['S','M','T','W','T','F','S'].forEach(l => {
+      const s = document.createElement('span');
+      s.className = 'gg-dow';
+      s.textContent = l;
+      labels.appendChild(s);
+    });
+    grid.appendChild(labels);
+
+    // Week columns
+    const weeksEl = document.createElement('div');
+    weeksEl.className = 'gg-weeks';
+
+    weeks.forEach(wk => {
+      const col = document.createElement('div');
+      col.className = 'gg-week';
+
+      wk.forEach(day => {
+        const cell = document.createElement('div');
+        const classes = ['gg-day'];
+
+        if (day.isPad || !day.date) {
+          classes.push('gg-day--empty');
+        } else if (day.entry) {
+          classes.push('gg-day--practiced');
+        }
+        if (day.isToday) classes.push('gg-day--today');
+
+        cell.className = classes.join(' ');
+        if (day.date) {
+          cell.dataset.date  = day.date;
+          cell.dataset.mins  = String(day.entry?.minutes ?? 0);
+          cell.dataset.piece = day.entry?.piece ?? '';
+
+          if (tooltip) {
+            cell.addEventListener('mouseenter', (e: MouseEvent) => {
+              const mins  = cell.dataset.mins  ?? '0';
+              const piece = cell.dataset.piece ?? '';
+              const label = day.isToday ? 'Today' : day.date;
+              tooltip.textContent = piece
+                ? `${label}: ${mins} min — ${piece}`
+                : mins !== '0' ? `${label}: ${mins} min` : label;
+              tooltip.classList.add('is-visible');
+              tooltip.style.left = e.clientX + 12 + 'px';
+              tooltip.style.top  = e.clientY - 34 + 'px';
+            });
+            cell.addEventListener('mousemove', (e: MouseEvent) => {
+              tooltip.style.left = e.clientX + 12 + 'px';
+              tooltip.style.top  = e.clientY - 34 + 'px';
+            });
+            cell.addEventListener('mouseleave', () => tooltip.classList.remove('is-visible'));
+          }
+        }
+
+        col.appendChild(cell);
+      });
+
+      weeksEl.appendChild(col);
+    });
+
+    grid.appendChild(weeksEl);
+    mount.appendChild(grid);
+  }
+
+  // Wire up every mount on this page
+  document.querySelectorAll<HTMLElement>('.gg-mount').forEach(mount => {
+    const logId  = mount.dataset.logId ?? '';
+    const logEl  = document.getElementById(logId);
+    const log    = logEl ? (JSON.parse(logEl.textContent ?? '{}') as Record<string, any>) : {};
+
+    let raf = 0;
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => buildGrid(mount, log));
+    };
+
+    schedule();
+    new ResizeObserver(schedule).observe(mount);
   });
-});
+})();
 </script>
