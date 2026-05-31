@@ -136,9 +136,6 @@ const dataMilestones = [
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="dt-divider" aria-hidden="true"></div>
-
         <!-- Data track (bass) -->
         <div class="dt-track">
           <h3 class="dt-track-label dt-track-label--data">
@@ -318,16 +315,10 @@ const dataMilestones = [
 /* ─── Dual timeline ─── */
 .dual-timeline {
   display: grid;
-  grid-template-columns: 1fr 1px 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-12);
   align-items: start;
   margin-top: var(--space-10);
-}
-
-.dt-divider {
-  background: var(--color-cream-mid);
-  align-self: stretch;
-  min-height: 200px;
 }
 
 .dt-track-label {
@@ -535,7 +526,6 @@ const dataMilestones = [
     grid-template-columns: 1fr;
     gap: var(--space-10);
   }
-  .dt-divider { display: none; }
 
   .gem-split {
     grid-template-columns: 1fr;
