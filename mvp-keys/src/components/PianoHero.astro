@@ -220,6 +220,8 @@ const CTA_KEY = {
   height: 130px;
   z-index: 2;
   pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .key--black {
@@ -283,13 +285,9 @@ const CTA_KEY = {
 
 /* ─── Card panel ─── */
 .card-panel {
-  position: fixed;
-  bottom: var(--space-6);
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100vw - 2 * var(--space-6));
+  position: relative;
+  width: 100%;
   max-width: 500px;
-  z-index: 200;
   background: var(--color-score-cream);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-cream-mid);
@@ -301,8 +299,8 @@ const CTA_KEY = {
 .card-panel[hidden] { display: none; }
 
 @keyframes card-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.98); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
