@@ -135,6 +135,7 @@ const CTA_KEY = {
   gap: var(--space-6);
   padding: var(--space-8) 0;
   user-select: none;
+  width: 100%;
 }
 
 .piano-hint {
@@ -154,8 +155,7 @@ const CTA_KEY = {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 640px;
+  width: fit-content;
 }
 
 /* ─── White keys ─── */
@@ -230,7 +230,7 @@ const CTA_KEY = {
   border: 1.5px solid rgba(245,240,232,0.08);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   cursor: pointer;
-  pointer-events: all;
+  pointer-events: auto;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -253,8 +253,8 @@ const CTA_KEY = {
 
 .key--black:active,
 .key--black[aria-pressed="true"] {
-  transform: translateY(2px);
   background: var(--color-pearl);
+  filter: brightness(1.15);
 }
 
 /* Black key positions: C# D# F# G# A# C#5 within an 8-white-key span (C4–C5)
