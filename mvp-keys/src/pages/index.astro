@@ -53,29 +53,6 @@ const topMoments = momentsData.moments.slice(0, 3);
        60-SECOND RECRUITER STRIP — same as MVP Program
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 
-  <!-- Flagship projects -->
-  <section class="section section--cream" aria-label="Flagship projects">
-    <div class="container">
-      <div class="strip-header">
-        <span class="program-label">Selected work</span>
-        <a href={`/projects`} class="strip-more">All projects →</a>
-      </div>
-      <div class="grid-2">
-        {flagshipProjects.map((p) => (
-          <ProjectCard
-            id={p!.id}
-            title={p!.title}
-            subtitle={p!.subtitle}
-            narrative={p!.narrative}
-            tags={p!.tags}
-            repo={p!.repo}
-            lang={lang}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Moments teasers -->
   <section class="section section--cream-warm" aria-label="Proud moments">
     <div class="container">
@@ -83,18 +60,49 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="program-label">{t.moments.headline}</span>
         <a href={`/moments`} class="strip-more">All moments →</a>
       </div>
-      <div class="grid-3">
-        {topMoments.map(m => (
-          <MomentTeaser
-            id={m.id}
-            title={m.title}
-            year={m.year}
-            category={m.category as 'music' | 'data' | 'both'}
-            summary={m.summary_en}
-            image={m.image}
-            lang={lang}
-          />
-        ))}
+      <div class="carousel carousel--moments">
+        <div class="carousel-track">
+          {topMoments.map(m => (
+            <div class="carousel-slide">
+              <MomentTeaser
+                id={m.id}
+                title={m.title}
+                year={m.year}
+                category={m.category as 'music' | 'data' | 'both'}
+                summary={m.summary_en}
+                image={m.image}
+                lang={lang}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flagship projects -->
+  <section class="section section--cream" aria-label="Flagship projects">
+    <div class="container">
+      <div class="strip-header">
+        <span class="program-label">Selected work</span>
+        <a href={`/projects`} class="strip-more">All projects →</a>
+      </div>
+      <div class="carousel carousel--projects">
+        <div class="carousel-track">
+          {flagshipProjects.map((p) => (
+            <div class="carousel-slide">
+              <ProjectCard
+                id={p!.id}
+                title={p!.title}
+                subtitle={p!.subtitle}
+                narrative={p!.narrative}
+                tags={p!.tags}
+                repo={p!.repo}
+                lang={lang}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -181,6 +189,35 @@ const topMoments = momentsData.moments.slice(0, 3);
   transition: color var(--transition);
 }
 .strip-more:hover { color: var(--color-text-dark); }
+
+/* ─── Carousel ─── */
+.carousel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar { display: none; }
+
+.carousel-track {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .carousel--projects .carousel-slide {
+    flex: 0 0 calc(50% - var(--space-3));
+  }
+  .carousel--moments .carousel-slide {
+    flex: 0 0 calc(33.333% - var(--space-4));
+  }
+}
 
 /* ─── Encore ─── */
 .encore-prompt {
