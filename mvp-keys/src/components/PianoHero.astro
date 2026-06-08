@@ -237,7 +237,12 @@ const CTA_KEY = {
   padding-bottom: var(--space-2);
   box-shadow: 2px 6px 16px rgba(0,0,0,0.6), inset 0 -1px 3px rgba(255,255,255,0.05);
   transition: background var(--transition), transform 0.08s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
+
+.key--black:focus { outline: none; }
 
 .key--black:hover,
 .key--black:focus-visible {
