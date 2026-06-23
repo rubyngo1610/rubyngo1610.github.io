@@ -132,20 +132,20 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Bottom-left arrow: sweeps from bottom-left UP toward the frame -->
-        <span class="story-arrow story-arrow--bl" aria-hidden="true">
+        <!-- Bottom-right arrow: sweeps from bottom-right UP-LEFT toward the frame -->
+        <span class="story-arrow story-arrow--br" aria-hidden="true">
           <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aBL" x1="5" y1="75" x2="80" y2="8" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aBR" x1="85" y1="75" x2="10" y2="8" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
                 <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- starts bottom-left, big arc sweeping up-right, loop, arrowhead pointing right -->
-            <path d="M 5 75 C 35 82, 72 62, 55 38 C 47 24, 28 22, 34 34 C 40 46, 60 44, 74 20"
-              stroke="url(#aBL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <path d="M 67 26 L 75 19 L 67 12"
+            <!-- starts bottom-right, big arc sweeping up-left, loop, arrowhead pointing left -->
+            <path d="M 85 75 C 55 82, 18 62, 35 38 C 43 24, 62 22, 56 34 C 50 46, 30 44, 16 20"
+              stroke="url(#aBR)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 23 26 L 15 19 L 23 12"
               stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
@@ -316,9 +316,9 @@ const topMoments = momentsData.moments.slice(0, 3);
   top: calc(50% - 80px);
   animation-delay: 0.1s;
 }
-/* bottom-left arrow: sits below-left of the frame, arrowhead points up-right */
-.story-arrow--bl {
-  left: calc(50% - 230px);
+/* bottom-right arrow: sits below-right of the frame, arrowhead points up-left */
+.story-arrow--br {
+  right: calc(50% - 230px);
   bottom: calc(50% - 80px);
   animation-delay: 0.45s;
 }
@@ -412,7 +412,7 @@ const topMoments = momentsData.moments.slice(0, 3);
 @media (max-width: 640px) {
   .my-story-wrap { padding: 60px 16px; }
   .story-arrow--tl { left: calc(50% - 160px); top: 0; }
-  .story-arrow--bl { left: calc(50% - 160px); bottom: 0; }
+  .story-arrow--br { right: calc(50% - 160px); bottom: 0; }
   .sparkle--3, .sparkle--7, .sparkle--8 { display: none; }
 }
 
