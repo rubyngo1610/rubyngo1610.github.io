@@ -44,7 +44,35 @@ const topMoments = momentsData.moments.slice(0, 3);
       <div class="stage-ctas cta-group">
         <a href={`/resume.pdf`} class="btn btn--primary" target="_blank" rel="noopener">{t.hero.cta_resume}</a>
         <a href="mailto:ngocrubytin@gmail.com" class="btn btn--outline">{t.hero.cta_email}</a>
-        <a href={`/music`} class="btn btn--outline">{t.hero.cta_listen}</a>
+
+        <!-- Inline audio player button -->
+        <div class="listen-player" id="listen-player">
+          <button class="btn btn--outline listen-btn" id="listen-btn" aria-label="Play piano sample">
+            <span class="listen-icon" id="listen-icon" aria-hidden="true">▶</span>
+            <span class="listen-label" id="listen-label">{t.hero.cta_listen}</span>
+            <span class="eq-bars" id="eq-bars" aria-hidden="true">
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+              <span class="eq-bar"></span>
+            </span>
+          </button>
+          <audio id="listen-audio" preload="none">
+            <source src="/audio/Piano Sonata No. 16 in G Major, Op. 31, no. 1 audio.m4a" type="audio/mp4" />
+          </audio>
+        </div>
+      </div>
+
+      <!-- My Story CTA row -->
+      <div class="my-story-row">
+        <a href={`/about`} class="btn btn--outline my-story-btn">{t.nav.about}</a>
+        <span class="story-arrow" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 10 C10 6, 16 4, 18 10 C20 16, 14 22, 18 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M15 24 L18 29 L22 25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
       </div>
     </div>
   </section>
@@ -174,6 +202,76 @@ const topMoments = momentsData.moments.slice(0, 3);
 
 .stage-ctas { justify-content: center; }
 
+/* ─── My Story row ─── */
+.my-story-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.my-story-btn {
+  font-size: var(--text-sm);
+}
+.story-arrow {
+  color: var(--color-pearl);
+  display: flex;
+  align-items: center;
+  animation: story-bounce 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+@keyframes story-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+  50%       { transform: translateY(6px) rotate(4deg); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .story-arrow { animation: none; } }
+
+/* ─── Listen audio player ─── */
+.listen-player { position: relative; }
+
+.listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  transition:
+    width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background var(--transition),
+    border-color var(--transition);
+  overflow: hidden;
+}
+
+.listen-icon { font-size: 0.7em; line-height: 1; flex-shrink: 0; }
+
+/* Equalizer bars — hidden by default, visible when playing */
+.eq-bars {
+  display: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.listen-btn.is-playing .eq-bars { display: flex; }
+.listen-btn.is-playing .listen-label { display: none; }
+
+.eq-bar {
+  width: 3px;
+  background: var(--color-pearl);
+  border-radius: 1px;
+  height: 4px;
+  transition: height 0.05s linear;
+}
+/* CSS fallback animation when audio plays but Web Audio API not wired yet */
+@keyframes eq-dance-1 { 0%,100%{height:4px} 50%{height:13px} }
+@keyframes eq-dance-2 { 0%,100%{height:8px} 50%{height:5px}  }
+@keyframes eq-dance-3 { 0%,100%{height:6px} 50%{height:14px} }
+@keyframes eq-dance-4 { 0%,100%{height:10px}50%{height:4px}  }
+@keyframes eq-dance-5 { 0%,100%{height:3px} 50%{height:11px} }
+.listen-btn.is-playing.no-analyser .eq-bar:nth-child(1) { animation: eq-dance-1 0.8s ease-in-out infinite; }
+.listen-btn.is-playing.no-analyser .eq-bar:nth-child(2) { animation: eq-dance-2 0.6s ease-in-out infinite 0.1s; }
+.listen-btn.is-playing.no-analyser .eq-bar:nth-child(3) { animation: eq-dance-3 0.9s ease-in-out infinite 0.05s; }
+.listen-btn.is-playing.no-analyser .eq-bar:nth-child(4) { animation: eq-dance-4 0.7s ease-in-out infinite 0.15s; }
+.listen-btn.is-playing.no-analyser .eq-bar:nth-child(5) { animation: eq-dance-5 1.0s ease-in-out infinite 0.2s; }
+
 /* ─── Strip header ─── */
 .strip-header {
   display: flex;
@@ -269,4 +367,84 @@ if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   window.addEventListener('resize', resize);
   draw();
 }
+
+/* ── Inline audio player ── */
+(function () {
+  const btn   = document.getElementById('listen-btn') as HTMLButtonElement | null;
+  const audio = document.getElementById('listen-audio') as HTMLAudioElement | null;
+  const icon  = document.getElementById('listen-icon');
+  const label = document.getElementById('listen-label');
+  const bars  = document.querySelectorAll<HTMLElement>('.eq-bar');
+
+  if (!btn || !audio) return;
+
+  let audioCtx: AudioContext | null = null;
+  let analyser: AnalyserNode | null = null;
+  let source: MediaElementAudioSourceNode | null = null;
+  let rafId = 0;
+  let analyserReady = false;
+
+  function initAudioCtx() {
+    if (audioCtx) return;
+    try {
+      audioCtx = new AudioContext();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 64;
+      source = audioCtx.createMediaElementSource(audio!);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      analyserReady = true;
+      btn!.classList.remove('no-analyser');
+    } catch {
+      btn!.classList.add('no-analyser');
+    }
+  }
+
+  function animateBars() {
+    if (!analyser || !analyserReady) return;
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    const step = Math.floor(data.length / bars.length);
+    bars.forEach((bar, i) => {
+      const val = data[i * step] ?? 0;
+      bar.style.height = Math.max(3, (val / 255) * 14) + 'px';
+    });
+    rafId = requestAnimationFrame(animateBars);
+  }
+
+  btn.addEventListener('click', async () => {
+    if (audio.paused) {
+      initAudioCtx();
+      if (audioCtx && audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+      }
+      audio.play().catch(() => btn!.classList.add('no-analyser'));
+      btn.classList.add('is-playing');
+      btn.setAttribute('aria-label', 'Pause piano sample');
+      if (icon) icon.textContent = '⏸';
+      if (analyserReady) {
+        btn.classList.remove('no-analyser');
+        animateBars();
+      } else {
+        btn.classList.add('no-analyser');
+      }
+    } else {
+      audio.pause();
+      btn.classList.remove('is-playing');
+      btn.setAttribute('aria-label', 'Play piano sample');
+      if (icon) icon.textContent = '▶';
+      if (label) label.style.display = '';
+      cancelAnimationFrame(rafId);
+      bars.forEach(bar => { bar.style.height = '4px'; });
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    btn.classList.remove('is-playing');
+    btn.setAttribute('aria-label', 'Play piano sample');
+    if (icon) icon.textContent = '▶';
+    cancelAnimationFrame(rafId);
+    bars.forEach(bar => { bar.style.height = '4px'; });
+  });
+})();
 </script>
