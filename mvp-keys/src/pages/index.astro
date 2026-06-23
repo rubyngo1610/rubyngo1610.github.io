@@ -59,16 +59,65 @@ const topMoments = momentsData.moments.slice(0, 3);
             </span>
           </button>
           <audio id="listen-audio" preload="none">
-            <source src="/audio/Piano Sonata No. 16 in G Major, Op. 31, no. 1 audio.m4a" type="audio/mp4" />
+            <source src="/audio/Piano%20Sonata%20No.%2016%20in%20G%20Major%2C%20Op.%2031%2C%20no.%201%20audio.m4a" type="audio/mp4" />
           </audio>
         </div>
       </div>
 
-      <!-- My Story CTA row -->
-      <div class="my-story-row">
+      <!-- My Story CTA — centered frame with arrows pointing in -->
+      <div class="my-story-wrap">
+
+        <!-- Arrow: upper-left, sweeps down-right toward frame -->
+        <span class="story-arrow story-arrow--tl" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="a1" x1="0" y1="0" x2="90" y2="80" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M8 8 C14 12, 10 24, 18 22 C26 20, 20 10, 28 14 C38 20, 50 40, 66 58 C72 65, 78 70, 82 74"
+              stroke="url(#a1)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M76 68 L83 75 L75 78" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
+        <!-- Arrow: upper-right, sweeps down-left toward frame -->
+        <span class="story-arrow story-arrow--tr" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="a2" x1="90" y1="0" x2="0" y2="80" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M82 8 C76 12, 80 24, 72 22 C64 20, 70 10, 62 14 C52 20, 40 40, 24 58 C18 65, 12 70, 8 74"
+              stroke="url(#a2)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M14 68 L7 75 L15 78" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
+        <!-- Arrow: left side, curls in with loop toward frame -->
+        <span class="story-arrow story-arrow--l" aria-hidden="true">
+          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="a3" x1="0" y1="30" x2="80" y2="30" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="50%" stop-color="#7eb8c9" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M6 30 C14 20, 22 16, 24 22 C26 28, 18 34, 22 30 C26 26, 34 24, 44 28 C58 34, 68 34, 74 32"
+              stroke="url(#a3)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M68 27 L75 32 L68 37" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
+        <!-- The centered frame -->
         <a href={`/about`} class="my-story-btn" aria-label="My Story — learn about Ruby">
           <span class="my-story-frame">
-            <!-- Baroque ornament left -->
             <svg class="baroque-ornament baroque-ornament--left" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M44 30 C38 22, 28 18, 24 10 C20 4, 22 0, 26 2 C30 4, 30 10, 26 14 C22 18, 14 18, 10 24 C6 30, 8 38, 14 40 C20 42, 26 38, 28 32 C30 26, 24 20, 20 24 C16 28, 18 36, 24 36 C30 36, 34 30, 30 26" stroke="url(#goldL)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
               <path d="M44 30 C40 34, 36 40, 30 44 C24 48, 18 46, 14 50 C10 54, 12 58, 16 58 C20 58, 24 54, 22 50 C20 46, 14 46, 12 42" stroke="url(#goldL2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
@@ -86,10 +135,7 @@ const topMoments = momentsData.moments.slice(0, 3);
                 </linearGradient>
               </defs>
             </svg>
-
             <span class="my-story-text">{t.nav.about}</span>
-
-            <!-- Baroque ornament right (mirrored) -->
             <svg class="baroque-ornament baroque-ornament--right" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M4 30 C10 22, 20 18, 24 10 C28 4, 26 0, 22 2 C18 4, 18 10, 22 14 C26 18, 34 18, 38 24 C42 30, 40 38, 34 40 C28 42, 22 38, 20 32 C18 26, 24 20, 28 24 C32 28, 30 36, 24 36 C18 36, 14 30, 18 26" stroke="url(#goldR)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
               <path d="M4 30 C8 34, 12 40, 18 44 C24 48, 30 46, 34 50 C38 54, 36 58, 32 58 C28 58, 24 54, 26 50 C28 46, 34 46, 36 42" stroke="url(#goldR2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
@@ -110,40 +156,38 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Dashed curvy arrow fading stem→pointer in pearl blue -->
-        <span class="story-arrow" aria-hidden="true">
-          <svg width="110" height="54" viewBox="0 0 110 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Arrow: right side, curls in with loop toward frame -->
+        <span class="story-arrow story-arrow--r" aria-hidden="true">
+          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="arrowFade" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+              <linearGradient id="a4" x1="80" y1="30" x2="0" y2="30" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="30%" stop-color="#7eb8c9" stop-opacity="0.3"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-              <linearGradient id="arrowHeadFade" x1="80" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0.7"/>
+                <stop offset="50%" stop-color="#7eb8c9" stop-opacity="0.5"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- Dashed curvy path: starts left, loops up, sweeps right and down to arrowhead -->
-            <path
-              d="M4 28 C12 28, 16 14, 22 18 C28 22, 22 34, 30 32 C42 28, 60 20, 82 30 C92 34, 98 40, 102 42"
-              stroke="url(#arrowFade)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-dasharray="5 4"
-              fill="none"
-            />
-            <!-- Arrowhead -->
-            <path
-              d="M96 38 L103 43 L98 50"
-              stroke="url(#arrowHeadFade)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              fill="none"
-            />
+            <path d="M74 30 C66 20, 58 16, 56 22 C54 28, 62 34, 58 30 C54 26, 46 24, 36 28 C22 34, 12 34, 6 32"
+              stroke="url(#a4)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M12 27 L5 32 L12 37" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
+
+        <!-- Arrow: below, sweeps up toward frame -->
+        <span class="story-arrow story-arrow--b" aria-hidden="true">
+          <svg width="60" height="70" viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="a5" x1="30" y1="70" x2="30" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M30 64 C24 54, 14 46, 16 38 C18 30, 28 30, 26 24 C24 18, 16 18, 20 12 C24 6, 34 8, 32 4"
+              stroke="url(#a5)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M26 9 L31 2 L37 8" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
       </div>
     </div>
   </section>
@@ -273,22 +317,27 @@ const topMoments = momentsData.moments.slice(0, 3);
 
 .stage-ctas { justify-content: center; }
 
-/* ─── My Story row ─── */
-.my-story-row {
+/* ─── My Story centered wrap ─── */
+.my-story-wrap {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-4);
+  /* tall enough for the diagonal arrows above/below */
+  padding: 70px 0 60px;
 }
 
-/* Baroque gold-frame button */
+/* Baroque gold-frame button — always centered */
 .my-story-btn {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
   cursor: pointer;
   transition: transform var(--transition), filter var(--transition);
+  position: relative;
+  z-index: 1;
 }
 .my-story-btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
 .my-story-btn:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 4px; border-radius: 4px; }
@@ -299,10 +348,8 @@ const topMoments = momentsData.moments.slice(0, 3);
   gap: 0;
   position: relative;
   padding: var(--space-2) 0;
-  /* Parchment center background */
   background: linear-gradient(135deg, #f5e9c8 0%, #ede0b0 40%, #f0e5c4 70%, #e8d89a 100%);
   border-radius: 6px;
-  /* Outer gold border simulation */
   box-shadow:
     0 0 0 1.5px #b8860b,
     0 0 0 3px #f0c96a,
@@ -311,11 +358,7 @@ const topMoments = momentsData.moments.slice(0, 3);
     inset 0 1px 3px rgba(255,240,180,0.6);
 }
 
-.baroque-ornament {
-  width: 40px;
-  height: 52px;
-  flex-shrink: 0;
-}
+.baroque-ornament { width: 40px; height: 52px; flex-shrink: 0; }
 .baroque-ornament--left  { margin-right: -4px; }
 .baroque-ornament--right { margin-left: -4px; }
 
@@ -331,18 +374,54 @@ const topMoments = momentsData.moments.slice(0, 3);
   text-shadow: 0 1px 2px rgba(255,240,180,0.8);
 }
 
-/* Dashed arrow */
+/* Arrows — absolute positioned around the center frame */
 .story-arrow {
+  position: absolute;
   display: flex;
-  align-items: center;
-  animation: story-drift 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
-  margin-left: var(--space-1);
+  pointer-events: none;
 }
-@keyframes story-drift {
-  0%, 100% { transform: translate(0, 0); opacity: 0.75; }
-  50%       { transform: translate(5px, 3px); opacity: 1; }
+
+/* Upper-left: corner pointing down-right */
+.story-arrow--tl {
+  top: 0; left: calc(50% - 180px);
+  animation: arrow-tl 2.2s ease-in-out infinite;
 }
-@media (prefers-reduced-motion: reduce) { .story-arrow { animation: none; } }
+/* Upper-right: corner pointing down-left */
+.story-arrow--tr {
+  top: 0; right: calc(50% - 180px);
+  animation: arrow-tr 2.4s ease-in-out infinite 0.3s;
+}
+/* Left side: sweeping right */
+.story-arrow--l {
+  left: calc(50% - 230px);
+  top: 50%; transform: translateY(-50%);
+  animation: arrow-l 2s ease-in-out infinite 0.1s;
+}
+/* Right side: sweeping left */
+.story-arrow--r {
+  right: calc(50% - 230px);
+  top: 50%; transform: translateY(-50%);
+  animation: arrow-r 2.6s ease-in-out infinite 0.5s;
+}
+/* Bottom: sweeping up */
+.story-arrow--b {
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  animation: arrow-b 1.8s ease-in-out infinite 0.2s;
+}
+
+@keyframes arrow-tl { 0%,100%{transform:translate(0,0);opacity:.6} 50%{transform:translate(4px,4px);opacity:1} }
+@keyframes arrow-tr { 0%,100%{transform:translate(0,0);opacity:.6} 50%{transform:translate(-4px,4px);opacity:1} }
+@keyframes arrow-l  { 0%,100%{transform:translateY(-50%) translateX(0);opacity:.6} 50%{transform:translateY(-50%) translateX(5px);opacity:1} }
+@keyframes arrow-r  { 0%,100%{transform:translateY(-50%) translateX(0);opacity:.6} 50%{transform:translateY(-50%) translateX(-5px);opacity:1} }
+@keyframes arrow-b  { 0%,100%{transform:translateX(-50%) translateY(0);opacity:.6} 50%{transform:translateX(-50%) translateY(-5px);opacity:1} }
+
+@media (prefers-reduced-motion: reduce) { .story-arrow { animation: none !important; } }
+
+/* Hide side/diagonal arrows on narrow screens to avoid overflow */
+@media (max-width: 600px) {
+  .story-arrow--tl, .story-arrow--tr, .story-arrow--l, .story-arrow--r { display: none; }
+  .my-story-wrap { padding: 20px 0 50px; }
+}
 
 /* ─── Listen audio player ─── */
 .listen-player { position: relative; }
