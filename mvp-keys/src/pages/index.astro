@@ -64,10 +64,10 @@ const topMoments = momentsData.moments.slice(0, 3);
         </div>
       </div>
 
-      <!-- My Story CTA — centered frame with sparkles -->
+      <!-- My Story CTA — centered frame with sparkles + arrows -->
       <div class="my-story-wrap" aria-hidden="false">
 
-        <!-- Sparkles scattered around the frame (aria-hidden) -->
+        <!-- Sparkles scattered around the frame -->
         <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
         <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
         <span class="sparkle sparkle--3" aria-hidden="true">+</span>
@@ -79,6 +79,23 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="sparkle sparkle--9" aria-hidden="true">+</span>
         <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
+        <!-- Left sweeping arrow: curves from far-left, loops, points right toward frame -->
+        <span class="story-arrow story-arrow--l" aria-hidden="true">
+          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aL" x1="0" y1="35" x2="100" y2="35" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <!-- sweep in from left, loop up, then curve right to arrowhead -->
+            <path d="M4 42 C16 42, 22 20, 32 26 C42 32, 30 46, 40 40 C54 32, 72 30, 88 34"
+              stroke="url(#aL)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M82 28 L90 34 L83 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
         <!-- The centered frame -->
         <a href={`/about`} class="my-story-btn" aria-label="My Story — learn about Ruby">
           <span class="my-story-frame">
@@ -87,14 +104,11 @@ const topMoments = momentsData.moments.slice(0, 3);
               <path d="M44 30 C40 34, 36 40, 30 44 C24 48, 18 46, 14 50 C10 54, 12 58, 16 58 C20 58, 24 54, 22 50 C20 46, 14 46, 12 42" stroke="url(#goldL2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
               <defs>
                 <linearGradient id="goldL" x1="44" y1="30" x2="10" y2="24" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#c9922a"/>
-                  <stop offset="40%" stop-color="#f0c96a"/>
-                  <stop offset="70%" stop-color="#e8b84a"/>
-                  <stop offset="100%" stop-color="#8b5e1a"/>
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/><stop offset="100%" stop-color="#8b5e1a"/>
                 </linearGradient>
                 <linearGradient id="goldL2" x1="44" y1="30" x2="12" y2="42" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#c9922a"/>
-                  <stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="50%" stop-color="#f0c96a"/>
                   <stop offset="100%" stop-color="#8b5e1a"/>
                 </linearGradient>
               </defs>
@@ -105,20 +119,33 @@ const topMoments = momentsData.moments.slice(0, 3);
               <path d="M4 30 C8 34, 12 40, 18 44 C24 48, 30 46, 34 50 C38 54, 36 58, 32 58 C28 58, 24 54, 26 50 C28 46, 34 46, 36 42" stroke="url(#goldR2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
               <defs>
                 <linearGradient id="goldR" x1="4" y1="30" x2="38" y2="24" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#c9922a"/>
-                  <stop offset="40%" stop-color="#f0c96a"/>
-                  <stop offset="70%" stop-color="#e8b84a"/>
-                  <stop offset="100%" stop-color="#8b5e1a"/>
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/><stop offset="100%" stop-color="#8b5e1a"/>
                 </linearGradient>
                 <linearGradient id="goldR2" x1="4" y1="30" x2="36" y2="42" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#c9922a"/>
-                  <stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="50%" stop-color="#f0c96a"/>
                   <stop offset="100%" stop-color="#8b5e1a"/>
                 </linearGradient>
               </defs>
             </svg>
           </span>
         </a>
+
+        <!-- Right sweeping arrow: curves from far-right, loops, points left toward frame -->
+        <span class="story-arrow story-arrow--r" aria-hidden="true">
+          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aR" x1="100" y1="35" x2="0" y2="35" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M96 42 C84 42, 78 20, 68 26 C58 32, 70 46, 60 40 C46 32, 28 30, 12 34"
+              stroke="url(#aR)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            <path d="M18 28 L10 34 L17 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
 
       </div>
     </div>
@@ -260,7 +287,7 @@ const topMoments = momentsData.moments.slice(0, 3);
   padding: 48px 80px;
 }
 
-/* Baroque gold-frame button */
+/* Baroque gold-frame button — static, no heartbeat */
 .my-story-btn {
   display: inline-flex;
   align-items: center;
@@ -269,18 +296,35 @@ const topMoments = momentsData.moments.slice(0, 3);
   transition: transform var(--transition), filter var(--transition);
   position: relative;
   z-index: 1;
-  animation: frame-heartbeat 1.8s ease-in-out infinite;
 }
-.my-story-btn:hover  { filter: brightness(1.12); animation-play-state: paused; transform: scale(1.06); }
+.my-story-btn:hover  { transform: translateY(-1px); filter: brightness(1.12); }
 .my-story-btn:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 4px; border-radius: 4px; }
 
-@keyframes frame-heartbeat {
-  0%   { transform: scale(1);    }
-  14%  { transform: scale(1.07); }
-  28%  { transform: scale(1);    }
-  42%  { transform: scale(1.04); }
-  70%  { transform: scale(1);    }
-  100% { transform: scale(1);    }
+/* ─── Sweeping arrows ─── */
+.story-arrow {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  animation: arrow-heartbeat 1.8s ease-in-out infinite;
+}
+.story-arrow--l {
+  left: calc(50% - 280px);
+  top: 50%; transform: translateY(-50%);
+  animation-delay: 0.15s;
+}
+.story-arrow--r {
+  right: calc(50% - 280px);
+  top: 50%; transform: translateY(-50%);
+  animation-delay: 0.4s;
+}
+
+@keyframes arrow-heartbeat {
+  0%   { opacity: 0.55; transform: translateY(-50%) scale(1);    }
+  14%  { opacity: 1;    transform: translateY(-50%) scale(1.12); }
+  28%  { opacity: 0.7;  transform: translateY(-50%) scale(0.97); }
+  42%  { opacity: 0.95; transform: translateY(-50%) scale(1.06); }
+  70%  { opacity: 0.55; transform: translateY(-50%) scale(1);    }
+  100% { opacity: 0.55; transform: translateY(-50%) scale(1);    }
 }
 
 .my-story-frame {
@@ -358,11 +402,11 @@ const topMoments = momentsData.moments.slice(0, 3);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sparkle, .my-story-btn { animation: none !important; }
+  .sparkle, .story-arrow { animation: none !important; }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .my-story-wrap { padding: 36px 16px; }
-  /* hide sparkles that would overflow on small screens */
+  .story-arrow { display: none; }
   .sparkle--3, .sparkle--7, .sparkle--8 { display: none; }
 }
 
