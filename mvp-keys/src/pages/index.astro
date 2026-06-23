@@ -64,56 +64,20 @@ const topMoments = momentsData.moments.slice(0, 3);
         </div>
       </div>
 
-      <!-- My Story CTA — centered frame with arrows pointing in -->
-      <div class="my-story-wrap">
+      <!-- My Story CTA — centered frame with sparkles -->
+      <div class="my-story-wrap" aria-hidden="false">
 
-        <!-- Arrow: upper-left, sweeps down-right toward frame -->
-        <span class="story-arrow story-arrow--tl" aria-hidden="true">
-          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="a1" x1="0" y1="0" x2="90" y2="80" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M8 8 C14 12, 10 24, 18 22 C26 20, 20 10, 28 14 C38 20, 50 40, 66 58 C72 65, 78 70, 82 74"
-              stroke="url(#a1)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M76 68 L83 75 L75 78" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
-
-        <!-- Arrow: upper-right, sweeps down-left toward frame -->
-        <span class="story-arrow story-arrow--tr" aria-hidden="true">
-          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="a2" x1="90" y1="0" x2="0" y2="80" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M82 8 C76 12, 80 24, 72 22 C64 20, 70 10, 62 14 C52 20, 40 40, 24 58 C18 65, 12 70, 8 74"
-              stroke="url(#a2)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M14 68 L7 75 L15 78" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
-
-        <!-- Arrow: left side, curls in with loop toward frame -->
-        <span class="story-arrow story-arrow--l" aria-hidden="true">
-          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="a3" x1="0" y1="30" x2="80" y2="30" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%" stop-color="#7eb8c9" stop-opacity="0.5"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M6 30 C14 20, 22 16, 24 22 C26 28, 18 34, 22 30 C26 26, 34 24, 44 28 C58 34, 68 34, 74 32"
-              stroke="url(#a3)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M68 27 L75 32 L68 37" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
+        <!-- Sparkles scattered around the frame (aria-hidden) -->
+        <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--3" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--4" aria-hidden="true">·</span>
+        <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--6" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--7" aria-hidden="true">·</span>
+        <span class="sparkle sparkle--8" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--9" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
         <!-- The centered frame -->
         <a href={`/about`} class="my-story-btn" aria-label="My Story — learn about Ruby">
@@ -155,38 +119,6 @@ const topMoments = momentsData.moments.slice(0, 3);
             </svg>
           </span>
         </a>
-
-        <!-- Arrow: right side, curls in with loop toward frame -->
-        <span class="story-arrow story-arrow--r" aria-hidden="true">
-          <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="a4" x1="80" y1="30" x2="0" y2="30" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%" stop-color="#7eb8c9" stop-opacity="0.5"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M74 30 C66 20, 58 16, 56 22 C54 28, 62 34, 58 30 C54 26, 46 24, 36 28 C22 34, 12 34, 6 32"
-              stroke="url(#a4)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M12 27 L5 32 L12 37" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
-
-        <!-- Arrow: below, sweeps up toward frame -->
-        <span class="story-arrow story-arrow--b" aria-hidden="true">
-          <svg width="60" height="70" viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="a5" x1="30" y1="70" x2="30" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="60%" stop-color="#7eb8c9" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M30 64 C24 54, 14 46, 16 38 C18 30, 28 30, 26 24 C24 18, 16 18, 20 12 C24 6, 34 8, 32 4"
-              stroke="url(#a5)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M26 9 L31 2 L37 8" stroke="#7eb8c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
 
       </div>
     </div>
@@ -325,11 +257,10 @@ const topMoments = momentsData.moments.slice(0, 3);
   justify-content: center;
   width: 100%;
   margin-top: var(--space-4);
-  /* tall enough for the diagonal arrows above/below */
-  padding: 70px 0 60px;
+  padding: 48px 80px;
 }
 
-/* Baroque gold-frame button — always centered */
+/* Baroque gold-frame button */
 .my-story-btn {
   display: inline-flex;
   align-items: center;
@@ -338,9 +269,19 @@ const topMoments = momentsData.moments.slice(0, 3);
   transition: transform var(--transition), filter var(--transition);
   position: relative;
   z-index: 1;
+  animation: frame-heartbeat 1.8s ease-in-out infinite;
 }
-.my-story-btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.my-story-btn:hover  { filter: brightness(1.12); animation-play-state: paused; transform: scale(1.06); }
 .my-story-btn:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 4px; border-radius: 4px; }
+
+@keyframes frame-heartbeat {
+  0%   { transform: scale(1);    }
+  14%  { transform: scale(1.07); }
+  28%  { transform: scale(1);    }
+  42%  { transform: scale(1.04); }
+  70%  { transform: scale(1);    }
+  100% { transform: scale(1);    }
+}
 
 .my-story-frame {
   display: inline-flex;
@@ -374,53 +315,55 @@ const topMoments = momentsData.moments.slice(0, 3);
   text-shadow: 0 1px 2px rgba(255,240,180,0.8);
 }
 
-/* Arrows — absolute positioned around the center frame */
-.story-arrow {
+/* ─── Sparkles ─── */
+.sparkle {
   position: absolute;
-  display: flex;
+  color: var(--color-pearl);
   pointer-events: none;
+  font-style: normal;
+  line-height: 1;
+  animation: sparkle-beat 1.8s ease-in-out infinite;
 }
 
-/* Upper-left: corner pointing down-right */
-.story-arrow--tl {
-  top: 0; left: calc(50% - 180px);
-  animation: arrow-tl 2.2s ease-in-out infinite;
+/* Position each sparkle around the frame */
+.sparkle--1  { top: 4px;  left: calc(50% - 130px); font-size: 14px; animation-delay: 0s;     }
+.sparkle--2  { top: 2px;  left: calc(50% + 100px);  font-size: 10px; animation-delay: 0.3s;   }
+.sparkle--3  { top: 12px; left: calc(50% - 170px);  font-size: 12px; animation-delay: 0.6s;   }
+.sparkle--4  { top: 20px; left: calc(50% + 150px);  font-size: 8px;  animation-delay: 0.1s;   }
+.sparkle--5  { bottom: 6px;  left: calc(50% - 110px); font-size: 12px; animation-delay: 0.45s; }
+.sparkle--6  { bottom: 4px;  left: calc(50% + 90px);  font-size: 10px; animation-delay: 0.9s;  }
+.sparkle--7  { top: 50%; left: calc(50% - 200px); transform: translateY(-50%); font-size: 7px; animation-delay: 0.2s; }
+.sparkle--8  { top: 50%; left: calc(50% + 170px); transform: translateY(-50%); font-size: 13px; animation-delay: 0.7s; }
+.sparkle--9  { top: 8px; left: calc(50% - 10px);  font-size: 9px;  animation-delay: 0.55s;  }
+.sparkle--10 { bottom: 8px; left: calc(50% + 20px); font-size: 7px; animation-delay: 1.1s;   }
+
+@keyframes sparkle-beat {
+  0%   { transform: scale(1)    rotate(0deg);   opacity: 0.5; }
+  14%  { transform: scale(1.5)  rotate(15deg);  opacity: 1;   }
+  28%  { transform: scale(0.9)  rotate(-5deg);  opacity: 0.6; }
+  42%  { transform: scale(1.25) rotate(10deg);  opacity: 0.9; }
+  70%  { transform: scale(1)    rotate(0deg);   opacity: 0.5; }
+  100% { transform: scale(1)    rotate(0deg);   opacity: 0.5; }
 }
-/* Upper-right: corner pointing down-left */
-.story-arrow--tr {
-  top: 0; right: calc(50% - 180px);
-  animation: arrow-tr 2.4s ease-in-out infinite 0.3s;
-}
-/* Left side: sweeping right */
-.story-arrow--l {
-  left: calc(50% - 230px);
-  top: 50%; transform: translateY(-50%);
-  animation: arrow-l 2s ease-in-out infinite 0.1s;
-}
-/* Right side: sweeping left */
-.story-arrow--r {
-  right: calc(50% - 230px);
-  top: 50%; transform: translateY(-50%);
-  animation: arrow-r 2.6s ease-in-out infinite 0.5s;
-}
-/* Bottom: sweeping up */
-.story-arrow--b {
-  bottom: 0; left: 50%; transform: translateX(-50%);
-  animation: arrow-b 1.8s ease-in-out infinite 0.2s;
+/* Fix sparkles that use translateY for centering — include it in the keyframe */
+.sparkle--7 { animation-name: sparkle-beat-mid; }
+.sparkle--8 { animation-name: sparkle-beat-mid; }
+@keyframes sparkle-beat-mid {
+  0%   { transform: translateY(-50%) scale(1)    rotate(0deg);  opacity: 0.5; }
+  14%  { transform: translateY(-50%) scale(1.5)  rotate(15deg); opacity: 1;   }
+  28%  { transform: translateY(-50%) scale(0.9)  rotate(-5deg); opacity: 0.6; }
+  42%  { transform: translateY(-50%) scale(1.25) rotate(10deg); opacity: 0.9; }
+  70%  { transform: translateY(-50%) scale(1)    rotate(0deg);  opacity: 0.5; }
+  100% { transform: translateY(-50%) scale(1)    rotate(0deg);  opacity: 0.5; }
 }
 
-@keyframes arrow-tl { 0%,100%{transform:translate(0,0);opacity:.6} 50%{transform:translate(4px,4px);opacity:1} }
-@keyframes arrow-tr { 0%,100%{transform:translate(0,0);opacity:.6} 50%{transform:translate(-4px,4px);opacity:1} }
-@keyframes arrow-l  { 0%,100%{transform:translateY(-50%) translateX(0);opacity:.6} 50%{transform:translateY(-50%) translateX(5px);opacity:1} }
-@keyframes arrow-r  { 0%,100%{transform:translateY(-50%) translateX(0);opacity:.6} 50%{transform:translateY(-50%) translateX(-5px);opacity:1} }
-@keyframes arrow-b  { 0%,100%{transform:translateX(-50%) translateY(0);opacity:.6} 50%{transform:translateX(-50%) translateY(-5px);opacity:1} }
-
-@media (prefers-reduced-motion: reduce) { .story-arrow { animation: none !important; } }
-
-/* Hide side/diagonal arrows on narrow screens to avoid overflow */
+@media (prefers-reduced-motion: reduce) {
+  .sparkle, .my-story-btn { animation: none !important; }
+}
 @media (max-width: 600px) {
-  .story-arrow--tl, .story-arrow--tr, .story-arrow--l, .story-arrow--r { display: none; }
-  .my-story-wrap { padding: 20px 0 50px; }
+  .my-story-wrap { padding: 36px 16px; }
+  /* hide sparkles that would overflow on small screens */
+  .sparkle--3, .sparkle--7, .sparkle--8 { display: none; }
 }
 
 /* ─── Listen audio player ─── */
