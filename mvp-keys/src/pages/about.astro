@@ -79,29 +79,66 @@ const dataMilestones = [
 
   <Waveform bars={60} class="about-wave" />
 
-  <!-- ─── Narrative ─────────────────────────────────────────────────────── -->
-  <section class="section section--cream" aria-label="Story">
-    <div class="container container--narrow">
+  <!-- ─── Paired narrative + evidence ─────────────────────────────────────── -->
+  <section class="section section--cream" aria-label="Story and evidence" id="practice">
+    <div class="container">
 
-      <div class="about-block">
-        <span class="movement-label">Music</span>
-        <h2>The piano came first.</h2>
-        <p>{t.body_music}</p>
+      <span class="program-label">Two practices, one discipline</span>
+      <p class="evidence-sub">Same year. Same cadence of showing up. Two different instruments.</p>
+
+      <!-- Row 1: Music narrative | Practice log -->
+      <div class="evidence-row">
+        <div class="evidence-narrative">
+          <span class="movement-label">Music</span>
+          <h2>The piano came first.</h2>
+          <p>{t.body_music}</p>
+        </div>
+        <div class="evidence-grid">
+          <header class="gem-col-header">
+            <div class="gem-col-icon" aria-hidden="true">𝄞</div>
+            <div>
+              <h3 class="gem-col-title">Practice log</h3>
+              <p class="gem-col-meta">
+                {`${practiceDaysThisYear} active ${practiceDaysThisYear === 1 ? 'day' : 'days'} · updated live as I practice`}
+              </p>
+            </div>
+          </header>
+          <GemstoneGrid log={practiceLog as any} compact={true} />
+        </div>
       </div>
 
       <div class="waveform-divider waveform-animated" style="margin-block: var(--space-12);" aria-hidden="true"></div>
 
-      <div class="about-block">
-        <span class="movement-label">Data</span>
-        <h2>Then the data.</h2>
-        <p>{t.body_data}</p>
+      <!-- Row 2: Data narrative | Code commits -->
+      <div class="evidence-row">
+        <div class="evidence-narrative">
+          <span class="movement-label">Data</span>
+          <h2>Then the data.</h2>
+          <p>{t.body_data}</p>
+        </div>
+        <div class="evidence-grid">
+          <header class="gem-col-header">
+            <div class="gem-col-icon gem-col-icon--amber" aria-hidden="true">⌨</div>
+            <div>
+              <h3 class="gem-col-title">Code commits</h3>
+              <p class="gem-col-meta">
+                {`${commitActiveDays} active ${commitActiveDays === 1 ? 'day' : 'days'} · ${githubFetchOk ? 'live from GitHub' : 'static snapshot'}`}
+              </p>
+            </div>
+          </header>
+          <CommitGrid log={commitLog} totalCommits={totalCommits} />
+        </div>
       </div>
 
-      <div class="waveform-divider waveform-animated" style="margin-block: var(--space-12);" aria-hidden="true"></div>
-
-      <div class="about-block about-block--center">
+      <!-- Pull-quote -->
+      <div class="about-block about-block--center" style="margin-top: var(--space-16);">
         <blockquote class="pull-quote">{t.body_both}</blockquote>
       </div>
+
+      <!-- Legend -->
+      <p class="gem-annotation">
+        Pearl = piano session &nbsp;·&nbsp; Amber = code commit &nbsp;·&nbsp; Brighter = more activity
+      </p>
 
     </div>
   </section>
@@ -156,60 +193,6 @@ const dataMilestones = [
     </div>
   </section>
 
-  <!-- ─── Gemstone split: practice | commits ────────────────────────────── -->
-  <section class="section section--cream" id="practice" aria-label="Discipline grids">
-    <div class="container">
-
-      <div class="gem-intro">
-        <span class="program-label">Gemstone Practice</span>
-        <h2 class="section-h2">Discipline, side by side.</h2>
-        <p class="gem-intro-sub">
-          Same year. Same cadence of showing up. Two different instruments.
-        </p>
-      </div>
-
-      <div class="gem-split">
-
-        <!-- Left column: Piano practice grid (pearl) -->
-        <div class="gem-col gem-col--practice">
-          <header class="gem-col-header">
-            <div class="gem-col-icon" aria-hidden="true">𝄞</div>
-            <div>
-              <h3 class="gem-col-title">Practice log</h3>
-              <p class="gem-col-meta">
-                {`${practiceDaysThisYear} active ${practiceDaysThisYear === 1 ? 'day' : 'days'} · updated live as I practice`}
-              </p>
-            </div>
-          </header>
-          <GemstoneGrid log={practiceLog as any} compact={true} />
-        </div>
-
-        <!-- Column divider -->
-        <div class="gem-col-divider" aria-hidden="true"></div>
-
-        <!-- Right column: Code commit grid (amber) -->
-        <div class="gem-col gem-col--commits">
-          <header class="gem-col-header">
-            <div class="gem-col-icon gem-col-icon--amber" aria-hidden="true">⌨</div>
-            <div>
-              <h3 class="gem-col-title">Code commits</h3>
-              <p class="gem-col-meta">
-                {`${commitActiveDays} active ${commitActiveDays === 1 ? 'day' : 'days'} · ${githubFetchOk ? 'live from GitHub' : 'static snapshot'}`}
-              </p>
-            </div>
-          </header>
-          <CommitGrid log={commitLog} totalCommits={totalCommits} />
-        </div>
-
-      </div>
-
-      <!-- Legend annotation -->
-      <p class="gem-annotation">
-        Pearl = piano session &nbsp;·&nbsp; Amber = code commit &nbsp;·&nbsp; Brighter = more activity
-      </p>
-
-    </div>
-  </section>
 
   <!-- ─── Metrics ───────────────────────────────────────────────────────── -->
   <section class="section section--cream-warm" aria-label="By the numbers">
@@ -264,10 +247,35 @@ const dataMilestones = [
   padding: var(--space-3) var(--space-8);
 }
 
-/* ─── Narrative ─── */
+/* ─── Paired evidence section ─── */
+.evidence-sub {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-10);
+  max-width: none;
+}
+
+.evidence-row {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-12);
+  align-items: start;
+}
+
+.evidence-narrative { padding-top: var(--space-2); }
+
+.evidence-grid {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ─── Narrative text ─── */
 .about-block { margin-bottom: var(--space-2); }
 .about-block--center { text-align: center; }
 
+.evidence-narrative h2,
 .about-block h2 {
   font-family: var(--font-serif);
   font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
@@ -275,6 +283,7 @@ const dataMilestones = [
   letter-spacing: -0.02em;
   margin-bottom: var(--space-4);
 }
+.evidence-narrative p,
 .about-block p {
   font-size: var(--text-lg);
   line-height: 1.75;
@@ -534,12 +543,10 @@ const dataMilestones = [
     grid-template-columns: 1fr;
     gap: var(--space-10);
   }
-
-  .gem-split {
+  .evidence-row {
     grid-template-columns: 1fr;
-    gap: var(--space-10);
+    gap: var(--space-8);
   }
-  .gem-col-divider { display: none; }
 }
 
 @media (max-width: 768px) {
