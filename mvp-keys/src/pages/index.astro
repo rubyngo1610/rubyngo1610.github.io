@@ -79,20 +79,19 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="sparkle sparkle--9" aria-hidden="true">+</span>
         <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
-        <!-- Top-left arrow: sweeps from top-left DOWN toward the frame -->
+        <!-- Top-left arrow: sweeps from top-left, arrowhead points RIGHT toward frame -->
         <span class="story-arrow story-arrow--tl" aria-hidden="true">
-          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aTL" x1="5" y1="5" x2="80" y2="72" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aTL" x1="5" y1="8" x2="82" y2="38" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- starts top-left, big arc sweeping down-right, loop, arrowhead pointing right -->
-            <path d="M 5 5 C 35 -2, 72 18, 55 42 C 47 56, 28 58, 34 46 C 40 34, 60 36, 74 60"
+            <path d="M 5 8 C 25 -2, 60 12, 46 34 C 38 50, 18 50, 24 38 C 30 26, 55 28, 80 38"
               stroke="url(#aTL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <path d="M 67 54 L 75 61 L 67 68"
+            <path d="M 74 32 L 82 38 L 74 45"
               stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
@@ -132,20 +131,19 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Bottom-right arrow: sweeps from bottom-right UP-LEFT toward the frame -->
+        <!-- Bottom-right arrow: sweeps from bottom-right, arrowhead points LEFT toward frame -->
         <span class="story-arrow story-arrow--br" aria-hidden="true">
-          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aBR" x1="85" y1="75" x2="10" y2="8" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aBR" x1="85" y1="62" x2="8" y2="32" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- starts bottom-right, big arc sweeping up-left, loop, arrowhead pointing left -->
-            <path d="M 85 75 C 55 82, 18 62, 35 38 C 43 24, 62 22, 56 34 C 50 46, 30 44, 16 20"
+            <path d="M 85 62 C 65 72, 30 58, 44 36 C 52 20, 72 20, 66 32 C 60 44, 35 42, 10 32"
               stroke="url(#aBR)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <path d="M 23 26 L 15 19 L 23 12"
+            <path d="M 16 26 L 8 32 L 16 39"
               stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
