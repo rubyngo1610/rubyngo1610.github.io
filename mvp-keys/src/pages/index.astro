@@ -150,6 +150,13 @@ const topMoments = momentsData.moments.slice(0, 3);
 
       </div>
     </div>
+
+    <!-- Scroll cue — fades in after 1.5s, disappears once user scrolls -->
+    <button class="scroll-cue" id="scroll-cue" aria-label="Scroll down" tabindex="-1">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M6 10 L14 18 L22 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </section>
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -276,6 +283,40 @@ const topMoments = momentsData.moments.slice(0, 3);
 }
 
 .stage-ctas { justify-content: center; }
+
+/* ─── Scroll cue ─── */
+.scroll-cue {
+  position: absolute;
+  bottom: var(--space-8);
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  color: var(--color-pearl);
+  opacity: 0;
+  cursor: default;
+  padding: var(--space-2);
+  z-index: 2;
+  pointer-events: none;
+  animation:
+    cue-appear 0.6s ease-out 1.5s forwards,
+    cue-float  2.6s ease-in-out 2.1s infinite;
+  transition: opacity 0.5s ease;
+}
+.scroll-cue.is-hidden {
+  opacity: 0 !important;
+  animation: none;
+}
+@keyframes cue-appear {
+  to { opacity: 0.45; }
+}
+@keyframes cue-float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(7px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: cue-appear 0.6s ease-out 1.5s forwards; }
+}
 
 /* ─── My Story centered wrap ─── */
 .my-story-wrap {
@@ -556,6 +597,14 @@ if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   window.addEventListener('resize', resize);
   draw();
 }
+
+/* ── Scroll cue ── */
+(function () {
+  const cue = document.getElementById('scroll-cue');
+  if (!cue) return;
+  const hide = () => { if (window.scrollY > 80) cue.classList.add('is-hidden'); };
+  window.addEventListener('scroll', hide, { passive: true });
+})();
 
 /* ── Inline audio player ── */
 (function () {
