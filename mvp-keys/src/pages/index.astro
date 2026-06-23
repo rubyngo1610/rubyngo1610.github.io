@@ -150,14 +150,14 @@ const topMoments = momentsData.moments.slice(0, 3);
 
       </div>
     </div>
-
-    <!-- Scroll cue — fades in after 1.5s, disappears once user scrolls -->
-    <button class="scroll-cue" id="scroll-cue" aria-label="Scroll down" tabindex="-1">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M6 10 L14 18 L22 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
   </section>
+
+  <!-- Scroll cue — fixed to viewport bottom-center, disappears on scroll -->
+  <button class="scroll-cue" id="scroll-cue" aria-label="Scroll down" tabindex="-1">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <path d="M6 10 L14 18 L22 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        60-SECOND RECRUITER STRIP — same as MVP Program
@@ -286,7 +286,7 @@ const topMoments = momentsData.moments.slice(0, 3);
 
 /* ─── Scroll cue ─── */
 .scroll-cue {
-  position: absolute;
+  position: fixed;
   bottom: var(--space-8);
   left: 50%;
   transform: translateX(-50%);
@@ -296,7 +296,7 @@ const topMoments = momentsData.moments.slice(0, 3);
   opacity: 0;
   cursor: default;
   padding: var(--space-2);
-  z-index: 2;
+  z-index: var(--z-above);
   pointer-events: none;
   animation:
     cue-appear 0.6s ease-out 1.5s forwards,
