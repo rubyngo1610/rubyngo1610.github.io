@@ -79,20 +79,22 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="sparkle sparkle--9" aria-hidden="true">+</span>
         <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
-        <!-- Left sweeping arrow: curves from far-left, loops, points right toward frame -->
+        <!-- Left sweeping arrow: arc → loop → arrowhead (like the gif) -->
         <span class="story-arrow story-arrow--l" aria-hidden="true">
-          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aL" x1="0" y1="35" x2="100" y2="35" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aL" x1="0" y1="12" x2="68" y2="60" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- sweep in from left, loop up, then curve right to arrowhead -->
-            <path d="M4 42 C16 42, 22 20, 32 26 C42 32, 30 46, 40 40 C54 32, 72 30, 88 34"
-              stroke="url(#aL)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M82 28 L90 34 L83 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- big arc sweeping in, loop, then continues to arrowhead -->
+            <path d="M 5 12 C 30 0, 58 14, 44 36 C 38 48, 22 50, 27 39 C 32 28, 50 30, 62 52"
+              stroke="url(#aL)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <!-- arrowhead pointing lower-right -->
+            <path d="M 56 46 L 63 53 L 55 59"
+              stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -131,19 +133,22 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Right sweeping arrow: curves from far-right, loops, points left toward frame -->
+        <!-- Right sweeping arrow: mirrored — arc → loop → arrowhead pointing lower-left -->
         <span class="story-arrow story-arrow--r" aria-hidden="true">
-          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aR" x1="100" y1="35" x2="0" y2="35" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aR" x1="80" y1="12" x2="12" y2="60" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <path d="M96 42 C84 42, 78 20, 68 26 C58 32, 70 46, 60 40 C46 32, 28 30, 12 34"
-              stroke="url(#aR)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M18 28 L10 34 L17 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- mirrored: big arc, loop, arrowhead lower-left -->
+            <path d="M 75 12 C 50 0, 22 14, 36 36 C 42 48, 58 50, 53 39 C 48 28, 30 30, 18 52"
+              stroke="url(#aR)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <!-- arrowhead pointing lower-left -->
+            <path d="M 24 46 L 17 53 L 25 59"
+              stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -308,12 +313,12 @@ const topMoments = momentsData.moments.slice(0, 3);
   animation: arrow-heartbeat 1.8s ease-in-out infinite;
 }
 .story-arrow--l {
-  left: calc(50% - 280px);
+  left: calc(50% - 210px);
   top: 50%; transform: translateY(-50%);
   animation-delay: 0.15s;
 }
 .story-arrow--r {
-  right: calc(50% - 280px);
+  right: calc(50% - 210px);
   top: 50%; transform: translateY(-50%);
   animation-delay: 0.4s;
 }
