@@ -66,11 +66,82 @@ const topMoments = momentsData.moments.slice(0, 3);
 
       <!-- My Story CTA row -->
       <div class="my-story-row">
-        <a href={`/about`} class="btn btn--outline my-story-btn">{t.nav.about}</a>
+        <a href={`/about`} class="my-story-btn" aria-label="My Story — learn about Ruby">
+          <span class="my-story-frame">
+            <!-- Baroque ornament left -->
+            <svg class="baroque-ornament baroque-ornament--left" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M44 30 C38 22, 28 18, 24 10 C20 4, 22 0, 26 2 C30 4, 30 10, 26 14 C22 18, 14 18, 10 24 C6 30, 8 38, 14 40 C20 42, 26 38, 28 32 C30 26, 24 20, 20 24 C16 28, 18 36, 24 36 C30 36, 34 30, 30 26" stroke="url(#goldL)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <path d="M44 30 C40 34, 36 40, 30 44 C24 48, 18 46, 14 50 C10 54, 12 58, 16 58 C20 58, 24 54, 22 50 C20 46, 14 46, 12 42" stroke="url(#goldL2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="goldL" x1="44" y1="30" x2="10" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/>
+                  <stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+                <linearGradient id="goldL2" x1="44" y1="30" x2="12" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/>
+                  <stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+              </defs>
+            </svg>
+
+            <span class="my-story-text">{t.nav.about}</span>
+
+            <!-- Baroque ornament right (mirrored) -->
+            <svg class="baroque-ornament baroque-ornament--right" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 30 C10 22, 20 18, 24 10 C28 4, 26 0, 22 2 C18 4, 18 10, 22 14 C26 18, 34 18, 38 24 C42 30, 40 38, 34 40 C28 42, 22 38, 20 32 C18 26, 24 20, 28 24 C32 28, 30 36, 24 36 C18 36, 14 30, 18 26" stroke="url(#goldR)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <path d="M4 30 C8 34, 12 40, 18 44 C24 48, 30 46, 34 50 C38 54, 36 58, 32 58 C28 58, 24 54, 26 50 C28 46, 34 46, 36 42" stroke="url(#goldR2)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="goldR" x1="4" y1="30" x2="38" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/>
+                  <stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+                <linearGradient id="goldR2" x1="4" y1="30" x2="36" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/>
+                  <stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+        </a>
+
+        <!-- Dashed curvy arrow fading stem→pointer in pearl blue -->
         <span class="story-arrow" aria-hidden="true">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10 C10 6, 16 4, 18 10 C20 16, 14 22, 18 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <path d="M15 24 L18 29 L22 25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <svg width="110" height="54" viewBox="0 0 110 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="arrowFade" x1="0" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="30%" stop-color="#7eb8c9" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+              <linearGradient id="arrowHeadFade" x1="80" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7eb8c9" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <!-- Dashed curvy path: starts left, loops up, sweeps right and down to arrowhead -->
+            <path
+              d="M4 28 C12 28, 16 14, 22 18 C28 22, 22 34, 30 32 C42 28, 60 20, 82 30 C92 34, 98 40, 102 42"
+              stroke="url(#arrowFade)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-dasharray="5 4"
+              fill="none"
+            />
+            <!-- Arrowhead -->
+            <path
+              d="M96 38 L103 43 L98 50"
+              stroke="url(#arrowHeadFade)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
           </svg>
         </span>
       </div>
@@ -207,21 +278,69 @@ const topMoments = momentsData.moments.slice(0, 3);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  margin-top: var(--space-2);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
+
+/* Baroque gold-frame button */
 .my-story-btn {
-  font-size: var(--text-sm);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--transition), filter var(--transition);
 }
+.my-story-btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.my-story-btn:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 4px; border-radius: 4px; }
+
+.my-story-frame {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  padding: var(--space-2) 0;
+  /* Parchment center background */
+  background: linear-gradient(135deg, #f5e9c8 0%, #ede0b0 40%, #f0e5c4 70%, #e8d89a 100%);
+  border-radius: 6px;
+  /* Outer gold border simulation */
+  box-shadow:
+    0 0 0 1.5px #b8860b,
+    0 0 0 3px #f0c96a,
+    0 0 0 4.5px #8b5e1a,
+    0 2px 12px rgba(200,150,30,0.25),
+    inset 0 1px 3px rgba(255,240,180,0.6);
+}
+
+.baroque-ornament {
+  width: 40px;
+  height: 52px;
+  flex-shrink: 0;
+}
+.baroque-ornament--left  { margin-right: -4px; }
+.baroque-ornament--right { margin-left: -4px; }
+
+.my-story-text {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: #5a3a00;
+  padding: 0 var(--space-5);
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255,240,180,0.8);
+}
+
+/* Dashed arrow */
 .story-arrow {
-  color: var(--color-pearl);
   display: flex;
   align-items: center;
-  animation: story-bounce 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  animation: story-drift 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  margin-left: var(--space-1);
 }
-@keyframes story-bounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
-  50%       { transform: translateY(6px) rotate(4deg); opacity: 1; }
+@keyframes story-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.75; }
+  50%       { transform: translate(5px, 3px); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .story-arrow { animation: none; } }
 
