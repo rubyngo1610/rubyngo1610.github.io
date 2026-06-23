@@ -79,20 +79,21 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="sparkle sparkle--9" aria-hidden="true">+</span>
         <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
-        <!-- Left sweeping arrow: curves from far-left, loops, points right toward frame -->
-        <span class="story-arrow story-arrow--l" aria-hidden="true">
-          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Top-left arrow: sweeps from top-left DOWN toward the frame -->
+        <span class="story-arrow story-arrow--tl" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aL" x1="0" y1="35" x2="100" y2="35" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aTL" x1="5" y1="5" x2="80" y2="72" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- sweep in from left, loop up, then curve right to arrowhead -->
-            <path d="M4 42 C16 42, 22 20, 32 26 C42 32, 30 46, 40 40 C54 32, 72 30, 88 34"
-              stroke="url(#aL)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M82 28 L90 34 L83 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- starts top-left, big arc sweeping down-right, loop, arrowhead pointing right -->
+            <path d="M 5 5 C 35 -2, 72 18, 55 42 C 47 56, 28 58, 34 46 C 40 34, 60 36, 74 60"
+              stroke="url(#aTL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 67 54 L 75 61 L 67 68"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -131,19 +132,21 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Right sweeping arrow: curves from far-right, loops, points left toward frame -->
-        <span class="story-arrow story-arrow--r" aria-hidden="true">
-          <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bottom-right arrow: sweeps from bottom-right UP-LEFT toward the frame -->
+        <span class="story-arrow story-arrow--br" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aR" x1="100" y1="35" x2="0" y2="35" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aBR" x1="85" y1="75" x2="10" y2="8" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
-                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.55"/>
+                <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <path d="M96 42 C84 42, 78 20, 68 26 C58 32, 70 46, 60 40 C46 32, 28 30, 12 34"
-              stroke="url(#aR)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
-            <path d="M18 28 L10 34 L17 41" stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- starts bottom-right, big arc sweeping up-left, loop, arrowhead pointing left -->
+            <path d="M 85 75 C 55 82, 18 62, 35 38 C 43 24, 62 22, 56 34 C 50 46, 30 44, 16 20"
+              stroke="url(#aBR)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 23 26 L 15 19 L 23 12"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -307,24 +310,26 @@ const topMoments = momentsData.moments.slice(0, 3);
   pointer-events: none;
   animation: arrow-heartbeat 1.8s ease-in-out infinite;
 }
-.story-arrow--l {
-  left: calc(50% - 280px);
-  top: 50%; transform: translateY(-50%);
-  animation-delay: 0.15s;
+/* top-left arrow: sits above-left of the frame, arrowhead points down-right */
+.story-arrow--tl {
+  left: calc(50% - 230px);
+  top: calc(50% - 80px);
+  animation-delay: 0.1s;
 }
-.story-arrow--r {
-  right: calc(50% - 280px);
-  top: 50%; transform: translateY(-50%);
-  animation-delay: 0.4s;
+/* bottom-right arrow: sits below-right of the frame, arrowhead points up-left */
+.story-arrow--br {
+  right: calc(50% - 230px);
+  bottom: calc(50% - 80px);
+  animation-delay: 0.45s;
 }
 
 @keyframes arrow-heartbeat {
-  0%   { opacity: 0.55; transform: translateY(-50%) scale(1);    }
-  14%  { opacity: 1;    transform: translateY(-50%) scale(1.12); }
-  28%  { opacity: 0.7;  transform: translateY(-50%) scale(0.97); }
-  42%  { opacity: 0.95; transform: translateY(-50%) scale(1.06); }
-  70%  { opacity: 0.55; transform: translateY(-50%) scale(1);    }
-  100% { opacity: 0.55; transform: translateY(-50%) scale(1);    }
+  0%   { opacity: 0.55; transform: scale(1);    }
+  14%  { opacity: 1;    transform: scale(1.1);  }
+  28%  { opacity: 0.7;  transform: scale(0.97); }
+  42%  { opacity: 0.95; transform: scale(1.05); }
+  70%  { opacity: 0.55; transform: scale(1);    }
+  100% { opacity: 0.55; transform: scale(1);    }
 }
 
 .my-story-frame {
@@ -405,8 +410,9 @@ const topMoments = momentsData.moments.slice(0, 3);
   .sparkle, .story-arrow { animation: none !important; }
 }
 @media (max-width: 640px) {
-  .my-story-wrap { padding: 36px 16px; }
-  .story-arrow { display: none; }
+  .my-story-wrap { padding: 60px 16px; }
+  .story-arrow--tl { left: calc(50% - 160px); top: 0; }
+  .story-arrow--br { right: calc(50% - 160px); bottom: 0; }
   .sparkle--3, .sparkle--7, .sparkle--8 { display: none; }
 }
 
