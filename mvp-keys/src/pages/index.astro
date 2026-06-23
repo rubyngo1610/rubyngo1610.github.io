@@ -79,22 +79,21 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="sparkle sparkle--9" aria-hidden="true">+</span>
         <span class="sparkle sparkle--10" aria-hidden="true">·</span>
 
-        <!-- Left sweeping arrow: arc → loop → arrowhead (like the gif) -->
-        <span class="story-arrow story-arrow--l" aria-hidden="true">
-          <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Top-left arrow: sweeps from top-left DOWN toward the frame -->
+        <span class="story-arrow story-arrow--tl" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aL" x1="0" y1="12" x2="68" y2="60" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aTL" x1="5" y1="5" x2="80" y2="72" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
                 <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- big arc sweeping in, loop, then continues to arrowhead -->
-            <path d="M 5 12 C 30 0, 58 14, 44 36 C 38 48, 22 50, 27 39 C 32 28, 50 30, 62 52"
-              stroke="url(#aL)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-            <!-- arrowhead pointing lower-right -->
-            <path d="M 56 46 L 63 53 L 55 59"
-              stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- starts top-left, big arc sweeping down-right, loop, arrowhead pointing right -->
+            <path d="M 5 5 C 35 -2, 72 18, 55 42 C 47 56, 28 58, 34 46 C 40 34, 60 36, 74 60"
+              stroke="url(#aTL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 67 54 L 75 61 L 67 68"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -133,22 +132,21 @@ const topMoments = momentsData.moments.slice(0, 3);
           </span>
         </a>
 
-        <!-- Right sweeping arrow: mirrored — arc → loop → arrowhead pointing lower-left -->
-        <span class="story-arrow story-arrow--r" aria-hidden="true">
-          <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bottom-left arrow: sweeps from bottom-left UP toward the frame -->
+        <span class="story-arrow story-arrow--bl" aria-hidden="true">
+          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="aR" x1="80" y1="12" x2="12" y2="60" gradientUnits="userSpaceOnUse">
+              <linearGradient id="aBL" x1="5" y1="75" x2="80" y2="8" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
                 <stop offset="45%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <!-- mirrored: big arc, loop, arrowhead lower-left -->
-            <path d="M 75 12 C 50 0, 22 14, 36 36 C 42 48, 58 50, 53 39 C 48 28, 30 30, 18 52"
-              stroke="url(#aR)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-            <!-- arrowhead pointing lower-left -->
-            <path d="M 24 46 L 17 53 L 25 59"
-              stroke="#7eb8c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- starts bottom-left, big arc sweeping up-right, loop, arrowhead pointing right -->
+            <path d="M 5 75 C 35 82, 72 62, 55 38 C 47 24, 28 22, 34 34 C 40 46, 60 44, 74 20"
+              stroke="url(#aBL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 67 26 L 75 19 L 67 12"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
 
@@ -312,24 +310,26 @@ const topMoments = momentsData.moments.slice(0, 3);
   pointer-events: none;
   animation: arrow-heartbeat 1.8s ease-in-out infinite;
 }
-.story-arrow--l {
-  left: calc(50% - 210px);
-  top: 50%; transform: translateY(-50%);
-  animation-delay: 0.15s;
+/* top-left arrow: sits above-left of the frame, arrowhead points down-right */
+.story-arrow--tl {
+  left: calc(50% - 230px);
+  top: calc(50% - 80px);
+  animation-delay: 0.1s;
 }
-.story-arrow--r {
-  right: calc(50% - 210px);
-  top: 50%; transform: translateY(-50%);
-  animation-delay: 0.4s;
+/* bottom-left arrow: sits below-left of the frame, arrowhead points up-right */
+.story-arrow--bl {
+  left: calc(50% - 230px);
+  bottom: calc(50% - 80px);
+  animation-delay: 0.45s;
 }
 
 @keyframes arrow-heartbeat {
-  0%   { opacity: 0.55; transform: translateY(-50%) scale(1);    }
-  14%  { opacity: 1;    transform: translateY(-50%) scale(1.12); }
-  28%  { opacity: 0.7;  transform: translateY(-50%) scale(0.97); }
-  42%  { opacity: 0.95; transform: translateY(-50%) scale(1.06); }
-  70%  { opacity: 0.55; transform: translateY(-50%) scale(1);    }
-  100% { opacity: 0.55; transform: translateY(-50%) scale(1);    }
+  0%   { opacity: 0.55; transform: scale(1);    }
+  14%  { opacity: 1;    transform: scale(1.1);  }
+  28%  { opacity: 0.7;  transform: scale(0.97); }
+  42%  { opacity: 0.95; transform: scale(1.05); }
+  70%  { opacity: 0.55; transform: scale(1);    }
+  100% { opacity: 0.55; transform: scale(1);    }
 }
 
 .my-story-frame {
@@ -410,8 +410,9 @@ const topMoments = momentsData.moments.slice(0, 3);
   .sparkle, .story-arrow { animation: none !important; }
 }
 @media (max-width: 640px) {
-  .my-story-wrap { padding: 36px 16px; }
-  .story-arrow { display: none; }
+  .my-story-wrap { padding: 60px 16px; }
+  .story-arrow--tl { left: calc(50% - 160px); top: 0; }
+  .story-arrow--bl { left: calc(50% - 160px); bottom: 0; }
   .sparkle--3, .sparkle--7, .sparkle--8 { display: none; }
 }
 
