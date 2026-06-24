@@ -481,7 +481,7 @@ const BASE = (document.querySelector('.piano-hero-wrapper') as HTMLElement)?.dat
 function openCard(data: typeof ALL_KEYS[0]) {
   const panel = document.getElementById('card-panel')!;
   (document.getElementById('card-note')  as HTMLElement).textContent = data.note;
-  (document.getElementById('card-type')  as HTMLElement).textContent = data.type === 'music' ? 'White key · Music' : data.type === 'data' ? 'Black key · Data' : 'Call to action';
+  (document.getElementById('card-type')  as HTMLElement).textContent = '';
   (document.getElementById('card-title') as HTMLElement).textContent = data.title;
   (document.getElementById('card-body')  as HTMLElement).textContent = data.body;
   const linkEl = document.getElementById('card-link') as HTMLAnchorElement;
