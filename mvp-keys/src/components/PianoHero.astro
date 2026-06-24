@@ -85,17 +85,13 @@ const BLACK_KEYS = [
     body: 'Still performing. Still committing code. The two tracks aren\'t merging yet — they\'re sharpening each other. Every concert season makes the data work more intuitive. Every model trained makes the music more precise.',
     link: `/moments`, linkLabel: 'See moments',
   },
-  {
-    note: 'C#5', label: 'C♯',
-    title: '♯ Stack',
-    body: 'Python · SQL · PyTorch · dbt · Airflow · Spark · Snowflake — and a Steinway. Tools used deliberately, not collected. The sharpest version of both instruments.',
-    link: `/skills`, linkLabel: 'See skills',
-  },
 ];
 
-// C5 = CTA key
+// C5 = Calling key
 const CTA_KEY = {
-  note: 'C5', label: 'C', title: 'Let\'s talk', body: 'Open to full-time roles in data engineering, ML engineering, or data science. Based in New York.', link: `/contact`, linkLabel: 'Get in touch',
+  note: 'C5', label: 'C', title: 'Calling',
+  body: 'To build AI that understands music the way a musician does — tools that amplify human artistry, never replace it. Every model I train, every pipeline I ship, every performance I give is practice toward that. B was the leading tone. This is the resolution.',
+  link: `/contact`, linkLabel: 'Let\'s talk',
 };
 
 // All keys in piano order: C4 C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C#5 C5
@@ -107,7 +103,7 @@ const CTA_KEY = {
 <div class="piano-hero-wrapper" aria-label="Keys of Proof — interactive piano" data-base={base}>
   <!-- Hint text (first visit) -->
   <p class="piano-hint" id="piano-hint" aria-live="polite">
-    Try a white key <span class="hint-sep" aria-hidden="true">·</span> Try a black key
+    Every story starts at C
   </p>
 
   <!-- Piano keyboard -->
@@ -474,10 +470,9 @@ const BLACK_KEYS_DATA = [
   { note:'F#4', title:'♯ First Data Win', type:'data', body:'First data internship in the US — the same year as the Concerto Competition win. InfoRe Technology (2019), then Mekong Capital (2020). Two "firsts" in the same chapter. The sharp that matched the music note.', link:'experience' },
   { note:'G#4', title:'♯ Scale', type:'data', body:'Bank of America — Global Technology Analyst, then Software Engineer II. Fixed data pipelines at FINRA scale. Automated compliance controls. Millions in fines prevented. Engineering at scale is its own kind of performance.', link:'experience' },
   { note:'A#4', title:'♯ Converge', type:'data', body:"Still performing. Still committing code. The two tracks aren't merging yet — they're sharpening each other. Every concert season makes the data work more intuitive. Every model trained makes the music more precise.", link:'moments' },
-  { note:'C#5', title:'♯ Stack', type:'data', body:'Python · SQL · PyTorch · dbt · Airflow · Spark · Snowflake — and a Steinway. Tools used deliberately, not collected. The sharpest version of both instruments.', link:'skills' },
 ];
 
-const CTA_KEY_DATA = { note:'C5', title:"Let's talk", type:'cta', body:'Open to full-time roles in data engineering, ML engineering, or data science. Based in New York.', link:'contact' };
+const CTA_KEY_DATA = { note:'C5', title:'Calling', type:'cta', body:'To build AI that understands music the way a musician does — tools that amplify human artistry, never replace it. Every model I train, every pipeline I ship, every performance I give is practice toward that. B was the leading tone. This is the resolution.', link:'contact' };
 
 const ALL_KEYS = [...WHITE_KEYS_DATA, CTA_KEY_DATA, ...BLACK_KEYS_DATA];
 
