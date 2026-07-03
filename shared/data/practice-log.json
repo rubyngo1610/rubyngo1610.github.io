@@ -1,6 +1,6 @@
 {
   "_note": "Owner updates quarterly. Keys are YYYY-MM-DD. All fields optional except date key.",
-  "_toggl_synced_at": "2026-07-02T10:38:14.352Z",
+  "_toggl_synced_at": "2026-07-03T10:34:26.177Z",
   "2024-09-03": {
     "minutes": 60,
     "piece": "Chopin Ballade No. 1",
@@ -272,6 +272,10 @@
   },
   "2026-06-19": {
     "minutes": 28,
+    "piece": "Chopin’s Mazurka in A minor, Op. 17 No. 4"
+  },
+  "2026-07-02": {
+    "minutes": 13,
     "piece": "Chopin’s Mazurka in A minor, Op. 17 No. 4"
   }
 }
