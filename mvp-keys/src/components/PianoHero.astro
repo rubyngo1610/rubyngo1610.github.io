@@ -162,7 +162,6 @@ const CTA_KEY = {
       <span class="card-type" id="card-type"></span>
       <h3 class="card-title" id="card-title"></h3>
       <p class="card-body" id="card-body"></p>
-      <a class="card-link btn btn--dark" id="card-link" href="#">Read more →</a>
     </div>
   </div>
 </div>
@@ -428,12 +427,6 @@ const CTA_KEY = {
   margin-block: var(--space-2);
 }
 
-.card-link {
-  align-self: flex-start;
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-}
-
 /* ─── Accessible list ─── */
 .piano-accessible-list { border: none; }
 .piano-accessible-list summary { font-size: var(--text-xs); opacity: 0.5; }
@@ -484,9 +477,6 @@ function openCard(data: typeof ALL_KEYS[0]) {
   (document.getElementById('card-type')  as HTMLElement).textContent = '';
   (document.getElementById('card-title') as HTMLElement).textContent = data.title;
   (document.getElementById('card-body')  as HTMLElement).textContent = data.body;
-  const linkEl = document.getElementById('card-link') as HTMLAnchorElement;
-  linkEl.href = `${BASE}/${data.link}`;
-  linkEl.textContent = 'Read more →';
   panel.hidden = false;
   panel.focus?.();
   // Hide hint after first interaction

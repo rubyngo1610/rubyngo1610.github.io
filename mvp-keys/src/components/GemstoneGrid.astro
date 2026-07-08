@@ -54,7 +54,7 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 
 <div class="gemstone-grid-wrapper" aria-label="Practice heatmap — last 365 days">
 
-  <!-- Summary -->
+  <!-- Summary + sort toggle -->
   <div class="gg-summary">
     <span class="gg-stat">
       <strong>{totalDays}</strong> practice days
@@ -63,6 +63,12 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
     <span class="gg-stat">
       <strong>{Math.round(totalMins / 60)}</strong> hours logged
     </span>
+    <label class="gg-sort-toggle" aria-label="Sort order">
+      <span class="gg-sort-label">Oldest</span>
+      <input class="gg-sort-input" type="checkbox" checked aria-label="Show most recent first" />
+      <span class="gg-sort-track"><span class="gg-sort-thumb"></span></span>
+      <span class="gg-sort-label">Recent</span>
+    </label>
   </div>
 
   <!-- Grid -->
@@ -146,6 +152,41 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 }
 .gg-stat strong { color: var(--color-text-dark); font-weight: 600; }
 .gg-sep { opacity: 0.4; }
+
+/* ─── Sort toggle ─── */
+.gg-sort-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  cursor: pointer;
+  user-select: none;
+}
+.gg-sort-label { font-size: 10px; color: var(--color-text-muted); }
+.gg-sort-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.gg-sort-track {
+  position: relative;
+  width: 32px;
+  height: 16px;
+  background: rgba(10,10,10,0.15);
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.gg-sort-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  transition: transform 0.2s, background 0.2s;
+}
+.gg-sort-input:checked ~ .gg-sort-track { background: var(--color-pearl-dim, rgba(160,200,220,0.4)); }
+.gg-sort-input:checked ~ .gg-sort-track .gg-sort-thumb {
+  transform: translateX(16px);
+  background: var(--color-pearl, #a0c8dc);
+}
 
 .gg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -254,6 +295,24 @@ const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 </style>
 
 <script>
+// Sort toggle — default is checked (recent first), so reverse weeks on load
+const sortInput = document.querySelector('.gg-sort-input') as HTMLInputElement | null;
+const weeksEl   = document.querySelector('.gg-weeks') as HTMLElement | null;
+
+function applySort(recentFirst: boolean) {
+  if (!weeksEl) return;
+  const cols = Array.from(weeksEl.children) as HTMLElement[];
+  if (recentFirst) cols.reverse();
+  cols.forEach(c => weeksEl.appendChild(c));
+}
+
+// Apply on load (checked = recent first)
+if (sortInput?.checked) applySort(true);
+
+sortInput?.addEventListener('change', () => {
+  applySort(sortInput.checked);
+});
+
 const tooltip = document.getElementById('gg-tooltip')!;
 
 document.querySelectorAll('.gg-day[data-date]').forEach(el => {
