@@ -56,12 +56,6 @@ const maxCommits = Math.max(...days.map(d => d.entry?.commits ?? 0), 1);
     <span class="cg-stat"><strong>{activeDays}</strong> active days</span>
     <span class="cg-sep" aria-hidden="true">·</span>
     <span class="cg-stat"><strong>{computedTotal}</strong> commits</span>
-    <label class="cg-sort-toggle" aria-label="Sort order">
-      <span class="cg-sort-label">Oldest</span>
-      <input class="cg-sort-input" type="checkbox" checked aria-label="Show most recent first" />
-      <span class="cg-sort-track"><span class="cg-sort-thumb"></span></span>
-      <span class="cg-sort-label">Recent</span>
-    </label>
   </div>
 
   <div class="cg-scroll">
@@ -152,41 +146,6 @@ const maxCommits = Math.max(...days.map(d => d.entry?.commits ?? 0), 1);
 }
 .cg-stat strong { color: var(--color-text-dark); font-weight: 600; }
 .cg-sep { opacity: 0.4; }
-
-/* ─── Sort toggle ─── */
-.cg-sort-toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  cursor: pointer;
-  user-select: none;
-}
-.cg-sort-label { font-size: 10px; color: var(--color-text-muted); }
-.cg-sort-input { position: absolute; opacity: 0; width: 0; height: 0; }
-.cg-sort-track {
-  position: relative;
-  width: 32px;
-  height: 16px;
-  background: rgba(10,10,10,0.15);
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-.cg-sort-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-text-muted);
-  transition: transform 0.2s, background 0.2s;
-}
-.cg-sort-input:checked ~ .cg-sort-track { background: var(--color-amber-dim); }
-.cg-sort-input:checked ~ .cg-sort-track .cg-sort-thumb {
-  transform: translateX(16px);
-  background: var(--color-amber);
-}
 
 .cg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -282,22 +241,9 @@ const maxCommits = Math.max(...days.map(d => d.entry?.commits ?? 0), 1);
 </style>
 
 <script>
-// Sort toggle — default is checked (recent first)
-const sortInput = document.querySelector('.cg-sort-input') as HTMLInputElement | null;
-const weeksEl   = document.querySelector('.cg-weeks') as HTMLElement | null;
-
-function applySort(recentFirst: boolean) {
-  if (!weeksEl) return;
-  const cols = Array.from(weeksEl.children) as HTMLElement[];
-  if (recentFirst) cols.reverse();
-  cols.forEach(c => weeksEl.appendChild(c));
-}
-
-if (sortInput?.checked) applySort(true);
-
-sortInput?.addEventListener('change', () => {
-  applySort(sortInput.checked);
-});
+// Scroll to the right (most recent) on load
+const cgScroll = document.querySelector('.cg-scroll') as HTMLElement | null;
+if (cgScroll) cgScroll.scrollLeft = cgScroll.scrollWidth;
 
 const tooltip = document.getElementById('cg-tooltip')!;
 
