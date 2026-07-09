@@ -17,7 +17,7 @@ const {
   ogImage = '/og-image.jpg',
 } = Astro.props;
 
-const GA_ID = 'G-XXXXXXXXXX'; // Owner: replace with real GA4 measurement ID
+const GA_ID = 'G-E3BB2WHFCD'; // Owner: replace with real GA4 measurement ID
 ---
 
 <!doctype html>
@@ -41,7 +41,7 @@ const GA_ID = 'G-XXXXXXXXXX'; // Owner: replace with real GA4 measurement ID
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Google Analytics 4 — Owner: replace G-XXXXXXXXXX -->
+    <!-- Google Analytics 4 -->
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
     <script define:vars={{ GA_ID }}>
       window.dataLayer = window.dataLayer || [];

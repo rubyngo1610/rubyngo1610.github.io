@@ -15,17 +15,17 @@
     },
     "hero": {
       "name": "Ngoc (Ruby) Ngo",
-      "tagline": "She's the rare person who is both a fun musician and a data enthusiast — here's the proof.",
+      "tagline": "She's a constant learner who is both a fun musician and a data enthusiast, here's the proof!",
       "cta_resume": "Résumé",
       "cta_email": "Say Hello",
       "cta_listen": "Listen"
     },
     "about": {
       "headline": "Two disciplines, one practice.",
-      "body_music": "I perform semiannually with the New York Piano Society's Members. I debuted at Carnegie Hall showcasing Kashkin's arrangement of Tchaikovsky's Swan Lake - Finale Scene, and at Kaufman Music Center performing Liszt's arrangement of Wagner's Tristan und Isolde - Isoldens Liebestod.",
-      "body_data": "I am a Master's student in Data Science @ NYU and an ex-Software Engineer II @ Bank of America. I fixed data and automated processes to help banks save millions in compliance fines and utilized FIX protocol's enrichment logic to curate strategies to better serve the automation.",
+      "body_music": "I am performing semiannually with the New York Piano Society's Members. Most recent obsession is Chopin's Mazurka in A Minor, Op.17 No.4 where I explore the interplay of rhythm, melody, and introspection.",
+      "body_data": "I explore methods and the power of data as a Master's student in Data Science @ NYU. As a Data Science Intern at NYU Langone this 2026 summer, I am building microglia classification tools using deep learning frameworks. After that, I look forward to contributing to the development of innovative AI-powered products and services that will reshape how we discover, consume, and interact with music :).",
       "body_both": "I am passionate about using data science and AI to innovate and empower musicians. By day, I am a technologist and advocate for women in tech; by night, I am a pianist, bringing together my two passions to build community and explore new artistic frontiers.",
-      "origin": "Based in New York City. BA in Quantitative Economics and Music Performance, Dickinson College (Summa Cum Laude, GPA 3.92). Piano training at Vietnam National Academy of Music, Hanoi. Raised in Vietnam.",
+      "origin": "I track my code commits and piano practice days to measure my growth. You are welcome to come along!",
       "practice_label": "Practice days this year",
       "practice_unit": "sessions logged"
     },
@@ -63,18 +63,17 @@
       "resume_label": "Résumé"
     },
     "footer": {
-      "built_with": "Built with Astro. Deployed on GitHub Pages.",
       "copyright": "© 2025 Ngoc (Ruby) Ngo"
     }
   },
   "vi": {
     "nav": {
       "home": "Trang chủ",
-      "about": "Về tôi",
+      "about": "Về mình",
       "projects": "Dự án",
       "music": "Âm nhạc",
-      "moments": "Khoảnh Khắc Tự Hào",
-      "experience": "Kinh nghiệm",
+      "moments": "Những khoảnh khắc mình rất tự hào",
+      "experience": "Trải nghiệm",
       "skills": "Kỹ năng",
       "blog": "Ghi chú",
       "contact": "Liên hệ",
@@ -82,9 +81,9 @@
       "lang_toggle": "English"
     },
     "hero": {
-      "name": "Ngô Ngọc (Ruby)",
-      "tagline": "Cô ấy là người hiếm có — vừa là nhạc sĩ vui vẻ vừa đam mê dữ liệu — đây là bằng chứng.",
-      "cta_resume": "Tải CV",
+      "name": "Ngô Hồng Ngọc (Ruby)",
+      "tagline": "Cô ấy là một người luôn khao khát phát triển bản thân — vừa đam mê âm nhạc vừa thích xử lý dữ liệu, đây là bằng chứng!",
+      "cta_resume": "CV",
       "cta_email": "Liên hệ",
       "cta_listen": "Nghe nhạc"
     },
@@ -131,8 +130,7 @@
       "resume_label": "Sơ yếu lý lịch"
     },
     "footer": {
-      "built_with": "Xây dựng với Astro. Triển khai trên GitHub Pages.",
-      "copyright": "© 2025 Ngô Ngọc (Ruby)"
+      "copyright": "© 2025 Ngô Hồng Ngọc (Ruby)"
     }
   }
 }
