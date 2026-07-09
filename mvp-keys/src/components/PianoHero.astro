@@ -445,27 +445,11 @@ const CTA_KEY = {
 }
 </style>
 
-<script>
-// All key data from server — we encode it as JSON for the client script
-const WHITE_KEYS_DATA = [
-  { note:'C4', title:'Classical & Calculus', type:'music', body:"Before coming to the US at 17, I've already enjoyed learning classical piano at Vietnam National Academy of Music for 9 years and solved challenging math problems at Chu Van An High School for the Gifted - Math Specialized Class.", link:'about' },
-  { note:'D4', title:'Departure', type:'music', body:"I left Vietnam to study at Dickinson College for my Bachelor's in the United States and open my horizon.", link:'about' },
-  { note:'E4', title:'Education', type:'music', body:'At Dickinson College, I doubled major in Quantitative Economics and Music Performance where I enjoyed studying and challenging myself with hackathons, Econ Games, Recitals, and Concerto Competition.', link:'about' },
-  { note:'F4', title:'First Wons', type:'music', body:"I won the Concerto Competition, performing Grieg's Piano Concerto in A minor and landed my first Data Analyst Internship in the States where I learned tremendously as a performer and a team contributor working with real-world data!", link:'moments' },
-  { note:'G4', title:'Growth', type:'music', body:'After graduating with Summa Sum Laude, I started working at Bank of America as a Technology Analyst and performed with the NY Piano Society. After 2 years, I got promoted to SWE II and was honored to perform at Carnegie Hall.', link:'music' },
-  { note:'A4', title:'Ambition', type:'music', body:"After 3 years in the field, I helped my company built an automatic repair tools that fixed millions of trading messages to comply with FINRA, saving an estimated $2.5 million dollars. However, I was still hunger for innovation and the impact we could do with data. I decided to pursue a master's in Data Science at NYU, studying how AI reshapes what's been impossible in Music and other high-stake fields such as healthcare or education.", link:'about' },
-  { note:'B4', title:'Building', type:'music', body:"Since then, I have been thinking hard about these lingering questions. I have built a little passion e-comerce project on jewlery database and machine-learning powered platofrm, MCP-powered tools to catch AI red-handed on enabling users to copyright laundering, and utilized a deep learning framework to empower researchers to classifying microglia on images and answer the unknown.", link:'about' },
-];
-
-const BLACK_KEYS_DATA = [
-  { note:'C#4', title:'♯ The Leap', type:'data', body:'Wanted something practical with my math background, I researched schools domestically and in the U.S. to maximize my potential.', link:'about' },
-  { note:'D#4', title:'♯ Direction', type:'data', body:'I chose Quantitative Economics so that I could apply my problem solving skills into solving economic matters with quantitative methods.', link:'about' },
-  { note:'F#4', title:'♯ First Step', type:'data', body:'I interned as a Data Analyst at a Technology startup - InfoRe Technology (2019), then a private equity firm - Mekong Capital (2020), exposing myself to the industry. During those 2 years, I competed in the Concerto Competition but fell short of first place.', link:'experience' },
-  { note:'G#4', title:'♯ Scale', type:'data', body:"I got accepted for my first job at Bank of America as a Business Analyst!", link:'experience' },
-  { note:'A#4', title:'♯ Converge', type:'data', body:"I'm still performing, still shipping code. The two tracks aren't merging, yet they're sharpening each other.", link:'moments' },
-];
-
-const CTA_KEY_DATA = { note:'C5', title:'Calling', type:'cta', body:'I want build products that inspire creators, amplify their artistry, and stick with them something meaningful after they left.', link:'contact' };
+<script define:vars={{
+  WHITE_KEYS_DATA: WHITE_KEYS.map(k => ({ note: k.note, title: k.title, type: 'music', body: k.body, link: k.link.replace(/^\//, '') })),
+  BLACK_KEYS_DATA: BLACK_KEYS.map(k => ({ note: k.note, title: k.title, type: 'data',  body: k.body, link: k.link.replace(/^\//, '') })),
+  CTA_KEY_DATA: { note: CTA_KEY.note, title: CTA_KEY.title, type: 'cta', body: CTA_KEY.body, link: CTA_KEY.link.replace(/^\//, '') },
+}}>
 
 const ALL_KEYS = [...WHITE_KEYS_DATA, CTA_KEY_DATA, ...BLACK_KEYS_DATA];
 
