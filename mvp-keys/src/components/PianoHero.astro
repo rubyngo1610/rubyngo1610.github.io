@@ -445,27 +445,11 @@ const CTA_KEY = {
 }
 </style>
 
-<script>
-// All key data from server — we encode it as JSON for the client script
-const WHITE_KEYS_DATA = [
-  { note:'C4', title:'Classical & Calculus', type:'music', body:'Vietnam National Academy of Music — serious piano training from childhood. Simultaneously: Math Specialized Class at Chu Van An High School. Two disciplines, no conflict yet. Both felt like the same thing: precision under pressure.', link:'about' },
-  { note:'D4', title:'Departure', type:'music', body:"Left Vietnam for the United States. Left the Academy. Brought the piano and the notebook. Moving meant choosing — or proving you didn't have to.", link:'about' },
-  { note:'E4', title:'Education', type:'music', body:"Dickinson College — Music Performance and Quantitative Economics, simultaneously. Junior recital. Senior recital. Concerto Competition. Econ thesis. E has no sharp: this is where both voices played together, not separately.", link:'about' },
-  { note:'F4', title:'Firsts', type:'music', body:'Won the Concerto Competition on the third attempt — Grieg, Piano Concerto in A minor. First major music win on US soil. The same year: first data internship in the US. Two firsts, one year, one person.', link:'moments' },
-  { note:'G4', title:'Growth', type:'music', body:'Joined the NY Piano Society. Performed at Kaufman Music Center (2024) — Wagner, Isoldens Liebestod. Debuted at Carnegie Hall (2025) — Tchaikovsky, Swan Lake Finale Scene. The stage got bigger.', link:'music' },
-  { note:'A4', title:'Ambition', type:'music', body:"NYU MS Data Science — studying how AI reshapes what's possible. The question forming: what if the next instrument isn't acoustic at all? What if it's a model trained on everything musicians left behind?", link:'about' },
-  { note:'B4', title:'Bridge', type:'music', body:"The intersection being built — data science in service of music. Keys of Proof. B is the leading tone: unresolved, yearning, pointing forward. It doesn't end here. It resolves to C.", link:'about' },
-];
-
-const BLACK_KEYS_DATA = [
-  { note:'C#4', title:'♯ The Leap', type:'data', body:'Wanted something practical with the math background. America meant opportunity — and the chance to test whether the two disciplines could survive the same person. The first sharp: raising the stakes.', link:'about' },
-  { note:'D#4', title:'♯ Direction', type:'data', body:'Chose Quantitative Economics as the second major — the moment the math found a direction. Not just numbers, but decisions. Not just patterns, but meaning. The pivot that made both majors sharper.', link:'about' },
-  { note:'F#4', title:'♯ First Data Win', type:'data', body:'First data internship in the US — the same year as the Concerto Competition win. InfoRe Technology (2019), then Mekong Capital (2020). Two "firsts" in the same chapter. The sharp that matched the music note.', link:'experience' },
-  { note:'G#4', title:'♯ Scale', type:'data', body:'Bank of America — Global Technology Analyst, then Software Engineer II. Fixed data pipelines at FINRA scale. Automated compliance controls. Millions in fines prevented. Engineering at scale is its own kind of performance.', link:'experience' },
-  { note:'A#4', title:'♯ Converge', type:'data', body:"Still performing. Still committing code. The two tracks aren't merging yet — they're sharpening each other. Every concert season makes the data work more intuitive. Every model trained makes the music more precise.", link:'moments' },
-];
-
-const CTA_KEY_DATA = { note:'C5', title:'Calling', type:'cta', body:'To build AI that understands music the way a musician does — tools that amplify human artistry, never replace it. Every model I train, every pipeline I ship, every performance I give is practice toward that. B was the leading tone. This is the resolution.', link:'contact' };
+<script define:vars={{
+  WHITE_KEYS_DATA: WHITE_KEYS.map(k => ({ note: k.note, title: k.title, type: 'music', body: k.body, link: k.link.replace(/^\//, '') })),
+  BLACK_KEYS_DATA: BLACK_KEYS.map(k => ({ note: k.note, title: k.title, type: 'data',  body: k.body, link: k.link.replace(/^\//, '') })),
+  CTA_KEY_DATA: { note: CTA_KEY.note, title: CTA_KEY.title, type: 'cta', body: CTA_KEY.body, link: CTA_KEY.link.replace(/^\//, '') },
+}}>
 
 const ALL_KEYS = [...WHITE_KEYS_DATA, CTA_KEY_DATA, ...BLACK_KEYS_DATA];
 
