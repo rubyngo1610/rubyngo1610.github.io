@@ -100,7 +100,11 @@ const CTA_KEY = {
 // We render white keys as a row, black keys positioned absolutely above.
 ---
 
-<div class="piano-hero-wrapper" aria-label="Keys of Proof — interactive piano" data-base={base}>
+<div class="piano-hero-wrapper" aria-label="Keys of Proof — interactive piano" data-base={base} data-keys={JSON.stringify([
+  ...WHITE_KEYS.map(k => ({ note: k.note, title: k.title, type: 'music', body: k.body, link: k.link.replace(/^\//, '') })),
+  { note: CTA_KEY.note, title: CTA_KEY.title, type: 'cta', body: CTA_KEY.body, link: CTA_KEY.link.replace(/^\//, '') },
+  ...BLACK_KEYS.map(k => ({ note: k.note, title: k.title, type: 'data', body: k.body, link: k.link.replace(/^\//, '') })),
+])}>
   <!-- Hint text (first visit) -->
   <p class="piano-hint" id="piano-hint" aria-live="polite">
     Every story starts at C
@@ -445,15 +449,12 @@ const CTA_KEY = {
 }
 </style>
 
-<script define:vars={{
-  WHITE_KEYS_DATA: WHITE_KEYS.map(k => ({ note: k.note, title: k.title, type: 'music', body: k.body, link: k.link.replace(/^\//, '') })),
-  BLACK_KEYS_DATA: BLACK_KEYS.map(k => ({ note: k.note, title: k.title, type: 'data',  body: k.body, link: k.link.replace(/^\//, '') })),
-  CTA_KEY_DATA: { note: CTA_KEY.note, title: CTA_KEY.title, type: 'cta', body: CTA_KEY.body, link: CTA_KEY.link.replace(/^\//, '') },
-}}>
+<script>
+const wrapper = document.querySelector('.piano-hero-wrapper') as HTMLElement;
+const ALL_KEYS: { note: string; title: string; type: string; body: string; link: string }[] =
+  JSON.parse(wrapper?.dataset.keys ?? '[]');
 
-const ALL_KEYS = [...WHITE_KEYS_DATA, CTA_KEY_DATA, ...BLACK_KEYS_DATA];
-
-const BASE = (document.querySelector('.piano-hero-wrapper') as HTMLElement)?.dataset.base ?? '';
+const BASE = wrapper?.dataset.base ?? '';
 
 function openCard(data: typeof ALL_KEYS[0]) {
   const panel = document.getElementById('card-panel')!;
