@@ -6,17 +6,22 @@ const { lang = 'en' } = Astro.props;
 const t = i18n[lang].nav;
 const base = import.meta.env.BASE_URL;
 
+const prefix = lang === 'vi' ? '/vi' : '';
 const links = [
-  { href: `/about`,      label: t.about },
-  { href: `/projects`,   label: t.projects },
-  { href: `/music`,      label: t.music },
-  { href: `/moments`,    label: t.moments },
-  { href: `/experience`, label: t.experience },
-  { href: `/contact`,    label: t.contact },
+  { href: `${prefix}/about`,      label: t.about },
+  { href: `${prefix}/projects`,   label: t.projects },
+  { href: `${prefix}/music`,      label: t.music },
+  { href: `${prefix}/moments`,    label: t.moments },
+  { href: `${prefix}/experience`, label: t.experience },
+  { href: `${prefix}/contact`,    label: t.contact },
 ];
 
 const currentPath = Astro.url.pathname;
+// Toggle to same page in the other language
 const toggleLang = lang === 'en' ? 'vi' : 'en';
+const toggleHref = lang === 'en'
+  ? `/vi${currentPath === '/' ? '' : currentPath}`
+  : currentPath.replace(/^\/vi/, '') || '/';
 ---
 
 <header class="site-nav" role="banner">
@@ -45,7 +50,7 @@ const toggleLang = lang === 'en' ? 'vi' : 'en';
           </a>
         </li>
         <li>
-          <a href={Astro.url.pathname} class="nav-lang" hreflang={toggleLang}>
+          <a href={toggleHref} class="nav-lang" hreflang={toggleLang}>
             {t.lang_toggle}
           </a>
         </li>

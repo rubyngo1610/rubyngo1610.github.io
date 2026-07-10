@@ -1,109 +1,34 @@
 ---
 /*
   PianoHero — interactive octave piano, C4–C5 (13 keys).
-  White keys = music; Black keys = data.
-  Click/tap → slide-in program note card.
-  Keyboard accessible: Tab to focus, Enter/Space to open card, Escape to close.
-  See KEY_MAP.md for content mapping details.
+  Key content lives in shared/content/piano-keys.json (single source of truth).
+  The translate GitHub Action auto-populates *_vi fields for Vietnamese.
 */
+
+import pianoKeys from '../../../shared/content/piano-keys.json';
+
+interface Props { lang?: 'en' | 'vi'; }
+const { lang = 'en' } = Astro.props;
+const isVi = lang === 'vi';
 
 const base = import.meta.env.BASE_URL;
 
-const WHITE_KEYS = [
-  {
-    note: 'C4', label: 'C',
-    title: 'Classical & Calculus',
-    body: 'Before coming to the US at 17, I\'ve already enjoyed learning classical piano at Vietnam National Academy of Music for 9 years and solved challenging math problems at Chu Van An High School for the Gifted -  Math Specialized Class.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'D4', label: 'D',
-    title: 'Departure',
-    body: 'I left Vietnam to study at Dickinson College for my Bachelor\'s in the United States and open my horizon.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'E4', label: 'E',
-    title: 'Education',
-    body: 'At Dickinson College, I doubled major in Quantitative Economics and Music Performance where I enjoyed studying and challenging myself with hackathons, Econ Games, Recitals, and Concerto Competition.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'F4', label: 'F',
-    title: 'First Wons',
-    body: 'I won the Concerto Competition, performing Grieg\'s Piano Concerto in A minor and landed my first Data Analyst Internship in the States where I learned tremendously as a performer and a team contributor working with real-world data!',
-    link: `/moments`, linkLabel: 'See moments',
-  },
-  {
-    note: 'G4', label: 'G',
-    title: 'Growth',
-    body: 'After graduating with Summa Sum Laude, I started working at Bank of America as a Technology Analyst and performed with the NY Piano Society. After 2 years, I got promoted to SWE II and was honored to perform at Carnegie Hall.',
-    link: `/music`, linkLabel: 'Listen',
-  },
-  {
-    note: 'A4', label: 'A',
-    title: 'Ambition',
-    body: 'After 3 years in the field, I helped my company built an automatic repair tools that fixed millions of trading messages to comply with FINRA, saving an estimated $2.5 million dollars. However,  I was still hunger for innovation and the impact we could do with data. I decided to pursue a master\'s in Data Science at NYU, studying how AI reshapes what\'s been impossible in Music and other high-stake fields such as healthcare or education.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'B4', label: 'B',
-    title: 'Building',
-    body: 'Since then, I have been thinking hard about these lingering questions. I have built a little passion e-comerce project on jewlery database and machine-learning powered platofrm, MCP-powered tools to catch AI red-handed on enabling users to copyright laundering, and utilized a deep learning framework to empower researchers to classifying microglia on images and answer the unknown.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-];
+function t(key: { title: string; title_vi?: string; body: string; body_vi?: string }) {
+  return {
+    title: (isVi && key.title_vi) ? key.title_vi : key.title,
+    body:  (isVi && key.body_vi)  ? key.body_vi  : key.body,
+  };
+}
 
-const BLACK_KEYS = [
-  {
-    note: 'C#4', label: 'C♯',
-    title: '♯ The Leap',
-    body: 'Wanted something practical with my math background, I researched schools domestically and in the U.S. to maximize my potential.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'D#4', label: 'D♯',
-    title: '♯ Direction',
-    body: 'I chose Quantitative Economics so that I could apply my problem solving skills into solving economic matters with quantitative methods.',
-    link: `/about`, linkLabel: 'My Story',
-  },
-  {
-    note: 'F#4', label: 'F♯',
-    title: '♯ First Step',
-    body: 'I interned as a Data Analyst at a Technology startup - InfoRe Technology (2019), then a private equity firm - Mekong Capital (2020), exposing myself to the industry. During those 2 years, I competed in the Concerto Competition but fell short of first place.',
-    link: `/experience`, linkLabel: 'See experience',
-  },
-  {
-    note: 'G#4', label: 'G♯',
-    title: '♯ Scale',
-    body: 'I got accepted for my first job at Bank of America as a Business Analyst!',
-    link: `/experience`, linkLabel: 'See experience',
-  },
-  {
-    note: 'A#4', label: 'A♯',
-    title: '♯ Converge',
-    body: 'I\'m still performing, still shipping code. The two tracks aren\'t merging, yet they\'re sharpening each other.',
-    link: `/moments`, linkLabel: 'See moments',
-  },
-];
-
-// C5 = Calling key
-const CTA_KEY = {
-  note: 'C5', label: 'C', title: 'Calling',
-  body: 'I want build products that inspire creators, amplify their artistry, and stick with them something meaningful after they left.',
-  link: `/contact`, linkLabel: 'Let\'s talk',
-};
-
-// All keys in piano order: C4 C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C#5 C5
-// (C#5 is the 13th — last black key equivalent; C5 is CTA white key)
-// Physical piano layout for C4–C5: 7 white + 5 black + high C = 13 keys total
-// We render white keys as a row, black keys positioned absolutely above.
+const WHITE_KEYS = pianoKeys.white_keys;
+const BLACK_KEYS = pianoKeys.black_keys;
+const CTA_KEY    = pianoKeys.cta_key;
 ---
 
 <div class="piano-hero-wrapper" aria-label="Keys of Proof — interactive piano" data-base={base} data-keys={JSON.stringify([
-  ...WHITE_KEYS.map(k => ({ note: k.note, title: k.title, type: 'music', body: k.body, link: k.link.replace(/^\//, '') })),
-  { note: CTA_KEY.note, title: CTA_KEY.title, type: 'cta', body: CTA_KEY.body, link: CTA_KEY.link.replace(/^\//, '') },
-  ...BLACK_KEYS.map(k => ({ note: k.note, title: k.title, type: 'data', body: k.body, link: k.link.replace(/^\//, '') })),
+  ...WHITE_KEYS.map(k => ({ note: k.note, title: t(k).title, type: 'music', body: t(k).body, link: (isVi ? 'vi/' : '') + k.link.replace(/^\//, '') })),
+  { note: CTA_KEY.note, title: t(CTA_KEY).title, type: 'cta', body: t(CTA_KEY).body, link: (isVi ? 'vi/' : '') + CTA_KEY.link.replace(/^\//, '') },
+  ...BLACK_KEYS.map(k => ({ note: k.note, title: t(k).title, type: 'data', body: t(k).body, link: (isVi ? 'vi/' : '') + k.link.replace(/^\//, '') })),
 ])}>
   <!-- Hint text (first visit) -->
   <p class="piano-hint" id="piano-hint" aria-live="polite">
@@ -176,16 +101,16 @@ const CTA_KEY = {
   <ul style="margin-top:var(--space-4); list-style:none; display:flex; flex-direction:column; gap:var(--space-3);">
     {WHITE_KEYS.map(k => (
       <li>
-        <strong>{k.note} (music)</strong> — {k.title}: {k.body} <a href={k.link}>{k.linkLabel}</a>
+        <strong>{k.note} (music)</strong> — {t(k).title}: {t(k).body} <a href={k.link}>{k.linkLabel}</a>
       </li>
     ))}
     {BLACK_KEYS.map(k => (
       <li>
-        <strong>{k.note} (data)</strong> — {k.title}: {k.body} <a href={k.link}>{k.linkLabel}</a>
+        <strong>{k.note} (data)</strong> — {t(k).title}: {t(k).body} <a href={k.link}>{k.linkLabel}</a>
       </li>
     ))}
     <li>
-      <strong>{CTA_KEY.note} (CTA)</strong> — {CTA_KEY.title}: {CTA_KEY.body} <a href={CTA_KEY.link}>{CTA_KEY.linkLabel}</a>
+      <strong>{CTA_KEY.note} (CTA)</strong> — {t(CTA_KEY).title}: {t(CTA_KEY).body} <a href={CTA_KEY.link}>{CTA_KEY.linkLabel}</a>
     </li>
   </ul>
 </details>

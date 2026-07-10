@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Waveform from '../../components/Waveform.astro';
+import momentsData from '../../../../shared/data/moments.json';
+import i18n from '../../../../shared/content/i18n.json';
+
+const lang = 'vi';
+const t = i18n[lang].moments;
+const moments = momentsData.moments;
+---
+
+<BaseLayout
+  title="Khoảnh Khắc Đáng Tự Hào — Ngô Ngọc (Ruby)"
+  description="Những khoảnh khắc đáng tự hào — âm nhạc, dữ liệu, và giao điểm giữa hai lĩnh vực."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Khoảnh Khắc</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">{t.subheadline}</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="moments-grid" role="list">
+        {moments.map(m => (
+          <article class="moment-full" id={`moment-${m.id}`} role="listitem">
+            <div class="mf-image">
+              {m.image ? (
+                <img
+                  src={m.image}
+                  alt={m.title_vi || m.title}
+                  class="mf-photo"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <div class="mf-photo-placeholder" aria-hidden="true">
+                  <span class="placeholder-icon">
+                    {m.category === 'music' ? '🎹' : m.category === 'data' ? '💻' : '✨'}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div class="mf-body">
+              <span class="moment-category">
+                {t[`category_${m.category}` as keyof typeof t] ?? m.category}
+                {m.year ? ` · ${m.year}` : ''}
+              </span>
+              <h2 class="mf-title">{m.title_vi || m.title}</h2>
+              <p class="mf-summary">{m.summary_vi || m.summary_en}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="moments-note">
+        <p>Còn nhiều câu chuyện đang được viết thêm.</p>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.6); margin-top: var(--space-3); font-style:italic; }
+.section-waveform { background: var(--color-hall-black); padding: var(--space-3) var(--space-8); }
+
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-12) var(--space-10);
+}
+
+.moment-full {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.mf-image {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--color-cream-warm);
+}
+
+.mf-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.moment-full:hover .mf-photo {
+  transform: scale(1.03);
+}
+
+.mf-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-cream-warm) 0%, var(--color-cream-mid) 100%);
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.4;
+}
+
+.mf-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.moment-category {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+}
+
+.mf-title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 2.5vw, var(--text-2xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.mf-summary {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  font-style: italic;
+  max-width: none;
+}
+
+.moments-note {
+  margin-top: var(--space-16);
+  text-align: center;
+  padding: var(--space-6);
+  border: 1px dashed var(--color-cream-mid);
+  border-radius: var(--radius-lg);
+}
+.moments-note p {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: var(--text-sm);
+  max-width: none;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .moments-grid { grid-template-columns: 1fr; }
+}
+</style>

@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GemstoneGrid from '../../components/GemstoneGrid.astro';
+import CommitGrid from '../../components/CommitGrid.astro';
+import Waveform from '../../components/Waveform.astro';
+import i18n from '../../../../shared/content/i18n.json';
+import metrics from '../../../../shared/data/metrics.json';
+import practiceLog from '../../../../shared/data/practice-log.json';
+import staticCommitLog from '../../../../shared/data/commit-log.json';
+
+const lang = 'vi';
+const t = i18n[lang].about;
+const base = import.meta.env.BASE_URL;
+
+const thisYear = new Date().getFullYear().toString();
+const practiceDaysThisYear = Object.keys(practiceLog).filter(
+  d => !d.startsWith('_') && d.startsWith(thisYear)
+).length;
+
+interface CommitEntry { commits: number; repos?: string[]; }
+const commitLog: Record<string, CommitEntry> = Object.fromEntries(
+  Object.entries(staticCommitLog as Record<string, CommitEntry>).filter(([k]) => !k.startsWith('_'))
+);
+
+const today365 = new Date();
+const cutoff365 = new Date(today365);
+cutoff365.setDate(cutoff365.getDate() - 364);
+const cutoffStr = cutoff365.toISOString().split('T')[0];
+const commitEntriesInWindow = Object.entries(commitLog).filter(([k]) => k >= cutoffStr);
+const totalCommits    = commitEntriesInWindow.reduce((s, [, e]) => s + e.commits, 0);
+const commitActiveDays = commitEntriesInWindow.length;
+const githubFetchOk   = '_github_synced_at' in (staticCommitLog as Record<string, unknown>);
+
+const musicMilestones = [
+  { year: '2025', event: 'Ra mắt tại Carnegie Hall — Tchaikovsky, Swan Lake Finale Scene' },
+  { year: '2024', event: 'Ra mắt tại Kaufman Music Center — Wagner, Isoldens Liebestod' },
+  { year: '2023', event: 'Gia nhập NY Piano Society' },
+  { year: '2022', event: 'Recital Năm Cuối — Dickinson College (Liszt, Chopin, Debussy)' },
+  { year: '2021', event: 'Recital Năm 3: Desire — Dickinson College (Beethoven, Prokofiev)' },
+  { year: '2020', event: 'Giải Nhất Concerto Competition — Grieg, Piano Concerto in A minor' },
+  { year: '2018', event: 'Bằng tốt nghiệp Piano — Học viện Âm nhạc Quốc gia Việt Nam, Hà Nội' },
+];
+
+const dataMilestones = [
+  { year: '2025–2027', event: 'Thạc sĩ Khoa học Dữ liệu — NYU' },
+  { year: '2024',      event: 'Software Engineer II — Bank of America' },
+  { year: '2022',      event: 'Global Technology Analyst — Bank of America' },
+  { year: '2021',      event: 'Thực tập Search Data Analyst — Genuine Parts Company' },
+  { year: '2020',      event: 'Thực tập Data Analyst — Mekong Capital' },
+  { year: '2019',      event: 'Thực tập Data Analyst — InfoRe Technology' },
+  { year: '2018–2022', event: 'Cử nhân Kinh tế Định lượng — Dickinson College' },
+  { year: '2018',      event: 'Bằng, Chuyên Toán — THPT Chu Văn An Hà Nội' },
+];
+---
+
+<BaseLayout
+  title="Câu chuyện của tôi — Ngô Ngọc (Ruby)"
+  description="Hai lĩnh vực, một tinh thần. Thạc sĩ Khoa học Dữ liệu NYU. Nghệ sĩ piano cổ điển."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Câu chuyện của tôi</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">{t.origin}</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="about-wave" />
+
+  <section class="section section--cream" aria-label="Câu chuyện và bằng chứng" id="practice">
+    <div class="container">
+
+      <div class="evidence-row">
+        <div class="evidence-narrative">
+          <span class="movement-label">Âm nhạc</span>
+          <h2>Cập nhật âm nhạc</h2>
+          <p>{t.body_music}</p>
+        </div>
+        <div class="evidence-grid">
+          <header class="gem-col-header">
+            <div class="gem-col-icon" aria-hidden="true">𝄞</div>
+            <div>
+              <h3 class="gem-col-title">Nhật ký luyện tập</h3>
+              <p class="gem-col-meta">
+                {`${practiceDaysThisYear} ngày · cập nhật trực tiếp`}
+              </p>
+            </div>
+          </header>
+          <GemstoneGrid log={practiceLog as any} compact={true} />
+        </div>
+      </div>
+
+      <div class="waveform-divider waveform-animated" style="margin-block: var(--space-12);" aria-hidden="true"></div>
+
+      <div class="evidence-row">
+        <div class="evidence-narrative">
+          <span class="movement-label">Dữ liệu</span>
+          <h2>Cập nhật dữ liệu</h2>
+          <p>{t.body_data}</p>
+        </div>
+        <div class="evidence-grid">
+          <header class="gem-col-header">
+            <div class="gem-col-icon gem-col-icon--amber" aria-hidden="true">⌨</div>
+            <div>
+              <h3 class="gem-col-title">Lịch sử commit</h3>
+              <p class="gem-col-meta">
+                {`${commitActiveDays} ngày · ${githubFetchOk ? 'trực tiếp từ GitHub' : 'ảnh chụp tĩnh'}`}
+              </p>
+            </div>
+          </header>
+          <CommitGrid log={commitLog} totalCommits={totalCommits} />
+        </div>
+      </div>
+
+      <div class="about-block about-block--center" style="margin-top: var(--space-16);">
+        <blockquote class="pull-quote">{t.body_both}</blockquote>
+      </div>
+
+      <p class="gem-annotation">
+        Ngọc trai = buổi tập piano &nbsp;·&nbsp; Hổ phách = commit code &nbsp;·&nbsp; Sáng hơn = nhiều hoạt động hơn
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--cream-warm" aria-label="Hành trình song song">
+    <div class="container">
+      <span class="program-label">Hành trình</span>
+      <h2 class="section-h2">Hai con đường song song.</h2>
+
+      <div class="dual-timeline" role="region" aria-label="Các mốc âm nhạc và dữ liệu">
+        <div class="dt-track">
+          <h3 class="dt-track-label dt-track-label--music">
+            <span class="clef" aria-hidden="true">𝄞</span>
+            <a href="/vi/music" class="track-link">Âm nhạc</a>
+          </h3>
+          <div class="timeline" role="list">
+            {musicMilestones.map(m => (
+              <div class="timeline-item" role="listitem">
+                <span class="tl-year">{m.year}</span>
+                <p class="tl-event">{m.event}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="dt-track">
+          <h3 class="dt-track-label dt-track-label--data">
+            <span class="clef" aria-hidden="true">𝄢</span>
+            <a href="/vi/experience" class="track-link">Dữ liệu</a>
+          </h3>
+          <div class="timeline" role="list">
+            {dataMilestones.map(m => (
+              <div class="timeline-item" role="listitem">
+                <span class="tl-year">{m.year}</span>
+                <p class="tl-event">{m.event}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream-warm" aria-label="Con số">
+    <div class="container">
+      <span class="program-label">Con số</span>
+      <div class="metrics-grid" style="margin-top: var(--space-8);">
+        <div class="metric-item">
+          <span class="metric-value">{metrics.music.notable_venues.join(' · ')}</span>
+          <span class="metric-label">Địa điểm biểu diễn</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.music.pieces_active_repertoire}</span>
+          <span class="metric-label">Tác phẩm repertoire hiện tại</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.data.flagship_record_scale}</span>
+          <span class="metric-label">Bản ghi trong pipeline tuân thủ</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">{metrics.data.ms_program}</span>
+          <span class="metric-label">Chương trình sau đại học</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark" style="padding-block: var(--space-16);">
+    <div class="container" style="text-align:center;">
+      <h2 style="color:var(--color-score-cream); font-weight:300; margin-bottom:var(--space-6);">Hãy trò chuyện.</h2>
+      <div class="cta-group" style="justify-content:center;">
+        <a href="mailto:ngocrubytin@gmail.com" class="btn btn--primary">Liên hệ</a>
+        <a href={`/resume.pdf`} class="btn btn--outline" target="_blank" rel="noopener">Sơ yếu lý lịch</a>
+        <a href="https://www.linkedin.com/in/ngocrubyngo" class="btn btn--outline" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.65); margin-top: var(--space-4); max-width: 60ch; }
+.evidence-row { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-12); align-items: start; }
+.evidence-narrative { padding-top: var(--space-4); }
+.movement-label { font-family: var(--font-sans); font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-pearl); opacity: 0.7; display: block; margin-bottom: var(--space-3); }
+.gem-col-header { display: flex; gap: var(--space-3); align-items: flex-start; margin-bottom: var(--space-4); }
+.gem-col-icon { font-size: 2rem; color: var(--color-pearl); opacity: 0.7; line-height: 1; }
+.gem-col-icon--amber { color: #c9a87e; }
+.gem-col-title { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 400; color: var(--color-text-dark); margin: 0 0 var(--space-1); }
+.gem-col-meta { font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 0; }
+.pull-quote { font-family: var(--font-serif); font-size: clamp(var(--text-lg), 2vw, var(--text-xl)); font-style: italic; color: var(--color-text-dark); max-width: 56ch; margin: 0 auto; line-height: 1.6; text-align: center; }
+.gem-annotation { text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-8); letter-spacing: 0.06em; }
+.dual-timeline { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); margin-top: var(--space-10); }
+.dt-track-label { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 400; display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-cream-mid); }
+.dt-track-label--music { color: var(--color-pearl); }
+.dt-track-label--data { color: #c9a87e; }
+.track-link { color: inherit; font-size: var(--text-sm); opacity: 0.8; }
+.timeline { display: flex; flex-direction: column; gap: var(--space-4); }
+.timeline-item { display: grid; grid-template-columns: 80px 1fr; gap: var(--space-3); }
+.tl-year { font-family: var(--font-sans); font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.06em; padding-top: 2px; }
+.tl-event { font-size: var(--text-sm); color: var(--color-text-dark); line-height: 1.5; margin: 0; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-8); }
+.metric-item { display: flex; flex-direction: column; gap: var(--space-2); }
+.metric-value { font-family: var(--font-serif); font-size: var(--text-2xl); color: var(--color-text-dark); }
+.metric-label { font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.section-h2 { font-family: var(--font-serif); font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl)); font-weight: 300; color: var(--color-text-dark); margin-top: var(--space-4); }
+.waveform-divider { height: 2px; background: repeating-linear-gradient(90deg, var(--color-cream-mid) 0, var(--color-cream-mid) 4px, transparent 4px, transparent 8px); border-radius: 1px; }
+@media (max-width: 768px) {
+  .evidence-row { grid-template-columns: 1fr; }
+  .dual-timeline { grid-template-columns: 1fr; }
+}
+</style>

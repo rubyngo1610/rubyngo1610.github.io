@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Waveform from '../../components/Waveform.astro';
+import i18n from '../../../../shared/content/i18n.json';
+
+const lang = 'vi';
+const t = i18n[lang].music;
+const base = import.meta.env.BASE_URL;
+
+const repertoire = [
+  { composer: 'Tchaikovsky (arr. Kashkin)', works: ['Swan Lake — Finale Scene'], note: 'NY Piano Society · Carnegie Hall, tháng 3 năm 2025' },
+  { composer: 'Wagner (arr. Liszt)', works: ['Tristan und Isolde — Isoldens Liebestod'], note: 'NY Piano Society · Kaufman Music Center, tháng 10 năm 2024' },
+  { composer: 'Liszt', works: ['Après une lecture du Dante: Fantasia quasi-Sonata', 'Grandes études de Paganini, S. 141, No. 4 & 5'], note: 'Senior Recital · Dickinson College, tháng 4 năm 2022' },
+  { composer: 'Chopin', works: ['Ballade No. 1 in G minor, Op. 23', 'Nocturne in E-flat major, Op. 9 No. 2'] },
+  { composer: 'Beethoven', works: ['Piano Sonata No. 26 in E-flat major, Op. 81a "Les Adieux"', 'Piano Concerto No. 3 in C minor, Op. 37'], note: 'Biểu diễn cùng dàn nhạc · Giải Nhất Concerto Competition' },
+  { composer: 'Grieg', works: ['Piano Concerto in A minor, Op. 16'], note: 'Biểu diễn cùng dàn nhạc' },
+  { composer: 'Brahms', works: ['Intermezzo in A major, Op. 118 No. 2'] },
+  { composer: 'Schubert', works: ['Impromptu in G-flat major, Op. 90 No. 3', 'Impromptu in A-flat major, Op. 90 No. 4'] },
+  { composer: 'Prokofiev', works: ['Toccata, Op. 11'], note: 'Junior Recital: Desire · Dickinson College, tháng 4 năm 2021' },
+  { composer: 'Debussy', works: ['Préludes (chọn lọc)'] },
+  { composer: 'Mozart', works: ['Piano Concerto No. 24 in C minor, K. 491'] },
+];
+---
+
+<BaseLayout
+  title="Âm nhạc — Ngô Ngọc (Ruby)"
+  description="Nghệ sĩ piano cổ điển. NY Piano Society. Carnegie Hall và Kaufman Music Center."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Âm nhạc</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">NY Piano Society · Carnegie Hall · Kaufman Music Center</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <section class="section section--cream">
+    <div class="container container--narrow">
+      <span class="program-label">{t.listen}</span>
+      <h2 class="section-h2">Bản ghi âm.</h2>
+      <div class="embed-placeholder">
+        <div class="embed-box">
+          <p class="embed-note">[ Chủ sở hữu: dán liên kết nhúng YouTube hoặc SoundCloud tại đây ]</p>
+        </div>
+      </div>
+      <div class="embed-placeholder" style="margin-top: var(--space-8);">
+        <div class="embed-box">
+          <p class="embed-note">[ Chủ sở hữu: bản ghi âm / clip biểu diễn thứ hai ]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream-warm">
+    <div class="container">
+      <span class="program-label">Biểu diễn</span>
+      <div class="photos-grid">
+        {[1,2,3,4].map(i => (
+          <div class="photo-item image-block" style="min-height: 280px;">
+            <div class="img-placeholder" style="height:280px; min-height:unset;" aria-label={`Ảnh biểu diễn ${i}`}>ảnh</div>
+          </div>
+        ))}
+      </div>
+      <p class="photos-caption">Carnegie Hall · Kaufman Music Center · Hòa nhạc cộng đồng NY Piano Society</p>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container container--narrow">
+      <span class="program-label">{t.program_note}</span>
+      <h2 class="section-h2">{t.repertoire_headline}</h2>
+      <p class="section-intro">Tập trung vào thời kỳ Lãng mạn — ngôn ngữ hòa âm cảm giác như nhà nhất.</p>
+
+      <div class="repertoire-list" role="list">
+        {repertoire.map(({ composer, works, note }) => (
+          <div class="repertoire-group" role="listitem">
+            <h3 class="composer-name">{composer}</h3>
+            {note && <p class="repertoire-note">{note}</p>}
+            <ul class="works-list">
+              {works.map(w => <li class="work-item">{w}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.65); margin-top: var(--space-4); }
+.section-h2 { font-family: var(--font-serif); font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl)); font-weight: 300; color: var(--color-text-dark); margin-top: var(--space-4); }
+.section-intro { color: var(--color-text-muted); font-style: italic; margin-top: var(--space-3); margin-bottom: var(--space-8); }
+.embed-placeholder { width: 100%; }
+.embed-box { background: var(--color-cream-warm); border: 1px dashed var(--color-cream-mid); border-radius: var(--radius-md); padding: var(--space-12) var(--space-8); text-align: center; }
+.embed-note { color: var(--color-text-muted); font-size: var(--text-sm); }
+.photos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-top: var(--space-8); }
+.photos-caption { text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-4); letter-spacing: 0.06em; }
+.img-placeholder { background: var(--color-cream-warm); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: var(--text-sm); }
+.repertoire-list { display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-8); }
+.repertoire-group { border-left: 2px solid var(--color-pearl); padding-left: var(--space-5); }
+.composer-name { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 400; color: var(--color-text-dark); margin: 0 0 var(--space-1); }
+.repertoire-note { font-size: var(--text-xs); color: var(--color-pearl); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 var(--space-3); }
+.works-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.work-item { font-size: var(--text-sm); color: var(--color-text-muted); }
+</style>
