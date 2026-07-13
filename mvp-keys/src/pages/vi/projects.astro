@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ProjectModal from '../../components/ProjectModal.astro';
+import Waveform from '../../components/Waveform.astro';
+import projects from '../../../../shared/content/projects.json';
+import i18n from '../../../../shared/content/i18n.json';
+
+const lang = 'vi';
+const t = i18n[lang].projects;
+
+type Project = typeof projects[0] & {
+  title_vi?: string; subtitle_vi?: string; narrative_vi?: string;
+  modal_about_vi?: string;
+};
+
+const primary   = projects.filter(p => p.flagship && !p.secondary) as Project[];
+const secondary = projects.filter(p => p.secondary) as Project[];
+const other     = projects.filter(p => !p.flagship && !p.secondary) as Project[];
+const hasModal = (p: Project) => !!(p.modal_about || (p.modal_tools && p.modal_tools.length > 0));
+---
+
+<BaseLayout
+  title="Dự án — Ngô Ngọc (Ruby)"
+  description="Kỹ thuật dữ liệu, nghiên cứu ML và hackathon của Ngô Ngọc (Ruby)."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Công việc</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">Kỹ thuật dữ liệu · Nghiên cứu ML · AI tự chủ · Hackathon</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <section class="section section--cream">
+    <div class="container">
+      <span class="program-label">Tiêu biểu</span>
+      <div class="grid-2" style="margin-top: var(--space-8);">
+        {primary.map(p => (
+          <ProjectCard
+            id={p.id}
+            title={p.title_vi || p.title}
+            subtitle={p.subtitle_vi || p.subtitle}
+            narrative={p.narrative_vi || p.narrative}
+            tags={p.tags}
+            repo={p.repo}
+            lang={lang}
+            hasModal={hasModal(p)}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {other.length > 0 && (
+    <section class="section section--cream-warm">
+      <div class="container">
+        <span class="program-label">Công việc khác</span>
+        <div class="grid-2" style="margin-top: var(--space-8);">
+          {other.map(p => (
+            <ProjectCard
+              id={p.id}
+              title={p.title_vi || p.title}
+              subtitle={p.subtitle_vi || p.subtitle}
+              narrative={p.narrative_vi || p.narrative}
+              tags={p.tags}
+              repo={p.repo}
+              lang={lang}
+              hasModal={hasModal(p)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {secondary.length > 0 && (
+    <section class="section section--cream">
+      <div class="container container--narrow">
+        <details class="collapsible-section">
+          <summary class="collapsible-summary">
+            <span class="program-label" style="display:inline; margin:0;">Cuộc thi & Hackathon</span>
+          </summary>
+          <div style="margin-top: var(--space-8);">
+            {secondary.map(p => (
+              <div style="margin-bottom: var(--space-6);">
+                <ProjectCard
+                  id={p.id}
+                  title={p.title_vi || p.title}
+                  subtitle={p.subtitle_vi || p.subtitle}
+                  narrative={p.narrative_vi || p.narrative}
+                  tags={p.tags}
+                  repo={p.repo}
+                  lang={lang}
+                  hasModal={hasModal(p)}
+                />
+              </div>
+            ))}
+          </div>
+        </details>
+      </div>
+    </section>
+  )}
+
+  {projects.map(p => {
+    const proj = p as Project;
+    return (
+      <ProjectModal
+        id={proj.id}
+        title={proj.title_vi || proj.title}
+        subtitle={proj.subtitle_vi || proj.subtitle}
+        modal_tools={proj.modal_tools}
+        modal_about={proj.modal_about_vi || proj.modal_about}
+        repo={proj.repo}
+        link={proj.link}
+        video={'video' in proj ? (proj as any).video : undefined}
+        tags={proj.tags}
+      />
+    );
+  })}
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.6); margin-top: var(--space-3); font-style: italic; }
+</style>

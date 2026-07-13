@@ -1,0 +1,39 @@
+name: Auto-translate to Vietnamese
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'shared/content/i18n.json'
+      - 'shared/content/piano-keys.json'
+      - 'shared/content/projects.json'
+      - 'shared/content/experience.json'
+      - 'shared/content/skills.json'
+      - 'shared/data/moments.json'
+
+jobs:
+  translate:
+    name: Translate English → Vietnamese
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run translation script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node --experimental-vm-modules scripts/translate.js
+
+      - name: Commit translations
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add shared/content/ shared/data/moments.json
+          git diff --staged --quiet || git commit -m "chore: auto-translate Vietnamese content [skip ci]"
+          git push

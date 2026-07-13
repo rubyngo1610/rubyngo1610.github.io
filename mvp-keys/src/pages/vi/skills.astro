@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Waveform from '../../components/Waveform.astro';
+import skillsData from '../../../../shared/content/skills.json';
+import i18n from '../../../../shared/content/i18n.json';
+
+const lang = 'vi';
+const t = i18n[lang].skills;
+
+type SkillCategory = typeof skillsData.categories[0] & { name_vi?: string };
+---
+
+<BaseLayout
+  title="Kỹ Năng — Ngô Ngọc (Ruby)"
+  description="Kỹ năng kỹ thuật — Python, SQL, ML, kỹ thuật dữ liệu và piano cổ điển."
+  lang={lang}
+>
+
+  <section class="page-hero section section--dark">
+    <div class="container">
+      <span class="program-label">Kỹ Năng</span>
+      <h1>{t.headline}</h1>
+      <p class="page-sub">{t.note}</p>
+    </div>
+  </section>
+
+  <Waveform bars={60} class="section-waveform" />
+
+  <section class="section section--cream">
+    <div class="container container--narrow">
+      <div class="skills-grid" role="list">
+        {(skillsData.categories as SkillCategory[]).map(cat => (
+          <div class="skill-category" role="listitem">
+            <h2 class="cat-name">{cat.name_vi || cat.name}</h2>
+            <ul class="skill-chips" aria-label={cat.name_vi || cat.name}>
+              {cat.items.map(item => (
+                <li><span class="skill-chip">{item}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding-top: 120px; }
+.page-sub { color: rgba(245,240,232,0.6); margin-top: var(--space-3); font-style:italic; }
+.section-waveform { background: var(--color-hall-black); padding: var(--space-3) var(--space-8); }
+
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.cat-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-dark);
+}
+
+.skill-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.skill-chip {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--color-cream-warm);
+  border: 1px solid var(--color-cream-mid);
+  color: var(--color-text-dark);
+  letter-spacing: 0.01em;
+}
+</style>

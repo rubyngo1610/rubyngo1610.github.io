@@ -1,0 +1,337 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PianoHero from '../../components/PianoHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import MomentTeaser from '../../components/MomentTeaser.astro';
+import projects from '../../../../shared/content/projects.json';
+import momentsData from '../../../../shared/data/moments.json';
+import i18n from '../../../../shared/content/i18n.json';
+import metrics from '../../../../shared/data/metrics.json';
+
+const lang = 'vi';
+const t = i18n[lang];
+const base = import.meta.env.BASE_URL;
+
+const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary];
+const flagshipProjects = flagshipIds.map(id => projects.find(p => p.id === id)).filter(Boolean);
+const topMoments = momentsData.moments.slice(0, 3);
+
+type Project = typeof projects[0] & { title_vi?: string; subtitle_vi?: string; narrative_vi?: string };
+type Moment  = typeof momentsData.moments[0] & { title_vi?: string };
+---
+
+<BaseLayout
+  title="Ngô Ngọc (Ruby) — Keys of Proof"
+  description="Kỹ sư phần mềm và nghệ sĩ piano cổ điển. Phím trắng = âm nhạc. Phím đen = dữ liệu."
+  lang={lang}
+>
+
+  <section class="piano-stage section section--dark" aria-label="Keys of Proof hero">
+    <canvas class="stage-canvas" id="stage-canvas" aria-hidden="true"></canvas>
+
+    <div class="stage-content container">
+      <div class="stage-headline">
+        <span class="program-label">Keys of Proof</span>
+        <h1 class="stage-name">{t.hero.name}</h1>
+        <p class="stage-tagline">{t.hero.tagline}</p>
+      </div>
+
+      <PianoHero lang={lang} />
+
+      <div class="stage-ctas cta-group">
+        <a href={`/resume.pdf`} class="btn btn--primary" target="_blank" rel="noopener">{t.hero.cta_resume}</a>
+        <a href="mailto:ngocrubytin@gmail.com" class="btn btn--outline">{t.hero.cta_email}</a>
+
+        <div class="listen-player" id="listen-player">
+          <button class="btn btn--outline listen-btn" id="listen-btn" aria-label="Nghe thử piano">
+            <span class="listen-icon" id="listen-icon" aria-hidden="true">▶</span>
+            <span class="listen-label" id="listen-label">{t.hero.cta_listen}</span>
+            <span class="eq-bars" id="eq-bars" aria-hidden="true">
+              <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+              <span class="eq-bar"></span><span class="eq-bar"></span>
+            </span>
+          </button>
+          <audio id="listen-audio" preload="none">
+            <source src="/audio/Piano%20Sonata%20No.%2016%20in%20G%20Major%2C%20Op.%2031%2C%20no.%201%20audio.m4a" type="audio/mp4" />
+          </audio>
+        </div>
+      </div>
+
+      <div class="my-story-wrap" aria-hidden="false">
+        <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--3" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--4" aria-hidden="true">·</span>
+        <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--6" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--7" aria-hidden="true">·</span>
+        <span class="sparkle sparkle--8" aria-hidden="true">✦</span>
+        <span class="sparkle sparkle--9" aria-hidden="true">+</span>
+        <span class="sparkle sparkle--10" aria-hidden="true">·</span>
+
+        <span class="story-arrow story-arrow--tl" aria-hidden="true">
+          <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aTL" x1="5" y1="8" x2="82" y2="38" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M 5 8 C 25 -2, 60 12, 46 34 C 38 50, 18 50, 24 38 C 30 26, 55 28, 80 38"
+              stroke="url(#aTL)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 74 32 L 82 38 L 74 45"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+
+        <a href={`/vi/about`} class="my-story-btn" aria-label="Câu chuyện của Ruby">
+          <span class="my-story-frame">
+            <svg class="baroque-ornament baroque-ornament--left" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M44 30 C38 22, 28 18, 24 10 C20 4, 22 0, 26 2 C30 4, 30 10, 26 14 C22 18, 14 18, 10 24 C6 30, 8 38, 14 40 C20 42, 26 38, 28 32 C30 26, 24 20, 20 24 C16 28, 18 36, 24 36 C30 36, 34 30, 30 26" stroke="url(#goldLv)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <path d="M44 30 C40 34, 36 40, 30 44 C24 48, 18 46, 14 50 C10 54, 12 58, 16 58 C20 58, 24 54, 22 50 C20 46, 14 46, 12 42" stroke="url(#goldL2v)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="goldLv" x1="44" y1="30" x2="10" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/><stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+                <linearGradient id="goldL2v" x1="44" y1="30" x2="12" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="my-story-text">
+              <span class="my-story-title">{t.nav.about}</span>
+              <span class="my-story-subtitle">(bằng ngôn ngữ dữ liệu)</span>
+            </span>
+            <svg class="baroque-ornament baroque-ornament--right" viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 30 C10 22, 20 18, 24 10 C28 4, 26 0, 22 2 C18 4, 18 10, 22 14 C26 18, 34 18, 38 24 C42 30, 40 38, 34 40 C28 42, 22 38, 20 32 C18 26, 24 20, 28 24 C32 28, 30 36, 24 36 C18 36, 14 30, 18 26" stroke="url(#goldRv)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <path d="M4 30 C8 34, 12 40, 18 44 C24 48, 30 46, 34 50 C38 54, 36 58, 32 58 C28 58, 24 54, 26 50 C28 46, 34 46, 36 42" stroke="url(#goldR2v)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="goldRv" x1="4" y1="30" x2="38" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="40%" stop-color="#f0c96a"/>
+                  <stop offset="70%" stop-color="#e8b84a"/><stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+                <linearGradient id="goldR2v" x1="4" y1="30" x2="36" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c9922a"/><stop offset="50%" stop-color="#f0c96a"/>
+                  <stop offset="100%" stop-color="#8b5e1a"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+        </a>
+
+        <span class="story-arrow story-arrow--br" aria-hidden="true">
+          <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aBR" x1="85" y1="62" x2="8" y2="32" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#7eb8c9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7eb8c9" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#7eb8c9" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M 85 62 C 65 72, 30 58, 44 36 C 52 20, 72 20, 66 32 C 60 44, 35 42, 10 32"
+              stroke="url(#aBR)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M 16 26 L 8 32 L 16 39"
+              stroke="#7eb8c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <button class="scroll-cue" id="scroll-cue" aria-label="Cuộn xuống" tabindex="-1">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <path d="M6 10 L14 18 L22 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <section class="section section--cream-warm" aria-label="Khoảnh khắc tự hào">
+    <div class="container">
+      <div class="strip-header">
+        <span class="program-label">{t.moments.headline}</span>
+        <a href={`/vi/moments`} class="strip-more">Tất cả →</a>
+      </div>
+      <div class="carousel carousel--moments">
+        <div class="carousel-track">
+          {topMoments.map((m) => {
+            const moment = m as Moment;
+            return (
+              <div class="carousel-slide">
+                <MomentTeaser
+                  id={moment.id}
+                  title={moment.title_vi || moment.title}
+                  year={moment.year}
+                  category={moment.category as 'music' | 'data' | 'both'}
+                  summary={moment.summary_vi || moment.summary_en}
+                  image={moment.image}
+                  lang={lang}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" aria-label="Dự án tiêu biểu">
+    <div class="container">
+      <div class="strip-header">
+        <span class="program-label">Dự án tiêu biểu</span>
+        <a href={`/vi/projects`} class="strip-more">Tất cả dự án →</a>
+      </div>
+      <div class="carousel carousel--projects">
+        <div class="carousel-track">
+          {flagshipProjects.map((p) => {
+            const proj = p as Project;
+            return (
+              <div class="carousel-slide">
+                <ProjectCard
+                  id={proj!.id}
+                  title={proj!.title_vi || proj!.title}
+                  subtitle={proj!.subtitle_vi || proj!.subtitle}
+                  narrative={proj!.narrative_vi || proj!.narrative}
+                  tags={proj!.tags}
+                  repo={proj!.repo}
+                  lang={lang}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark" style="padding-block: var(--space-20);">
+    <div class="container" style="text-align:center;">
+      <p class="encore-prompt">Tìm kiếm vị trí toàn thời gian trong kỹ thuật dữ liệu · ML · khoa học dữ liệu. NYC.</p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+.piano-stage { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+.stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.25; }
+.stage-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-8); padding-top: 80px; padding-bottom: var(--space-16); }
+.stage-headline { text-align: center; }
+.stage-name { font-family: var(--font-serif); font-weight: 300; letter-spacing: -0.03em; color: var(--color-score-cream); line-height: 1.05; margin-bottom: var(--space-4); }
+.stage-tagline { font-size: clamp(var(--text-base), 1.5vw, var(--text-xl)); color: rgba(245,240,232,0.65); max-width: 52ch; line-height: 1.6; font-style: italic; margin-inline: auto; }
+.stage-ctas { justify-content: center; }
+.scroll-cue { position: fixed; bottom: var(--space-8); left: 50%; transform: translateX(-50%); background: none; border: none; color: var(--color-pearl); opacity: 0; cursor: default; padding: var(--space-2); z-index: var(--z-above); pointer-events: none; animation: cue-appear 0.6s ease-out 1.5s forwards, cue-float 2.6s ease-in-out 2.1s infinite; transition: opacity 0.5s ease; }
+.scroll-cue.is-hidden { opacity: 0 !important; animation: none; }
+@keyframes cue-appear { to { opacity: 0.45; } }
+@keyframes cue-float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
+.my-story-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; margin-top: var(--space-4); padding: 48px 80px; }
+.my-story-btn { display: inline-flex; align-items: center; text-decoration: none; cursor: pointer; transition: transform var(--transition), filter var(--transition); position: relative; z-index: 1; }
+.my-story-btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.story-arrow { position: absolute; display: flex; pointer-events: none; animation: arrow-heartbeat 1.8s ease-in-out infinite; }
+.story-arrow--tl { left: calc(50% - 230px); top: calc(50% - 80px); animation-delay: 0.1s; }
+.story-arrow--br { right: calc(50% - 230px); bottom: calc(50% - 80px); animation-delay: 0.45s; }
+@keyframes arrow-heartbeat { 0% { opacity: 0.55; transform: scale(1); } 14% { opacity: 1; transform: scale(1.1); } 28% { opacity: 0.7; transform: scale(0.97); } 42% { opacity: 0.95; transform: scale(1.05); } 70% { opacity: 0.55; transform: scale(1); } 100% { opacity: 0.55; transform: scale(1); } }
+.my-story-frame { display: inline-flex; align-items: center; gap: 0; position: relative; padding: var(--space-2) 0; background: linear-gradient(135deg, #f5e9c8 0%, #ede0b0 40%, #f0e5c4 70%, #e8d89a 100%); border-radius: 6px; box-shadow: 0 0 0 1.5px #b8860b, 0 0 0 3px #f0c96a, 0 0 0 4.5px #8b5e1a, 0 2px 12px rgba(200,150,30,0.25), inset 0 1px 3px rgba(255,240,180,0.6); }
+.baroque-ornament { width: 40px; height: 52px; flex-shrink: 0; }
+.baroque-ornament--left { margin-right: -4px; }
+.baroque-ornament--right { margin-left: -4px; }
+.my-story-text { font-family: var(--font-serif); letter-spacing: 0.06em; color: #5a3a00; padding: 0 var(--space-5); text-shadow: 0 1px 2px rgba(255,240,180,0.8); display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.my-story-title { font-size: var(--text-base); font-weight: 500; font-style: italic; }
+.my-story-subtitle { font-size: 0.7em; font-weight: 400; font-style: italic; opacity: 0.75; letter-spacing: 0.04em; }
+.sparkle { position: absolute; color: var(--color-pearl); pointer-events: none; font-style: normal; line-height: 1; animation: sparkle-beat 1.8s ease-in-out infinite; }
+.sparkle--1  { top: 4px;  left: calc(50% - 130px); font-size: 14px; animation-delay: 0s;    }
+.sparkle--2  { top: 2px;  left: calc(50% + 100px);  font-size: 10px; animation-delay: 0.3s;  }
+.sparkle--3  { top: 12px; left: calc(50% - 170px);  font-size: 12px; animation-delay: 0.6s;  }
+.sparkle--4  { top: 20px; right: calc(50% - 160px); font-size: 8px;  animation-delay: 0.9s;  }
+.sparkle--5  { bottom: 8px; left: calc(50% - 120px); font-size: 16px; animation-delay: 1.2s; }
+.sparkle--6  { bottom: 4px; right: calc(50% - 150px); font-size: 10px; animation-delay: 0.4s;}
+.sparkle--7  { top: 8px;  right: calc(50% - 180px); font-size: 8px;  animation-delay: 1.5s;  }
+.sparkle--8  { bottom: 14px; left: calc(50% - 200px); font-size: 12px; animation-delay: 0.7s;}
+.sparkle--9  { top: 16px; left: calc(50% + 140px);  font-size: 10px; animation-delay: 1.0s;  }
+.sparkle--10 { bottom: 6px; right: calc(50% - 110px); font-size: 8px; animation-delay: 1.8s; }
+@keyframes sparkle-beat { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
+.strip-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-6); }
+.strip-more { font-size: var(--text-sm); color: var(--color-pearl); }
+.carousel { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.carousel-track { display: flex; gap: var(--space-6); padding-bottom: var(--space-4); min-width: max-content; }
+.carousel-slide { width: 340px; flex-shrink: 0; }
+.encore-prompt { color: rgba(245,240,232,0.6); font-size: var(--text-sm); letter-spacing: 0.04em; }
+
+/* ─── Listen player (same as en) ─── */
+.listen-player { position: relative; }
+.listen-btn { display: flex; align-items: center; gap: var(--space-2); min-width: 120px; transition: min-width 0.4s cubic-bezier(0.34,1.56,0.64,1), padding 0.3s; }
+.listen-btn.is-expanded { min-width: 200px; }
+.listen-icon { font-size: 0.8em; transition: opacity 0.2s; }
+.eq-bars { display: none; gap: 2px; align-items: flex-end; height: 16px; }
+.listen-btn.is-playing .eq-bars { display: flex; }
+.listen-btn.is-playing .listen-icon { display: none; }
+.eq-bar { width: 3px; background: currentColor; border-radius: 2px; animation: eq-bounce 0.6s ease-in-out infinite alternate; }
+.eq-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+.eq-bar:nth-child(2) { height: 80%; animation-delay: 0.1s; }
+.eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+.eq-bar:nth-child(4) { height: 90%; animation-delay: 0.05s; }
+.eq-bar:nth-child(5) { height: 50%; animation-delay: 0.15s; }
+@keyframes eq-bounce { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+</style>
+
+<script>
+// Scroll cue
+const cue = document.getElementById('scroll-cue');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 80) cue?.classList.add('is-hidden');
+  else cue?.classList.remove('is-hidden');
+}, { passive: true });
+
+// Audio player
+const audio   = document.getElementById('listen-audio') as HTMLAudioElement | null;
+const btn     = document.getElementById('listen-btn');
+const iconEl  = document.getElementById('listen-icon');
+const labelEl = document.getElementById('listen-label');
+
+btn?.addEventListener('click', () => {
+  if (!audio) return;
+  if (audio.paused) {
+    audio.play();
+    btn.classList.add('is-playing', 'is-expanded');
+    if (labelEl) labelEl.textContent = 'Đang phát';
+  } else {
+    audio.pause();
+    btn.classList.remove('is-playing');
+    if (labelEl) labelEl.textContent = 'Nghe nhạc';
+  }
+});
+audio?.addEventListener('ended', () => {
+  btn?.classList.remove('is-playing');
+  if (labelEl) labelEl.textContent = 'Nghe nhạc';
+});
+
+// Stage canvas waveform
+const canvas = document.getElementById('stage-canvas') as HTMLCanvasElement | null;
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  const W = () => canvas.width  = canvas.offsetWidth;
+  const H = () => canvas.height = canvas.offsetHeight;
+  W(); H();
+  window.addEventListener('resize', () => { W(); H(); });
+  let t = 0;
+  function draw() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(126,184,201,${0.18 - i * 0.04})`;
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= canvas.width; x += 2) {
+        const y = cy + Math.sin((x / canvas.width) * Math.PI * (6 + i * 2) + t + i) * (40 + i * 20);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    t += 0.008;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
