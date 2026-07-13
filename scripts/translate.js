@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const HASHES_FILE = join(ROOT, 'shared/content/.translation-hashes.json');
-const MODEL = 'gemini-1.5-flash';
+const MODEL = 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY) { console.error('GEMINI_API_KEY not set'); process.exit(1); }
