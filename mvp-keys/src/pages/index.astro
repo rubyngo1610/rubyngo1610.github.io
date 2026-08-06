@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PianoHero from '../components/PianoHero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import MomentTeaser from '../components/MomentTeaser.astro';
+import ProjectModal from '../components/ProjectModal.astro';
 import projects from '../../../shared/content/projects.json';
 import momentsData from '../../../shared/data/moments.json';
 import i18n from '../../../shared/content/i18n.json';
@@ -14,7 +14,9 @@ const base = import.meta.env.BASE_URL;
 
 const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary];
 const flagshipProjects = flagshipIds.map(id => projects.find(p => p.id === id)).filter(Boolean);
-const topMoments = momentsData.moments.slice(0, 3);
+const allMoments = momentsData.moments;
+
+const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools && p.modal_tools.length > 0));
 ---
 
 <BaseLayout
@@ -173,22 +175,41 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="program-label">{t.moments.headline}</span>
         <a href={`/moments`} class="strip-more">All moments →</a>
       </div>
-      <div class="carousel carousel--moments">
-        <div class="carousel-track">
-          {topMoments.map(m => (
-            <div class="carousel-slide">
-              <MomentTeaser
-                id={m.id}
-                title={m.title}
-                year={m.year}
-                category={m.category as 'music' | 'data' | 'both'}
-                summary={m.summary_en}
-                image={m.image}
-                lang={lang}
-              />
-            </div>
-          ))}
+      <div class="carr-outer">
+        <button class="carr-btn carr-btn--prev" data-carr="moments" aria-label="Previous moment">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="carr" id="carr-moments" data-carr-id="moments">
+          <div class="carr-track">
+            {allMoments.map((m, i) => (
+              <div class="carr-slide" data-index={String(i)}>
+                <article
+                  class="moment-card"
+                  data-open-modal={`moment-modal-${m.id}`}
+                  role="button"
+                  tabindex="0"
+                  aria-haspopup="dialog"
+                >
+                  {m.image ? (
+                    <div class="mc-image"><img src={m.image} alt="" loading="lazy" /></div>
+                  ) : (
+                    <div class="mc-image mc-image--placeholder" aria-hidden="true">
+                      <span class="mc-icon">{m.category === 'music' ? '🎹' : m.category === 'data' ? '💻' : '✨'}</span>
+                    </div>
+                  )}
+                  <div class="mc-body">
+                    <span class="mc-cat">{m.category === 'music' ? 'Music' : m.category === 'data' ? 'Data' : 'Both'}{m.year ? ` · ${m.year}` : ''}</span>
+                    <h3 class="mc-title">{m.title}</h3>
+                    <p class="mc-summary">{m.summary_en}</p>
+                  </div>
+                </article>
+              </div>
+            ))}
+          </div>
         </div>
+        <button class="carr-btn carr-btn--next" data-carr="moments" aria-label="Next moment">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 3l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -200,30 +221,67 @@ const topMoments = momentsData.moments.slice(0, 3);
         <span class="program-label">Selected work</span>
         <a href={`/projects`} class="strip-more">All projects →</a>
       </div>
-      <div class="carousel carousel--projects">
-        <div class="carousel-track">
-          {flagshipProjects.map((p) => (
-            <div class="carousel-slide">
-              <ProjectCard
-                id={p!.id}
-                title={p!.title}
-                subtitle={p!.subtitle}
-                narrative={p!.narrative}
-                tags={p!.tags}
-                repo={p!.repo}
-                lang={lang}
-              />
-            </div>
-          ))}
+      <div class="carr-outer">
+        <button class="carr-btn carr-btn--prev" data-carr="projects" aria-label="Previous project">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="carr" id="carr-projects" data-carr-id="projects">
+          <div class="carr-track">
+            {flagshipProjects.map((p, i) => (
+              <div class="carr-slide" data-index={String(i)}>
+                <ProjectCard
+                  id={p!.id}
+                  title={p!.title}
+                  subtitle={p!.subtitle}
+                  narrative={p!.narrative}
+                  tags={p!.tags}
+                  repo={p!.repo}
+                  lang={lang}
+                  hasModal={hasModal(p!)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+        <button class="carr-btn carr-btn--next" data-carr="projects" aria-label="Next project">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 3l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </section>
 
+  <!-- Moment modals -->
+  {allMoments.map(m => (
+    <dialog class="moment-modal" id={`moment-modal-${m.id}`} aria-labelledby={`mm-title-${m.id}`}>
+      <div class="mm-inner">
+        <button class="mm-close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <span class="mm-cat">{m.category === 'music' ? 'Music' : m.category === 'data' ? 'Data' : 'Both'}{m.year ? ` · ${m.year}` : ''}</span>
+        <h2 class="mm-title" id={`mm-title-${m.id}`}>{m.title}</h2>
+        <p class="mm-summary">{m.summary_en}</p>
+      </div>
+    </dialog>
+  ))}
+
+  <!-- Project modals -->
+  {flagshipProjects.map(p => (
+    <ProjectModal
+      id={p!.id}
+      title={p!.title}
+      subtitle={p!.subtitle}
+      modal_tools={(p as any).modal_tools}
+      modal_about={(p as any).modal_about}
+      repo={p!.repo}
+      link={(p as any).link}
+      tags={p!.tags}
+    />
+  ))}
+
   <!-- Final CTA -->
   <section class="section section--dark" style="padding-block: var(--space-20);">
     <div class="container" style="text-align:center;">
-      <p class="encore-prompt">Open to full-time data engineering · ML engineering · data science roles. NYC-based.</p>
+      <p class="encore-prompt">Open to full-time Data Engineering · ML Engineering · Data Science roles ^^</p>
     </div>
   </section>
 
@@ -529,32 +587,203 @@ const topMoments = momentsData.moments.slice(0, 3);
 .strip-more:hover { color: var(--color-text-dark); }
 
 /* ─── Carousel ─── */
-.carousel {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-.carousel::-webkit-scrollbar { display: none; }
-
-.carousel-track {
+.carr-outer {
   display: flex;
-  gap: var(--space-6);
+  align-items: center;
+  gap: var(--space-3);
 }
 
-.carousel-slide {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
+.carr-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-cream-mid);
+  background: var(--color-score-cream);
+  color: var(--color-text-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+}
+.carr-btn:hover { background: var(--color-cream-warm); border-color: var(--color-pearl); }
+.carr-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.carr {
+  flex: 1;
+  overflow: hidden;
   min-width: 0;
 }
 
+.carr-track {
+  display: flex;
+  gap: var(--space-5);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carr-slide {
+  flex-shrink: 0;
+  width: 100%;
+  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+.carr-slide:not(.is-active) {
+  filter: blur(3px);
+  opacity: 0.4;
+  transform: scale(0.97);
+  pointer-events: none;
+}
+
 @media (min-width: 768px) {
-  .carousel--projects .carousel-slide {
-    flex: 0 0 calc(50% - var(--space-3));
+  .carr-slide {
+    width: calc(50% - var(--space-3));
   }
-  .carousel--moments .carousel-slide {
-    flex: 0 0 calc(33.333% - var(--space-4));
-  }
+}
+
+/* ─── Moment card (inline in index) ─── */
+.moment-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.moment-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.moment-card:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 3px; }
+
+.mc-image {
+  height: 160px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.mc-image img { width: 100%; height: 100%; object-fit: cover; }
+.mc-image--placeholder {
+  background: var(--color-cream-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mc-icon { font-size: 2rem; opacity: 0.4; }
+
+.mc-body {
+  flex: 1;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--color-cream-mid);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: white;
+}
+
+.mc-cat {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+}
+
+.mc-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.mc-summary {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+/* ─── Moment modal ─── */
+.moment-modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 0;
+  max-width: min(560px, 92vw);
+  width: 100%;
+  max-height: 88vh;
+  overflow: hidden;
+  background: var(--color-score-cream);
+  color: var(--color-text-dark);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06);
+  opacity: 0;
+  translate: 0 16px;
+  scale: 0.98;
+  transition: opacity 0.25s var(--ease-out), translate 0.25s var(--ease-out), scale 0.25s var(--ease-out);
+}
+.moment-modal[open] { opacity: 1; translate: 0 0; scale: 1; }
+.moment-modal::backdrop { background: rgba(10,10,10,0.72); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.25s var(--ease-out); }
+.moment-modal[open]::backdrop { opacity: 1; }
+
+.mm-inner {
+  padding: var(--space-10) var(--space-10) var(--space-8);
+  position: relative;
+  overflow-y: auto;
+  max-height: 88vh;
+}
+
+.mm-close {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mm-close:hover { color: var(--color-text-dark); background: var(--color-cream-warm); }
+
+.mm-cat {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pearl);
+  margin-bottom: var(--space-3);
+}
+
+.mm-title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-hall-black);
+  margin-bottom: var(--space-5);
+  padding-right: var(--space-8);
+}
+
+.mm-summary {
+  font-size: var(--text-base);
+  line-height: 1.78;
+  color: #2a2520;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .mm-inner { padding: var(--space-8) var(--space-6) var(--space-6); }
+  .carr-btn { width: 30px; height: 30px; }
 }
 
 /* ─── Encore ─── */
@@ -693,6 +922,66 @@ if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     if (icon) icon.textContent = '▶';
     cancelAnimationFrame(rafId);
     bars.forEach(bar => { bar.style.height = '4px'; });
+  });
+})();
+
+/* ── Carousels with blur focus effect ── */
+(function () {
+  document.querySelectorAll<HTMLElement>('.carr').forEach(carr => {
+    const track = carr.querySelector<HTMLElement>('.carr-track');
+    const slides = [...carr.querySelectorAll<HTMLElement>('.carr-slide')];
+    if (!slides.length || !track) return;
+
+    const id = carr.dataset.carrId ?? '';
+    let active = 0;
+
+    function update() {
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === active));
+      // Slide the track so active slide is in view (left-aligned within overflow:hidden)
+      const slideW = slides[0].offsetWidth + parseInt(getComputedStyle(track).gap || '0');
+      track.style.transform = `translateX(-${active * slideW}px)`;
+
+      // Update arrow states
+      document.querySelectorAll<HTMLButtonElement>(`.carr-btn--prev[data-carr="${id}"]`).forEach(b => { b.disabled = active === 0; });
+      document.querySelectorAll<HTMLButtonElement>(`.carr-btn--next[data-carr="${id}"]`).forEach(b => { b.disabled = active === slides.length - 1; });
+    }
+
+    document.querySelectorAll<HTMLButtonElement>(`.carr-btn--prev[data-carr="${id}"]`).forEach(b => {
+      b.addEventListener('click', () => { if (active > 0) { active--; update(); } });
+    });
+    document.querySelectorAll<HTMLButtonElement>(`.carr-btn--next[data-carr="${id}"]`).forEach(b => {
+      b.addEventListener('click', () => { if (active < slides.length - 1) { active++; update(); } });
+    });
+
+    // Recalculate on resize
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  });
+})();
+
+/* ── Moment modals ── */
+(function () {
+  document.querySelectorAll<HTMLElement>('[data-open-modal]').forEach(trigger => {
+    const modalId = trigger.dataset.openModal;
+    if (!modalId) return;
+    const open = () => {
+      const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+      modal?.showModal();
+    };
+    trigger.addEventListener('click', open);
+    trigger.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+        e.preventDefault(); open();
+      }
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>('.moment-modal').forEach(modal => {
+    modal.querySelector('.mm-close')?.addEventListener('click', () => modal.close());
+    modal.addEventListener('click', (e) => {
+      const r = modal.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) modal.close();
+    });
   });
 })();
 </script>
