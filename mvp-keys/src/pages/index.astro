@@ -12,7 +12,7 @@ const lang = 'en';
 const t = i18n[lang];
 const base = import.meta.env.BASE_URL;
 
-const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary];
+const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary, 'feedback-agent'];
 const flagshipProjects = flagshipIds.map(id => projects.find(p => p.id === id)).filter(Boolean);
 const allMoments = momentsData.moments;
 
@@ -576,6 +576,8 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
   align-items: baseline;
   justify-content: space-between;
   margin-bottom: var(--space-8);
+  position: relative;
+  z-index: 2;
 }
 
 .strip-more {
