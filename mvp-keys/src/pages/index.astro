@@ -608,7 +608,7 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 }
 
 .carr-slide {
-  flex: 0 0 62%;
+  flex: 0 0 50%;
   aspect-ratio: 1 / 1;
   transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
 }
@@ -662,7 +662,7 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 .moment-card:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 3px; }
 
 .mc-image {
-  flex: 1;
+  flex: 2;
   min-height: 0;
   overflow: hidden;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -677,8 +677,8 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 .mc-icon { font-size: 2rem; opacity: 0.4; }
 
 .mc-body {
-  flex: 1;
-  padding: var(--space-5);
+  flex: 0 0 auto;
+  padding: var(--space-4) var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
