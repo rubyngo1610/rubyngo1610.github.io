@@ -12,8 +12,7 @@ const lang = 'en';
 const t = i18n[lang];
 const base = import.meta.env.BASE_URL;
 
-const flagshipIds = [metrics.flagship_projects.primary, metrics.flagship_projects.secondary, 'feedback-agent'];
-const flagshipProjects = flagshipIds.map(id => projects.find(p => p.id === id)).filter(Boolean);
+const flagshipProjects = projects;
 const allMoments = momentsData.moments;
 
 const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools && p.modal_tools.length > 0));
@@ -227,14 +226,14 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
             {flagshipProjects.map((p, i) => (
               <div class="carr-slide" data-index={String(i)}>
                 <ProjectCard
-                  id={p!.id}
-                  title={p!.title}
-                  subtitle={p!.subtitle}
-                  narrative={p!.narrative}
-                  tags={p!.tags}
-                  repo={p!.repo}
+                  id={p.id}
+                  title={p.title}
+                  subtitle={p.subtitle}
+                  narrative={p.narrative}
+                  tags={p.tags}
+                  repo={p.repo}
                   lang={lang}
-                  hasModal={hasModal(p!)}
+                  hasModal={hasModal(p)}
                 />
               </div>
             ))}
@@ -267,14 +266,14 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
   <!-- Project modals -->
   {flagshipProjects.map(p => (
     <ProjectModal
-      id={p!.id}
-      title={p!.title}
-      subtitle={p!.subtitle}
+      id={p.id}
+      title={p.title}
+      subtitle={p.subtitle}
       modal_tools={(p as any).modal_tools}
       modal_about={(p as any).modal_about}
-      repo={p!.repo}
+      repo={p.repo}
       link={(p as any).link}
-      tags={p!.tags}
+      tags={p.tags}
     />
   ))}
 
