@@ -175,11 +175,8 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
         <span class="program-label">{t.moments.headline}</span>
         <a href={`/moments`} class="strip-more">All moments →</a>
       </div>
-      <div class="carr-outer">
-        <button class="carr-btn carr-btn--prev" data-carr="moments" aria-label="Previous moment">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="carr" id="carr-moments" data-carr-id="moments">
+      <div class="carr-zone">
+        <div class="carr-clip" id="carr-moments" data-carr-id="moments">
           <div class="carr-track">
             {allMoments.map((m, i) => (
               <div class="carr-slide" data-index={String(i)}>
@@ -207,6 +204,9 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
             ))}
           </div>
         </div>
+        <button class="carr-btn carr-btn--prev" data-carr="moments" aria-label="Previous moment">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="carr-btn carr-btn--next" data-carr="moments" aria-label="Next moment">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 3l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -221,11 +221,8 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
         <span class="program-label">Selected work</span>
         <a href={`/projects`} class="strip-more">All projects →</a>
       </div>
-      <div class="carr-outer">
-        <button class="carr-btn carr-btn--prev" data-carr="projects" aria-label="Previous project">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="carr" id="carr-projects" data-carr-id="projects">
+      <div class="carr-zone">
+        <div class="carr-clip" id="carr-projects" data-carr-id="projects">
           <div class="carr-track">
             {flagshipProjects.map((p, i) => (
               <div class="carr-slide" data-index={String(i)}>
@@ -243,6 +240,9 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
             ))}
           </div>
         </div>
+        <button class="carr-btn carr-btn--prev" data-carr="projects" aria-label="Previous project">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 3L5 9l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="carr-btn carr-btn--next" data-carr="projects" aria-label="Next project">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 3l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -589,14 +589,41 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 .strip-more:hover { color: var(--color-text-dark); }
 
 /* ─── Carousel ─── */
-.carr-outer {
+.carr-zone {
+  position: relative;
+  padding: 0 52px; /* room for absolute arrows */
+}
+
+.carr-clip {
+  overflow-x: hidden;
+  overflow-y: visible; /* allow hover transforms to breathe vertically */
+  padding: var(--space-3) 0 var(--space-4); /* vertical breathing room for box-shadow */
+}
+
+.carr-track {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-5);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.carr-slide {
+  flex: 0 0 62%;
+  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+.carr-slide:not(.is-active) {
+  filter: blur(3px);
+  opacity: 0.4;
+  transform: scale(0.96);
+  pointer-events: none;
 }
 
 .carr-btn {
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -609,38 +636,15 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
   justify-content: center;
   transition: background var(--transition), border-color var(--transition), opacity var(--transition);
 }
+.carr-btn--prev { left: 0; }
+.carr-btn--next { right: 0; }
 .carr-btn:hover { background: var(--color-cream-warm); border-color: var(--color-pearl); }
-.carr-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+.carr-btn:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
 
-.carr {
-  flex: 1;
-  overflow: hidden;
-  min-width: 0;
-}
-
-.carr-track {
-  display: flex;
-  gap: var(--space-5);
-  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.carr-slide {
-  flex-shrink: 0;
-  width: 100%;
-  transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
-}
-
-.carr-slide:not(.is-active) {
-  filter: blur(3px);
-  opacity: 0.4;
-  transform: scale(0.97);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .carr-slide {
-    width: calc(50% - var(--space-3));
-  }
+@media (max-width: 640px) {
+  .carr-zone { padding: 0 40px; }
+  .carr-slide { flex: 0 0 80%; }
+  .carr-btn { width: 30px; height: 30px; }
 }
 
 /* ─── Moment card (inline in index) ─── */
@@ -785,7 +789,6 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 
 @media (max-width: 600px) {
   .mm-inner { padding: var(--space-8) var(--space-6) var(--space-6); }
-  .carr-btn { width: 30px; height: 30px; }
 }
 
 /* ─── Encore ─── */
@@ -929,33 +932,38 @@ if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 /* ── Carousels with blur focus effect ── */
 (function () {
-  document.querySelectorAll<HTMLElement>('.carr').forEach(carr => {
-    const track = carr.querySelector<HTMLElement>('.carr-track');
-    const slides = [...carr.querySelectorAll<HTMLElement>('.carr-slide')];
+  document.querySelectorAll<HTMLElement>('.carr-clip').forEach(clip => {
+    const track = clip.querySelector<HTMLElement>('.carr-track');
+    const slides = [...clip.querySelectorAll<HTMLElement>('.carr-slide')];
     if (!slides.length || !track) return;
 
-    const id = carr.dataset.carrId ?? '';
+    const id = clip.dataset.carrId ?? '';
     let active = 0;
 
     function update() {
       slides.forEach((s, i) => s.classList.toggle('is-active', i === active));
-      // Slide the track so active slide is in view (left-aligned within overflow:hidden)
-      const slideW = slides[0].offsetWidth + parseInt(getComputedStyle(track).gap || '0');
-      track.style.transform = `translateX(-${active * slideW}px)`;
 
-      // Update arrow states
-      document.querySelectorAll<HTMLButtonElement>(`.carr-btn--prev[data-carr="${id}"]`).forEach(b => { b.disabled = active === 0; });
-      document.querySelectorAll<HTMLButtonElement>(`.carr-btn--next[data-carr="${id}"]`).forEach(b => { b.disabled = active === slides.length - 1; });
+      const slideW = slides[0].offsetWidth;
+      const gap = parseFloat(getComputedStyle(track).gap || '20');
+      const clipW = clip.offsetWidth;
+
+      // Center active slide; for index 0, clamp to 0 so it starts flush left
+      const raw = active * (slideW + gap) - (clipW - slideW) / 2;
+      track.style.transform = `translateX(-${Math.max(0, raw)}px)`;
+
+      const zone = clip.closest<HTMLElement>('.carr-zone');
+      zone?.querySelectorAll<HTMLButtonElement>('.carr-btn--prev').forEach(b => { b.disabled = active === 0; });
+      zone?.querySelectorAll<HTMLButtonElement>('.carr-btn--next').forEach(b => { b.disabled = active === slides.length - 1; });
     }
 
-    document.querySelectorAll<HTMLButtonElement>(`.carr-btn--prev[data-carr="${id}"]`).forEach(b => {
+    const zone = clip.closest<HTMLElement>('.carr-zone');
+    zone?.querySelectorAll<HTMLButtonElement>('.carr-btn--prev').forEach(b => {
       b.addEventListener('click', () => { if (active > 0) { active--; update(); } });
     });
-    document.querySelectorAll<HTMLButtonElement>(`.carr-btn--next[data-carr="${id}"]`).forEach(b => {
+    zone?.querySelectorAll<HTMLButtonElement>('.carr-btn--next').forEach(b => {
       b.addEventListener('click', () => { if (active < slides.length - 1) { active++; update(); } });
     });
 
-    // Recalculate on resize
     window.addEventListener('resize', update, { passive: true });
     update();
   });
