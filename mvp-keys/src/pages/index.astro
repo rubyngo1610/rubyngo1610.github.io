@@ -609,6 +609,7 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 
 .carr-slide {
   flex: 0 0 62%;
+  aspect-ratio: 1 / 1;
   transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
 }
 
@@ -643,7 +644,7 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 
 @media (max-width: 640px) {
   .carr-zone { padding: 0 40px; }
-  .carr-slide { flex: 0 0 80%; }
+  .carr-slide { flex: 0 0 80%; aspect-ratio: 1 / 1; }
   .carr-btn { width: 30px; height: 30px; }
 }
 
@@ -661,9 +662,9 @@ const hasModal = (p: typeof projects[0]) => !!(p.modal_about || (p.modal_tools &
 .moment-card:focus-visible { outline: 2px solid var(--color-pearl); outline-offset: 3px; }
 
 .mc-image {
-  height: 160px;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
-  flex-shrink: 0;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 .mc-image img { width: 100%; height: 100%; object-fit: cover; }
