@@ -115,11 +115,18 @@ const repertoire = [
     <div class="container">
       <span class="program-label">Performances</span>
       <div class="photos-grid">
-        {[1,2,3,4].map(i => (
-          <div class="photo-item image-block" style="min-height: 280px;">
-            <div class="img-placeholder" style="height:280px; min-height:unset;" aria-label={`Performance photo ${i}`}>photo</div>
-          </div>
-        ))}
+        <div class="photo-item">
+          <img src="/images/New York Piano Society_Carnegie Hall_032925-172.JPEG" alt="NY Piano Society · Carnegie Hall, March 2025" loading="lazy" />
+        </div>
+        <div class="photo-item">
+          <img src="/images/Senior_R.png" alt="Senior Recital · Dickinson College" loading="lazy" />
+        </div>
+        <div class="photo-item">
+          <img src="/images/IMG_5687.JPG" alt="Performance" loading="lazy" />
+        </div>
+        <div class="photo-item">
+          <img src="/images/IMG_8838 2.jpg" alt="Performance" loading="lazy" />
+        </div>
       </div>
       <p class="photos-caption">Carnegie Hall · Kaufman Music Center · NY Piano Society community concerts</p>
     </div>
@@ -196,6 +203,18 @@ const repertoire = [
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
   margin-bottom: var(--space-4);
+}
+.photo-item {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-cream-warm);
+}
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .photos-caption {
   font-size: var(--text-sm);
