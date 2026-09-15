@@ -38,9 +38,9 @@ const repertoire = [
     composer: 'Beethoven',
     works: [
       'Piano Sonata No. 26 in E-flat major, Op. 81a "Les Adieux"',
-      'Piano Concerto No. 3 in C minor, Op. 37',
+      'Piano Concerto No. 3 in C minor, Op. 37 — I. Allegro con brio',
     ],
-    note: 'Concerto performed with orchestra · Student Concerto Competition Winner',
+    note: 'Concerto performed with orchestra · Student Concerto Competition Winner · Recording above',
   },
   // ── Grieg ────────────────────────────────────────────────────────────────
   {
@@ -98,17 +98,14 @@ const repertoire = [
     <div class="container container--narrow">
       <span class="program-label">{t.listen}</span>
       <h2 class="section-h2">Recordings.</h2>
-      <div class="embed-placeholder" aria-label="Audio recording — owner to embed YouTube or SoundCloud link">
-        <div class="embed-box">
-          <p class="embed-note">[ Owner: paste a YouTube or SoundCloud embed here ]</p>
-          <p class="embed-note" style="margin-top: var(--space-2); font-size: var(--text-sm);">Replace this block with an <code>&lt;iframe&gt;</code> — see README for instructions.</p>
-        </div>
-      </div>
-
-      <div class="embed-placeholder" style="margin-top: var(--space-8);" aria-label="Second recording placeholder">
-        <div class="embed-box">
-          <p class="embed-note">[ Owner: second recording / performance clip ]</p>
-        </div>
+      <div class="embed-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/sqovra1q4Kc"
+          title="Piano Concerto in C Minor, Op. 37, No. 3: I. Allegro con brio — Beethoven"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
       </div>
     </div>
   </section>
@@ -179,18 +176,19 @@ const repertoire = [
   margin-bottom: var(--space-8);
 }
 
-.embed-placeholder {}
-.embed-box {
-  background: var(--color-cream-warm);
-  border: 1px dashed var(--color-cream-mid);
+.embed-wrap {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
   border-radius: var(--radius-lg);
-  padding: var(--space-12) var(--space-8);
-  text-align: center;
+  overflow: hidden;
 }
-.embed-note {
-  color: var(--color-text-muted);
-  font-style: italic;
-  font-size: var(--text-base);
+.embed-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 .photos-grid {
