@@ -95,25 +95,6 @@ const CTA_KEY    = pianoKeys.cta_key;
   </div>
 </div>
 
-<!-- Screen-reader accessible list -->
-<details class="piano-accessible-list" style="margin-top: var(--space-8);">
-  <summary class="program-label" style="cursor:pointer; display:inline-block;">Accessible key list (screen readers)</summary>
-  <ul style="margin-top:var(--space-4); list-style:none; display:flex; flex-direction:column; gap:var(--space-3);">
-    {WHITE_KEYS.map(k => (
-      <li>
-        <strong>{k.note} (music)</strong> — {t(k).title}: {t(k).body} <a href={k.link}>{k.linkLabel}</a>
-      </li>
-    ))}
-    {BLACK_KEYS.map(k => (
-      <li>
-        <strong>{k.note} (data)</strong> — {t(k).title}: {t(k).body} <a href={k.link}>{k.linkLabel}</a>
-      </li>
-    ))}
-    <li>
-      <strong>{CTA_KEY.note} (CTA)</strong> — {t(CTA_KEY).title}: {t(CTA_KEY).body} <a href={CTA_KEY.link}>{CTA_KEY.linkLabel}</a>
-    </li>
-  </ul>
-</details>
 
 <style>
 .piano-hero-wrapper {
