@@ -47,7 +47,6 @@ const music = experience.filter(e => e.type === 'music') as ExpEntry[];
             <div class="exp-body">
               <h2 class="exp-org">{e.org}</h2>
               <p class="exp-role">{e.role_vi || e.role}</p>
-              <p class="exp-desc">{e.description_vi || e.description}</p>
               {(e.highlights_vi || e.highlights) && (
                 <ul class="exp-highlights">
                   {(e.highlights_vi || e.highlights || []).map((h: string) => <li>{h}</li>)}
@@ -76,7 +75,6 @@ const music = experience.filter(e => e.type === 'music') as ExpEntry[];
             <div class="exp-body">
               <h2 class="exp-org">{e.org}</h2>
               <p class="exp-role">{e.role_vi || e.role}</p>
-              <p class="exp-desc">{e.description_vi || e.description}</p>
               {(e.highlights_vi || e.highlights) && (
                 <ul class="exp-highlights">
                   {(e.highlights_vi || e.highlights || []).map((h: string) => <li>{h}</li>)}
@@ -103,7 +101,6 @@ const music = experience.filter(e => e.type === 'music') as ExpEntry[];
             <div class="exp-body">
               <h2 class="exp-org">{e.org}</h2>
               <p class="exp-role">{e.role_vi || e.role}</p>
-              <p class="exp-desc">{e.description_vi || e.description}</p>
               {(e.highlights_vi || e.highlights) && (
                 <ul class="exp-highlights">
                   {(e.highlights_vi || e.highlights || []).map((h: string) => <li>{h}</li>)}
