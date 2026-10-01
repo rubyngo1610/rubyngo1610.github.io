@@ -1,17 +1,31 @@
 [
   {
+    "id": "nyu-langone",
+    "org": "NYU Langone Radiology Imaging",
+    "role": "Machine Learning Intern",
+    "type": "work",
+    "location": "New York City",
+    "start": "Jun 2026",
+    "end": "Aug 2026",
+    "description": "Deep learning segmentation pipeline for mapping microglial density across whole Macaque brain volumes using nnU-Net and PyTorch.",
+    "highlights": [
+      "Engineered an open-source deep learning segmentation pipeline using nnU-Net and PyTorch to map microglial density across whole Macaque brain volumes, cutting processing time from weeks of manual labeling to hours",
+      "Architected an incremental learning strategy to eliminate spatial tiling artifacts, retraining the network on high-confidence inferences and elevating Mean Dice Similarity Coefficient from 75% to 96.11% on unseen validation slices"
+    ]
+  },
+  {
     "id": "boa-swe",
     "org": "Bank of America",
     "role": "Software Engineer II",
     "type": "work",
     "location": "New York City",
-    "start": "2022",
-    "end": "2024",
-    "description": "Saved the company an expected $2.5 million compliance fine from FINRA by repairing +100 million preprocessed records having absent or incorrect fields/attributes of FIX messages through a Python automation process. Led the migration of legacy components to modern technologies.",
+    "start": "Feb 2024",
+    "end": "Jul 2025",
+    "description": "Saved $2.5M in potential FINRA fines by building Python automation that repaired 100M+ malformed FIX trading records.",
     "highlights": [
-      "Saved expected $2.5M compliance fine from FINRA",
-      "Repaired +100 million preprocessed records via Python automation",
-      "Led migration of legacy components to modern technologies"
+      "Saved $2.5M in potential FINRA fines by building a Python automation process that repaired 100M+ malformed FIX trading records",
+      "Designed and implemented a more flexible and user-friendly repair execution process, reducing technical debt by 15%",
+      "Ensured stability and functionality of critical RHEL trading data processing systems by performing maintenance, implementing upgrades, and leading the migration of legacy components to modern technologies"
     ]
   },
   {
@@ -20,14 +34,12 @@
     "role": "Global Technology Analyst — Business Analyst",
     "type": "work",
     "location": "New York City",
-    "start": "2024",
-    "end": "2025",
-    "description": "Resolved data's regulatory compliance issues by analyzing +50 million corrupting tags' values in FIX messages post-trade and proposing correcting strategies.",
+    "start": "Jul 2022",
+    "end": "Feb 2024",
+    "description": "Resolved data regulatory compliance issues by analyzing 50M+ corrupting FIX message tags post-trade and developing Python/Shell scripts for data reconciliation.",
     "highlights": [
-      "Analyzed +50 million corrupting tag values in FIX messages post-trade",
-      "Proposed correcting strategies for regulatory compliance",
-      "Data Analytics Lead — Bank of America's Asian Leadership Network",
-      "Represented Bank of America at the 2025 Girls Who Code Fair"
+      "Analyzed 50M+ corrupt FIX messages post-trade to identify root causes and resolve systemic data compliance issues",
+      "Developed Python/Shell scripts for data reconciliation; used comparative metrics to pinpoint discrepancies and cut manual correction volume by 40%"
     ]
   },
   {
